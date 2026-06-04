@@ -10,11 +10,6 @@ namespace MoonBrewCoffee.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "ImageURL",
-                table: "Productos",
-                newName: "Image64");
-
             migrationBuilder.AddColumn<int>(
                 name: "Orden",
                 table: "ProcesosPreparacion",
@@ -29,11 +24,6 @@ namespace MoonBrewCoffee.Migrations
             migrationBuilder.DropColumn(
                 name: "Orden",
                 table: "ProcesosPreparacion");
-
-            migrationBuilder.RenameColumn(
-                name: "Image64",
-                table: "Productos",
-                newName: "ImageURL");
         }
     }
 }

@@ -16,5 +16,7 @@ namespace MoonBrewCoffee.Models.Entidades
         public Producto? Producto { get; set; }
 
         public EstacionCocina? EstacionCocina { get; set; }
+
+        public int Orden { get; set; }
     }
 }

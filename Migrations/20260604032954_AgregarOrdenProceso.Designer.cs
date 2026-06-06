@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoonBrewCoffee.Data;
 
@@ -11,9 +12,11 @@ using MoonBrewCoffee.Data;
 namespace MoonBrewCoffee.Migrations
 {
     [DbContext(typeof(MoonBrewContext))]
-    partial class MoonBrewContextModelSnapshot : ModelSnapshot
+    [Migration("20260604032954_AgregarOrdenProceso")]
+    partial class AgregarOrdenProceso
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

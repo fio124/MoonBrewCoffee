@@ -5,24 +5,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MoonBrewCoffee.Data;
 using MoonBrewCoffee.Models.Entidades;
+using MoonBrewCoffee.Repositories.Interfaces;
 
 namespace MoonBrewCoffee.Controllers
 {
     public class IngredientesController : Controller
     {
-        private readonly MoonBrewContext _context;
+        private readonly IIngredienteRepository _ingredienteRepository;
 
-        public IngredientesController(MoonBrewContext context)
+        public IngredientesController(IIngredienteRepository ingredienteRepository)
         {
-            _context = context;
+            _ingredienteRepository = ingredienteRepository;
         }
-
         // GET: Ingredientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ingredientes.ToListAsync());
+            var ingredientes = await _ingredienteRepository.GetAllAsync();
+            return View(ingredientes);
         }
 
         // GET: Ingredientes/Details/5
@@ -33,8 +33,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var ingrediente = await _context.Ingredientes
-                .FirstOrDefaultAsync(m => m.IdIngrediente == id);
+            var ingrediente = await _ingredienteRepository.GetByIdAsync(id.Value);
             if (ingrediente == null)
             {
                 return NotFound();
@@ -58,8 +57,7 @@ namespace MoonBrewCoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ingrediente);
-                await _context.SaveChangesAsync();
+                await _ingredienteRepository.AddAsync(ingrediente);
                 return RedirectToAction(nameof(Index));
             }
             return View(ingrediente);
@@ -73,7 +71,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var ingrediente = await _context.Ingredientes.FindAsync(id);
+            var ingrediente = await _ingredienteRepository.GetByIdAsync(id.Value);
             if (ingrediente == null)
             {
                 return NotFound();
@@ -97,12 +95,11 @@ namespace MoonBrewCoffee.Controllers
             {
                 try
                 {
-                    _context.Update(ingrediente);
-                    await _context.SaveChangesAsync();
+                    await _ingredienteRepository.UpdateAsync(ingrediente);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!IngredienteExists(ingrediente.IdIngrediente))
+                    if (!await _ingredienteRepository.ExistsAsync(ingrediente.IdIngrediente))
                     {
                         return NotFound();
                     }
@@ -124,8 +121,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var ingrediente = await _context.Ingredientes
-                .FirstOrDefaultAsync(m => m.IdIngrediente == id);
+            var ingrediente = await _ingredienteRepository.GetByIdAsync(id.Value);
             if (ingrediente == null)
             {
                 return NotFound();
@@ -139,19 +135,13 @@ namespace MoonBrewCoffee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ingrediente = await _context.Ingredientes.FindAsync(id);
-            if (ingrediente != null)
-            {
-                _context.Ingredientes.Remove(ingrediente);
-            }
-
-            await _context.SaveChangesAsync();
+            await _ingredienteRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool IngredienteExists(int id)
+        private async Task<bool> IngredienteExists(int id)
         {
-            return _context.Ingredientes.Any(e => e.IdIngrediente == id);
+            return await _ingredienteRepository.ExistsAsync(id);
         }
     }
 }

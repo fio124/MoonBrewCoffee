@@ -1,0 +1,64 @@
+﻿@{
+    var hora = DateTime.Now.Hour;
+
+    string saludo = hora switch
+    {
+        >= 5 and < 12 => "☀️ Buenos días",
+        >= 12 and < 18 => "🌤️ Buenas tardes",
+        _ => "🌙 Buenas noches"
+    };
+}
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <h3>@saludo, Fiore 👋</h3>
+
+        <span>
+            Bienvenida al sistema de administración de MoonBrew Coffee
+        </span>
+
+    </div>
+
+    <div class="topbar-right">
+
+        <div class="search-box">
+
+            <i class="bi bi-search"></i>
+
+            <input type="text"
+                   placeholder="Buscar..." />
+
+        </div>
+
+        <button class="icon-btn">
+
+            <i class="bi bi-bell-fill"></i>
+
+        </button>
+
+        <button class="icon-btn">
+
+            <i class="bi bi-gear-fill"></i>
+
+        </button>
+
+        <div class="profile">
+
+            <img src="~/Imagenes/Loguito.png"
+                 alt="Usuario" />
+
+            <div>
+
+                <strong>Administrador</strong>
+
+                <small>MoonBrew Coffee</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>

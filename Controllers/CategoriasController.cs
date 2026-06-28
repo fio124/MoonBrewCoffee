@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoonBrewCoffee.Data;
 using MoonBrewCoffee.Models.Entidades;
+using MoonBrewCoffee.Repositories.Interfaces;
 
 namespace MoonBrewCoffee.Controllers
 {
     public class CategoriasController : Controller
     {
-        private readonly MoonBrewContext _context;
+        private readonly ICategoriaRepository _categoriaRepository;
 
-        public CategoriasController(MoonBrewContext context)
+        public CategoriasController(ICategoriaRepository categoriaRepository)
         {
-            _context = context;
+            _categoriaRepository = categoriaRepository;
         }
 
         // GET: Categorias
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categorias.ToListAsync());
+            var categorias = await _categoriaRepository.GetAllAsync();
+            return View(categorias);
         }
 
         // GET: Categorias/Details/5
@@ -33,8 +35,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
-                .FirstOrDefaultAsync(m => m.IdCategoria == id);
+            var categoria = await _categoriaRepository.GetByIdAsync(id.Value);
             if (categoria == null)
             {
                 return NotFound();
@@ -58,8 +59,7 @@ namespace MoonBrewCoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categoria);
-                await _context.SaveChangesAsync();
+                await _categoriaRepository.AddAsync(categoria);
                 return RedirectToAction(nameof(Index));
             }
             return View(categoria);
@@ -73,7 +73,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias.FindAsync(id);
+            var categoria = await _categoriaRepository.GetByIdAsync(id.Value);
             if (categoria == null)
             {
                 return NotFound();
@@ -97,12 +97,11 @@ namespace MoonBrewCoffee.Controllers
             {
                 try
                 {
-                    _context.Update(categoria);
-                    await _context.SaveChangesAsync();
+                    await _categoriaRepository.UpdateAsync(categoria);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoriaExists(categoria.IdCategoria))
+                    if (!await _categoriaRepository.ExistsAsync(categoria.IdCategoria))
                     {
                         return NotFound();
                     }
@@ -124,8 +123,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
-                .FirstOrDefaultAsync(m => m.IdCategoria == id);
+            var categoria = await _categoriaRepository.GetByIdAsync(id.Value);
             if (categoria == null)
             {
                 return NotFound();
@@ -139,19 +137,13 @@ namespace MoonBrewCoffee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
-            if (categoria != null)
-            {
-                _context.Categorias.Remove(categoria);
-            }
-
-            await _context.SaveChangesAsync();
+            await _categoriaRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoriaExists(int id)
+        private async Task<bool> CategoriaExists(int id)
         {
-            return _context.Categorias.Any(e => e.IdCategoria == id);
+            return await _categoriaRepository.ExistsAsync(id);
         }
     }
 }

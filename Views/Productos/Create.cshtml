@@ -1,63 +1,79 @@
 ﻿@model MoonBrewCoffee.Models.Entidades.Producto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nuevo Producto";
 }
 
-<h1>Create</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<h4>Producto</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdCategoria" class="control-label"></label>
-                <input asp-for="IdCategoria" class="form-control" />
-                <span asp-validation-for="IdCategoria" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Precio" class="control-label"></label>
-                <input asp-for="Precio" class="form-control" />
-                <span asp-validation-for="Precio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image64" class="control-label"></label>
-                <input asp-for="Image64" class="form-control" />
-                <span asp-validation-for="Image64" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TiempoPreparacion" class="control-label"></label>
-                <input asp-for="TiempoPreparacion" class="form-control" />
-                <span asp-validation-for="TiempoPreparacion" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div>
+
+        <h1 class="fw-bold mb-1">
+            Nuevo Producto
+        </h1>
+
+        <p class="text-muted">
+            Agrega un nuevo producto al catálogo de MoonBrew Coffee.
+        </p>
+
     </div>
+
+    <a asp-action="Index" class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Volver
+
+    </a>
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="card shadow border-0">
+
+    <div class="card-body p-5">
+
+        <form asp-action="Create">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
+
+            <partial name="_ProductoForm" model="Model" />
+
+            <hr class="my-4" />
+
+            <div class="text-end">
+
+                <button class="btn btn-success px-5">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    Guardar Producto
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        document.getElementById("txtImagen")
+        .addEventListener("input",function(){
+
+        document.getElementById("preview").src=this.value;
+
+        });
+
+    </script>
+
 }

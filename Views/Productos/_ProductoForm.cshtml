@@ -1,0 +1,130 @@
+﻿@model MoonBrewCoffee.Models.Entidades.Producto
+
+<div class="row">
+
+    <div class="col-lg-7">
+
+        <div class="mb-4">
+
+            <label asp-for="Nombre" class="form-label fw-semibold"></label>
+
+            <input asp-for="Nombre" class="form-control" />
+
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label asp-for="Descripcion" class="form-label fw-semibold"></label>
+
+            <textarea asp-for="Descripcion"
+                      rows="4"
+                      class="form-control"></textarea>
+
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="mb-4">
+
+                    <label asp-for="Precio" class="form-label fw-semibold"></label>
+
+                    <input asp-for="Precio" class="form-control" />
+
+                    <span asp-validation-for="Precio" class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="mb-4">
+
+                    <label asp-for="TiempoPreparacion" class="form-label fw-semibold"></label>
+
+                    <input asp-for="TiempoPreparacion" class="form-control" />
+
+                    <span asp-validation-for="TiempoPreparacion" class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-5">
+
+        <div class="mb-4">
+
+            <label asp-for="IdCategoria" class="form-label fw-semibold"></label>
+
+            <select asp-for="IdCategoria"
+                    class="form-select"
+                    asp-items="ViewBag.IdCategoria">
+            </select>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label asp-for="Image64"
+                   class="form-label fw-semibold">
+
+                Imagen
+
+            </label>
+
+            <input asp-for="Image64"
+                   id="txtImagen"
+                   class="form-control" />
+
+        </div>
+
+        <div class="text-center">
+
+            <img id="preview"
+                 src="@(string.IsNullOrEmpty(Model?.Image64)
+                                         ? "https://placehold.co/350x250?text=Vista+Previa"
+                                         : Model.Image64)"
+                 class="img-fluid rounded shadow"
+                 style="max-height:250px;" />
+
+        </div>
+
+        <div class="form-check form-switch mt-4">
+
+            <input asp-for="Activo"
+                   class="form-check-input" />
+
+            <label asp-for="Activo"
+                   class="form-check-label"></label>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const txt=document.getElementById("txtImagen");
+
+    if(txt){
+
+    txt.addEventListener("input",function(){
+
+    document.getElementById("preview").src=this.value;
+
+    });
+
+    }
+
+</script>

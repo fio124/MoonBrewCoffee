@@ -7,22 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoonBrewCoffee.Data;
 using MoonBrewCoffee.Models.Entidades;
+using MoonBrewCoffee.Repositories.Interfaces;
+
 
 namespace MoonBrewCoffee.Controllers
 {
     public class MenusController : Controller
     {
-        private readonly MoonBrewContext _context;
+        private readonly IMenuRepository _menuRepository;
 
-        public MenusController(MoonBrewContext context)
+        public MenusController(IMenuRepository menuRepository)
         {
-            _context = context;
+            _menuRepository = menuRepository;
         }
 
         // GET: Menus
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Menus.ToListAsync());
+            var menus = await _menuRepository.GetAllAsync();
+            return View(menus);
         }
 
         // GET: Menus/Details/5
@@ -33,8 +36,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var menu = await _context.Menus
-                .FirstOrDefaultAsync(m => m.IdMenu == id);
+            var menu = await _menuRepository.GetByIdAsync(id.Value);
             if (menu == null)
             {
                 return NotFound();
@@ -58,8 +60,7 @@ namespace MoonBrewCoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(menu);
-                await _context.SaveChangesAsync();
+                await _menuRepository.AddAsync(menu);
                 return RedirectToAction(nameof(Index));
             }
             return View(menu);
@@ -73,7 +74,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var menu = await _context.Menus.FindAsync(id);
+            var menu = await _menuRepository.GetByIdAsync(id.Value);
             if (menu == null)
             {
                 return NotFound();
@@ -97,12 +98,11 @@ namespace MoonBrewCoffee.Controllers
             {
                 try
                 {
-                    _context.Update(menu);
-                    await _context.SaveChangesAsync();
+                    await _menuRepository.UpdateAsync(menu);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MenuExists(menu.IdMenu))
+                    if (!await _menuRepository.ExistsAsync(menu.IdMenu))
                     {
                         return NotFound();
                     }
@@ -124,8 +124,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var menu = await _context.Menus
-                .FirstOrDefaultAsync(m => m.IdMenu == id);
+            var menu = await _menuRepository.GetByIdAsync(id.Value);
             if (menu == null)
             {
                 return NotFound();
@@ -139,19 +138,13 @@ namespace MoonBrewCoffee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var menu = await _context.Menus.FindAsync(id);
-            if (menu != null)
-            {
-                _context.Menus.Remove(menu);
-            }
-
-            await _context.SaveChangesAsync();
+            await _menuRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MenuExists(int id)
+        private async Task<bool> MenuExists(int id)
         {
-            return _context.Menus.Any(e => e.IdMenu == id);
+            return await _menuRepository.ExistsAsync(id);
         }
     }
 }

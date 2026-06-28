@@ -1,11 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using MoonBrewCoffee.Data;
+using MoonBrewCoffee.Repositories.Interfaces;
+using MoonBrewCoffee.Repositories.Implementations;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<MoonBrewContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddScoped<IIngredienteRepository, IngredienteRepository>();
+builder.Services.AddScoped<IComboRepository, ComboRepository>();
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

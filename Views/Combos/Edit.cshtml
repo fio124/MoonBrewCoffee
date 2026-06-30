@@ -1,54 +1,89 @@
-﻿@model MoonBrewCoffee.Models.Entidades.Combo
+﻿@model IEnumerable<MoonBrewCoffee.Models.Entidades.Combo>
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Nuestros Combos";
 }
 
-<h1>Edit</h1>
+<section class="hero-small text-center mb-5">
 
-<h4>Combo</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdCombo" />
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+    <span class="badge bg-warning text-dark mb-3">
+        MoonBrew Coffee
+    </span>
+
+    <h1 class="display-5 fw-bold">
+        Nuestros Combos
+    </h1>
+
+    <p class="lead text-muted">
+        Disfruta nuestras mejores combinaciones de café y postres.
+    </p>
+
+</section>
+
+<div class="row g-4">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="coffee-card-product h-100">
+
+                <div class="product-image">
+
+                    <img src="@item.ImagenURL"
+                         alt="@item.Nombre" />
+
+                </div>
+
+                <div class="product-info">
+
+                    <span class="category-badge">
+
+                        Combo
+
+                    </span>
+
+                    <h3>
+
+                        @item.Nombre
+
+                    </h3>
+
+                    <p>
+
+                        @item.Descripcion
+
+                    </p>
+
+                    <div class="product-footer">
+
+                        <div>
+
+                            <small>Precio</small>
+
+                            <h4>
+
+                                ₡@item.PrecioCombo
+
+                            </h4>
+
+                        </div>
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.IdCombo"
+                           class="btn btn-primary">
+
+                            Ver Combo
+
+                        </a>
+
+                    </div>
+
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PrecioCombo" class="control-label"></label>
-                <input asp-for="PrecioCombo" class="form-control" />
-                <span asp-validation-for="PrecioCombo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImagenURL" class="control-label"></label>
-                <input asp-for="ImagenURL" class="form-control" />
-                <span asp-validation-for="ImagenURL" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+
+        </div>
+    }
+
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

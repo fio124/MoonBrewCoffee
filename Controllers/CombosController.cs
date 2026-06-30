@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoonBrewCoffee.Data;
 using MoonBrewCoffee.Models.Entidades;
+using MoonBrewCoffee.Repositories.Interfaces;
 
 namespace MoonBrewCoffee.Controllers
 {
     public class CombosController : Controller
     {
-        private readonly MoonBrewContext _context;
+        private readonly IComboRepository _comboRepository;
 
-        public CombosController(MoonBrewContext context)
+        public CombosController(IComboRepository comboRepository)
         {
-            _context = context;
+            _comboRepository = comboRepository;
         }
 
         // GET: Combos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Combos.ToListAsync());
+            var combos = await _comboRepository.GetAllAsync();
+            return View(combos);
         }
 
         // GET: Combos/Details/5
@@ -33,8 +35,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var combo = await _context.Combos
-                .FirstOrDefaultAsync(m => m.IdCombo == id);
+            var combo = await _comboRepository.GetByIdAsync(id.Value);
             if (combo == null)
             {
                 return NotFound();
@@ -58,8 +59,7 @@ namespace MoonBrewCoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(combo);
-                await _context.SaveChangesAsync();
+                await _comboRepository.AddAsync(combo);
                 return RedirectToAction(nameof(Index));
             }
             return View(combo);
@@ -73,7 +73,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var combo = await _context.Combos.FindAsync(id);
+            var combo = await _comboRepository.GetByIdAsync(id.Value);
             if (combo == null)
             {
                 return NotFound();
@@ -97,12 +97,11 @@ namespace MoonBrewCoffee.Controllers
             {
                 try
                 {
-                    _context.Update(combo);
-                    await _context.SaveChangesAsync();
+                    await _comboRepository.UpdateAsync(combo);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ComboExists(combo.IdCombo))
+                    if (!await _comboRepository.ExistsAsync(combo.IdCombo))
                     {
                         return NotFound();
                     }
@@ -124,8 +123,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var combo = await _context.Combos
-                .FirstOrDefaultAsync(m => m.IdCombo == id);
+            var combo = await _comboRepository.GetByIdAsync(id.Value);
             if (combo == null)
             {
                 return NotFound();
@@ -139,19 +137,13 @@ namespace MoonBrewCoffee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var combo = await _context.Combos.FindAsync(id);
-            if (combo != null)
-            {
-                _context.Combos.Remove(combo);
-            }
-
-            await _context.SaveChangesAsync();
+            await _comboRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ComboExists(int id)
+        private async Task<bool> ComboExists(int id)
         {
-            return _context.Combos.Any(e => e.IdCombo == id);
+            return await _comboRepository.ExistsAsync(id);
         }
     }
 }

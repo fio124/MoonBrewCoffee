@@ -1,0 +1,105 @@
+﻿@model IEnumerable<MoonBrewCoffee.Models.Entidades.Producto>
+
+@{
+    ViewData["Title"] = "Catálogo";
+}
+
+<section class="catalog-header">
+
+    <div class="catalog-title">
+
+        <span class="badge bg-warning text-dark mb-3">
+            Nuestro Menú
+        </span>
+
+        <h1>Descubre nuestros productos</h1>
+
+        <p>
+            Cafés artesanales, postres caseros y combos preparados con ingredientes de calidad.
+        </p>
+
+    </div>
+
+    <div class="catalog-search">
+
+        <i class="bi bi-search"></i>
+
+        <input type="text"
+               id="buscarProducto"
+               placeholder="Buscar un producto..." />
+
+    </div>
+
+</section>
+
+<div class="catalog-filters">
+
+    <button class="filter-btn active">Todos</button>
+
+    <button class="filter-btn">Bebidas</button>
+
+    <button class="filter-btn">Postres</button>
+
+    <button class="filter-btn">Combos</button>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-xl-3 col-lg-4 col-md-6 producto-card">
+
+            <div class="coffee-card-product">
+
+                <div class="product-image">
+
+                    <img src="@item.Image64"
+                         alt="@item.Nombre" />
+
+                </div>
+
+                <div class="product-info">
+
+                    <span class="category-badge">
+
+                        @item.Categoria?.Nombre
+
+                    </span>
+
+                    <h3>@item.Nombre</h3>
+
+                    <p>
+
+                        @item.Descripcion
+
+                    </p>
+
+                    <div class="product-footer">
+
+                        <div>
+
+                            <small>Desde</small>
+
+                            <h4>₡@item.Precio</h4>
+
+                        </div>
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.IdProducto"
+                           class="btn btn-primary">
+
+                            Ver
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

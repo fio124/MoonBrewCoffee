@@ -7,22 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoonBrewCoffee.Data;
 using MoonBrewCoffee.Models.Entidades;
+using MoonBrewCoffee.Repositories.Interfaces;
+
 
 namespace MoonBrewCoffee.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly MoonBrewContext _context;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public UsuariosController(MoonBrewContext context)
+        public UsuariosController(IUsuarioRepository usuarioRepository)
         {
-            _context = context;
+            _usuarioRepository = usuarioRepository;
         }
 
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuarios.ToListAsync());
+            var usuarios = await _usuarioRepository.GetAllAsync();
+            return View(usuarios);
         }
 
         // GET: Usuarios/Details/5
@@ -33,8 +36,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(m => m.IdUsuario == id);
+            var usuario = await _usuarioRepository.GetByIdAsync(id.Value);
             if (usuario == null)
             {
                 return NotFound();
@@ -58,8 +60,7 @@ namespace MoonBrewCoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
+                await _usuarioRepository.AddAsync(usuario);
                 return RedirectToAction(nameof(Index));
             }
             return View(usuario);
@@ -73,7 +74,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario = await _usuarioRepository.GetByIdAsync(id.Value);
             if (usuario == null)
             {
                 return NotFound();
@@ -97,12 +98,11 @@ namespace MoonBrewCoffee.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
+                    await _usuarioRepository.UpdateAsync(usuario);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.IdUsuario))
+                    if (!await _usuarioRepository.ExistsAsync(usuario.IdUsuario))
                     {
                         return NotFound();
                     }
@@ -124,8 +124,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(m => m.IdUsuario == id);
+            var usuario = await _usuarioRepository.GetByIdAsync(id.Value);
             if (usuario == null)
             {
                 return NotFound();
@@ -139,19 +138,13 @@ namespace MoonBrewCoffee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario != null)
-            {
-                _context.Usuarios.Remove(usuario);
-            }
-
-            await _context.SaveChangesAsync();
+            await _usuarioRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioExists(int id)
+        private async Task<bool> UsuarioExists(int id)
         {
-            return _context.Usuarios.Any(e => e.IdUsuario == id);
+            return await _usuarioRepository.ExistsAsync(id);
         }
     }
 }

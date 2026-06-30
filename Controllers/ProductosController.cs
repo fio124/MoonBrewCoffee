@@ -5,24 +5,25 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MoonBrewCoffee.Data;
 using MoonBrewCoffee.Models.Entidades;
+using MoonBrewCoffee.Repositories.Interfaces;
 
 namespace MoonBrewCoffee.Controllers
 {
     public class ProductosController : Controller
     {
-        private readonly MoonBrewContext _context;
+        private readonly IProductoRepository _productoRepository;
 
-        public ProductosController(MoonBrewContext context)
+        public ProductosController(IProductoRepository productoRepository)
         {
-            _context = context;
+            _productoRepository = productoRepository;
         }
 
         // GET: Productos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Productos.ToListAsync());
+            var productos = await _productoRepository.GetAllAsync();
+            return View(productos);
         }
 
         // GET: Productos/Details/5
@@ -33,8 +34,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos
-                .FirstOrDefaultAsync(m => m.IdProducto == id);
+            var producto = await _productoRepository.GetByIdAsync(id.Value);
             if (producto == null)
             {
                 return NotFound();
@@ -54,12 +54,11 @@ namespace MoonBrewCoffee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdProducto,IdCategoria,Nombre,Descripcion,Precio,ImageURL,TiempoPreparacion,Activo")] Producto producto)
+        public async Task<IActionResult> Create([Bind("IdProducto,IdCategoria,Nombre,Descripcion,Precio,Image64,TiempoPreparacion,Activo")] Producto producto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(producto);
-                await _context.SaveChangesAsync();
+                await _productoRepository.AddAsync(producto);
                 return RedirectToAction(nameof(Index));
             }
             return View(producto);
@@ -73,7 +72,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos.FindAsync(id);
+            var producto = await _productoRepository.GetByIdAsync(id.Value);
             if (producto == null)
             {
                 return NotFound();
@@ -86,7 +85,7 @@ namespace MoonBrewCoffee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdProducto,IdCategoria,Nombre,Descripcion,Precio,ImageURL,TiempoPreparacion,Activo")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("IdProducto,IdCategoria,Nombre,Descripcion,Precio,Image64,TiempoPreparacion,Activo")] Producto producto)
         {
             if (id != producto.IdProducto)
             {
@@ -97,12 +96,11 @@ namespace MoonBrewCoffee.Controllers
             {
                 try
                 {
-                    _context.Update(producto);
-                    await _context.SaveChangesAsync();
+                    await _productoRepository.UpdateAsync(producto);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductoExists(producto.IdProducto))
+                    if (!await _productoRepository.ExistsAsync(producto.IdProducto))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace MoonBrewCoffee.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos
-                .FirstOrDefaultAsync(m => m.IdProducto == id);
+            var producto = await _productoRepository.GetByIdAsync(id.Value);
             if (producto == null)
             {
                 return NotFound();
@@ -139,19 +136,13 @@ namespace MoonBrewCoffee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto != null)
-            {
-                _context.Productos.Remove(producto);
-            }
-
-            await _context.SaveChangesAsync();
+            await _productoRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductoExists(int id)
+        private async Task<bool> ProductoExists(int id)
         {
-            return _context.Productos.Any(e => e.IdProducto == id);
+            return await _productoRepository.ExistsAsync(id);
         }
     }
 }

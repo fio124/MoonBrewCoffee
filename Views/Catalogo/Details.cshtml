@@ -1,0 +1,56 @@
+﻿@model MoonBrewCoffee.Models.Entidades.Producto
+
+@{
+    ViewData["Title"] = Model.Nombre;
+}
+
+<div class="container">
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+
+            <img src="@Model.Image64"
+                 class="img-fluid rounded-4 shadow" />
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <h1>@Model.Nombre</h1>
+
+            <p class="text-muted">
+
+                @Model.Descripcion
+
+            </p>
+
+            <h2 class="text-success">
+
+                ₡@Model.Precio
+
+            </h2>
+
+            <br />
+
+            <p>
+
+                <strong>Tiempo de preparación:</strong>
+
+                @Model.TiempoPreparacion minutos
+
+            </p>
+
+            <br />
+
+            <a asp-action="Index"
+               class="btn btn-outline-dark">
+
+                ← Volver al catálogo
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

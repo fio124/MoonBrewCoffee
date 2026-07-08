@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using MoonBrewCoffee.Data;
-using MoonBrewCoffee.Repositories.Interfaces;
-using MoonBrewCoffee.Repositories.Implementations;
-
-
+using MoonBrewCoffee.Infrastructure.Repository.Interfaces;
+using MoonBrewCoffee.Infrastructure.Repository.Implementations;
+using MoonBrewCoffee.Application.Services.Interfaces;
+using MoonBrewCoffee.Application.Services.Implementations;
+using MoonBrewCoffee.Infrastructure.Data;
+using MoonBrewCoffee.Infrastructure.Interfaces;
+using MoonBrewCoffee.Infrastructure.Implementations;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,7 @@ builder.Services.AddScoped<IIngredienteRepository, IngredienteRepository>();
 builder.Services.AddScoped<IComboRepository, ComboRepository>();
 builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

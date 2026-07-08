@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MoonBrewCoffee.Models;
+using MoonBrewCoffee.Infrastructure.Models;
 
 namespace MoonBrewCoffee.Controllers
 {

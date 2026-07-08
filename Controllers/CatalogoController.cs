@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MoonBrewCoffee.Models.Entidades;
-using MoonBrewCoffee.Repositories.Interfaces;
+using MoonBrewCoffee.Infrastructure.Interfaces;
+using MoonBrewCoffee.Infrastructure.Models.Entidades;
+using MoonBrewCoffee.Infrastructure.Repository.Interfaces;
 
 namespace MoonBrewCoffee.Controllers
 {

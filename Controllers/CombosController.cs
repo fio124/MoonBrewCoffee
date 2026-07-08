@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MoonBrewCoffee.Data;
-using MoonBrewCoffee.Models.Entidades;
-using MoonBrewCoffee.Repositories.Interfaces;
+using MoonBrewCoffee.Infrastructure.Interfaces;
+using MoonBrewCoffee.Infrastructure.Models.Entidades;
+using MoonBrewCoffee.Infrastructure.Repository.Interfaces;
 
 namespace MoonBrewCoffee.Controllers
 {

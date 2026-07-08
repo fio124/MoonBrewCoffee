@@ -1,30 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MoonBrewCoffee.Data;
-using MoonBrewCoffee.Models.Entidades;
-using MoonBrewCoffee.Repositories.Interfaces;
-
+using MoonBrewCoffee.Infrastructure.Repository.Interfaces;
+using MoonBrewCoffee.Application.Services.Interfaces;
+using MoonBrewCoffee.Infrastructure.Models.Entidades;
 
 namespace MoonBrewCoffee.Controllers
 {
     public class UsuariosController : Controller
     {
+        private readonly IUsuarioService _usuarioService;
         private readonly IUsuarioRepository _usuarioRepository;
 
-        public UsuariosController(IUsuarioRepository usuarioRepository)
+        public UsuariosController(
+            IUsuarioService usuarioService,
+            IUsuarioRepository usuarioRepository)
         {
+            _usuarioService = usuarioService;
             _usuarioRepository = usuarioRepository;
         }
 
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            var usuarios = await _usuarioRepository.GetAllAsync();
+            var usuarios = await _usuarioService.GetAllAsync();
             return View(usuarios);
         }
 
@@ -32,15 +30,12 @@ namespace MoonBrewCoffee.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var usuario = await _usuarioRepository.GetByIdAsync(id.Value);
+            var usuario = await _usuarioService.GetByIdAsync(id.Value);
+
             if (usuario == null)
-            {
                 return NotFound();
-            }
 
             return View(usuario);
         }
@@ -52,8 +47,6 @@ namespace MoonBrewCoffee.Controllers
         }
 
         // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdUsuario,IdRol,Nombre,Apellido,Correo,Telefono,PasswordHash,FechaRegistro,Activo")] Usuario usuario)
@@ -63,6 +56,7 @@ namespace MoonBrewCoffee.Controllers
                 await _usuarioRepository.AddAsync(usuario);
                 return RedirectToAction(nameof(Index));
             }
+
             return View(usuario);
         }
 
@@ -70,29 +64,23 @@ namespace MoonBrewCoffee.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var usuario = await _usuarioRepository.GetByIdAsync(id.Value);
+
             if (usuario == null)
-            {
                 return NotFound();
-            }
+
             return View(usuario);
         }
 
         // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,IdRol,Nombre,Apellido,Correo,Telefono,PasswordHash,FechaRegistro,Activo")] Usuario usuario)
         {
             if (id != usuario.IdUsuario)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -103,16 +91,14 @@ namespace MoonBrewCoffee.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!await _usuarioRepository.ExistsAsync(usuario.IdUsuario))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(usuario);
         }
 
@@ -120,15 +106,12 @@ namespace MoonBrewCoffee.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var usuario = await _usuarioRepository.GetByIdAsync(id.Value);
+
             if (usuario == null)
-            {
                 return NotFound();
-            }
 
             return View(usuario);
         }

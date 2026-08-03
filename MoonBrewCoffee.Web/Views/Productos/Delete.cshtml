@@ -1,0 +1,37 @@
+@model MoonBrewCoffee.Application.DTOs.ProductoDTO
+
+@{
+    ViewData["Title"] = "Desactivar producto";
+}
+
+<div class="maintenance-header">
+    <div>
+        <span class="maintenance-eyebrow">Mantenimiento de productos</span>
+        <h1>Desactivar producto</h1>
+        <p>El producto dejará de aparecer en las selecciones activas.</p>
+    </div>
+    <a asp-action="Details" asp-route-id="@Model.IdProducto" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<section class="maintenance-confirm-card">
+    <div class="maintenance-confirm-icon"><i class="bi bi-exclamation-triangle"></i></div>
+    <span class="status-pill is-warning">Confirmación requerida</span>
+    <h2>¿Deseas desactivar “@Model.Nombre”?</h2>
+    <p>La información se conservará y el producto podrá reactivarse posteriormente.</p>
+
+    <div class="maintenance-confirm-summary">
+        <span><strong>Categoría</strong>@Model.NombreCategoria</span>
+        <span><strong>Precio</strong>₡@Model.Precio.ToColones()</span>
+        <span><strong>Preparación</strong>@Model.TiempoPreparacion minutos</span>
+    </div>
+
+    <form asp-action="Delete" class="maintenance-actions justify-content-center">
+        <input type="hidden" asp-for="IdProducto" />
+        <a asp-action="Details" asp-route-id="@Model.IdProducto" class="btn btn-light">Cancelar</a>
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-slash-circle"></i> Sí, desactivar
+        </button>
+    </form>
+</section>

@@ -1,0 +1,212 @@
+﻿@model IEnumerable<MoonBrewCoffee.Application.DTOs.MenuDTO>
+
+@{
+    ViewData["Title"] = "Menús";
+}
+
+<div class="maintenance-header">
+
+    <div>
+
+        <h1 class="fw-bold mb-1">
+            Menús
+        </h1>
+
+        <p class="text-muted">
+            Administra los menús disponibles.
+        </p>
+
+    </div>
+
+    <a asp-action="Create"
+       class="menu-primary-action">
+
+        <i class="bi bi-plus-circle-fill"></i>
+
+        Nuevo Menú
+
+    </a>
+
+</div>
+
+<div class="card shadow-sm border-0 maintenance-table-panel">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Nombre</th>
+
+                        <th data-i18n-key="common.start">Inicio</th>
+
+                        <th>Fin</th>
+
+                        <th>Horario</th>
+
+                        <th>Publicable</th>
+
+                        <th>Disponible Ahora</th>
+
+                        <th>Estado</th>
+
+                        <th class="text-center">
+
+                            Acciones
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+
+                                <strong>@item.Nombre</strong>
+
+                            </td>
+
+                            <td>
+
+                                @item.FechaInicio.ToString("dd/MM/yyyy")
+
+                            </td>
+
+                            <td>
+
+                                @item.FechaFin.ToString("dd/MM/yyyy")
+
+                            </td>
+
+                            <td>
+
+                                @item.HoraInicio.ToString(@"hh\:mm")
+                                -
+                                @item.HoraFin.ToString(@"hh\:mm")
+
+                            </td>
+
+                            <td>
+
+                                @if (item.Disponible)
+                                {
+                                    <span class="badge bg-primary">
+
+                                        Sí
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+
+                                        No
+
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td>
+
+                                @if (item.VigenteAhora)
+                                {
+                                    <span class="badge bg-success">
+
+                                        Vigente
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+
+                                        Fuera de horario
+
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td>
+
+                                @if (item.Activo)
+                                {
+                                    <span class="badge bg-success">
+
+                                        Activo
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+
+                                        Inactivo
+
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <div class="menu-row-actions">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.IdMenu"
+                                   class="menu-icon-action menu-icon-action-view"
+                                   title="Ver detalles de @item.Nombre"
+                                   aria-label="Ver detalles de @item.Nombre">
+
+                                    <i class="bi bi-eye-fill"></i>
+
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.IdMenu"
+                                   class="menu-icon-action menu-icon-action-edit"
+                                   title="Editar @item.Nombre"
+                                   aria-label="Editar @item.Nombre">
+
+                                    <i class="bi bi-pencil-fill"></i>
+
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.IdMenu"
+                                   class="menu-icon-action menu-icon-action-disable"
+                                   title="Desactivar @item.Nombre"
+                                   aria-label="Desactivar @item.Nombre">
+
+                                    <i class="bi bi-slash-circle-fill"></i>
+
+                                </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

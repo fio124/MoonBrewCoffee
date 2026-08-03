@@ -1,0 +1,73 @@
+@model MoonBrewCoffee.Application.DTOs.ComboDTO
+
+@{
+    ViewData["Title"] = $"Detalle de {Model.Nombre}";
+}
+
+<div class="maintenance-header">
+    <div>
+        <span class="maintenance-eyebrow">Mantenimiento de combos</span>
+        <h1>@Model.Nombre</h1>
+        <p>Información completa y productos incluidos en el combo.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<div class="maintenance-detail-grid">
+    <section class="maintenance-detail-media">
+        @if (!string.IsNullOrWhiteSpace(Model.ImagenURL))
+        {
+            <img src="@Url.Action("Image", "Combos", new { id = Model.IdCombo })"
+                 alt="@Model.Nombre"
+                 decoding="async" />
+        }
+        else
+        {
+            <div class="maintenance-image-placeholder">
+                <i class="bi bi-gift"></i><span>Sin imagen</span>
+            </div>
+        }
+    </section>
+
+    <section class="maintenance-detail-content">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <span class="status-pill @(Model.Activo ? "is-active" : "is-inactive")">
+                @(Model.Activo ? "Activo" : "Inactivo")
+            </span>
+            <strong class="maintenance-price">₡@Model.PrecioCombo.ToColones()</strong>
+        </div>
+
+        <h2>Descripción</h2>
+        <p>@(string.IsNullOrWhiteSpace(Model.Descripcion) ? "Sin descripción registrada." : Model.Descripcion)</p>
+
+        <h2>Productos incluidos</h2>
+        @if (Model.Productos.Count == 0)
+        {
+            <p class="maintenance-empty-inline">No hay productos asociados.</p>
+        }
+        else
+        {
+            <ul class="maintenance-related-list">
+                @foreach (var producto in Model.Productos)
+                {
+                    <li>
+                        <i class="bi bi-cup-hot"></i>
+                        <span>@producto.Nombre</span>
+                        <small>₡@producto.Precio.ToColones()</small>
+                    </li>
+                }
+            </ul>
+        }
+
+        <div class="maintenance-actions">
+            <a asp-action="Edit" asp-route-id="@Model.IdCombo" class="btn btn-warning">
+                <i class="bi bi-pencil-square"></i> Editar combo
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.IdCombo" class="btn btn-outline-danger">
+                <i class="bi bi-slash-circle"></i> Desactivar
+            </a>
+        </div>
+    </section>
+</div>

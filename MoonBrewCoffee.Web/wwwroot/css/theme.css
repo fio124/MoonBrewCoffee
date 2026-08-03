@@ -1,0 +1,276 @@
+﻿/*==================================================
+                MOONBREW THEME
+==================================================*/
+
+/*==================================================
+                VARIABLES
+==================================================*/
+
+:root {
+    --coffee: #5A382C;
+    --coffee-dark: #3A241C;
+    --coffee-light: #8B5E3C;
+    --caramel: #C49A6C;
+    --cream: #F8F5F2;
+    --cream-light: #FFFDFB;
+    --text: #555;
+    --text-dark: #3A241C;
+    --success: #198754;
+    --danger: #DC3545;
+    --warning: #FFC107;
+    --info: #0DCAF0;
+    --shadow-sm: 0 5px 15px rgba(0,0,0,.05);
+    --shadow-md: 0 12px 30px rgba(0,0,0,.08);
+    --shadow-lg: 0 18px 45px rgba(0,0,0,.12);
+    --radius: 18px;
+}
+
+/*==================================================
+                BODY
+==================================================*/
+
+body {
+    background: linear-gradient(135deg,#FFFDFB,#F8F3EE);
+}
+
+/*==================================================
+                TITULOS
+==================================================*/
+
+.section-title {
+    margin-bottom: 35px;
+}
+
+/*==================================================
+                BOTONES
+==================================================*/
+
+.btn {
+    border-radius: 40px;
+    padding: 12px 26px;
+    transition: .25s;
+    box-shadow: none;
+}
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+.btn-primary {
+    background: var(--coffee);
+    border: none;
+}
+
+    .btn-primary:hover {
+        background: var(--coffee-dark);
+    }
+
+.btn-success {
+    border: none;
+}
+
+.btn-danger {
+    border: none;
+}
+
+.btn-warning {
+    border: none;
+}
+
+.btn-secondary {
+    border: none;
+}
+
+/*==================================================
+                FORMULARIOS
+==================================================*/
+
+.form-control,
+.form-select {
+    border-radius: 14px;
+    border: 1px solid #DDD;
+    padding: 12px 16px;
+    transition: .25s;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--coffee);
+        box-shadow: 0 0 0 .2rem rgba(90,56,44,.15);
+    }
+
+.form-label {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+/*==================================================
+                TABLAS
+==================================================*/
+
+.table {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+    .table thead {
+        background: var(--coffee);
+        color: white;
+    }
+
+        .table thead th {
+            border: none;
+            padding: 16px;
+        }
+
+    .table tbody td {
+        padding: 16px;
+        vertical-align: middle;
+    }
+
+.table-hover tbody tr:hover {
+    background: #FAF6F2;
+}
+
+/*==================================================
+                BADGES
+==================================================*/
+
+.badge {
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 13px;
+}
+
+/*==================================================
+                CARDS
+==================================================*/
+
+.card {
+    border: none;
+    border-radius: 22px;
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    background: white;
+    border: none;
+    padding: 22px;
+}
+
+.card-body {
+    padding: 24px;
+}
+
+.card-footer {
+    background: white;
+    border: none;
+}
+
+/*==================================================
+                DASHBOARD CARDS
+==================================================*/
+
+.stat-card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: .30s;
+}
+
+    .stat-card:hover {
+        transform: translateY(-8px);
+    }
+
+    .stat-card i {
+        font-size: 42px;
+        color: var(--caramel);
+        margin-bottom: 18px;
+    }
+
+    .stat-card h2 {
+        margin-bottom: 5px;
+    }
+
+    .stat-card p {
+        margin: 0;
+    }
+
+/*==================================================
+                ALERTAS
+==================================================*/
+
+.alert {
+    border: none;
+    border-radius: 16px;
+}
+
+/*==================================================
+                MODALES
+==================================================*/
+
+.modal-content {
+    border: none;
+    border-radius: 22px;
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-footer {
+    border: none;
+}
+
+/*==================================================
+                PAGINACION
+==================================================*/
+
+.page-link {
+    color: var(--coffee);
+    border: none;
+}
+
+.page-item.active .page-link {
+    background: var(--coffee);
+    border-color: var(--coffee);
+}
+
+/*==================================================
+                DROPDOWN
+==================================================*/
+
+.dropdown-menu {
+    border: none;
+    border-radius: 18px;
+    box-shadow: var(--shadow-md);
+}
+
+/*==================================================
+                UTILIDADES
+==================================================*/
+
+.shadow-coffee {
+    box-shadow: var(--shadow-lg);
+}
+
+.rounded-coffee {
+    border-radius: 22px;
+}
+
+.bg-coffee {
+    background: var(--coffee);
+    color: white;
+}
+
+.text-coffee {
+    color: var(--coffee);
+}
+
+.border-coffee {
+    border: 1px solid var(--coffee);
+}

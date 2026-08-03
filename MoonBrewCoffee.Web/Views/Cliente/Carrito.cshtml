@@ -1,0 +1,81 @@
+@model MoonBrewCoffee.Web.Models.CartViewModel
+@using MoonBrewCoffee.Web.Formatting
+
+@{
+    ViewData["Title"] = "Mi carrito";
+    Layout = "_ClienteLayout";
+}
+
+<section class="client-page-header">
+    <div><span data-i18n-key="orders.cartSelection">Tu selección</span><h1 data-i18n-key="orders.cartTitle">Mi carrito</h1><p data-i18n-key="orders.cartCopy">Configura las cantidades y observaciones de cada preparación.</p></div>
+    <span class="client-page-icon"><i class="bi bi-bag"></i></span>
+</section>
+
+@if (Model.IsEmpty)
+{
+    <section class="client-empty-state">
+        <span class="client-empty-icon"><i class="bi bi-bag-heart"></i></span>
+        <h2 data-i18n-key="orders.emptyCart">Tu carrito está vacío</h2>
+        <p data-i18n-key="orders.emptyCartCopy">Explora nuestro menú y agrega algo delicioso para comenzar tu pedido.</p>
+        <a asp-controller="MenuDisponible" asp-action="Index" class="client-primary-button">
+            <i class="bi bi-journal-richtext"></i> <span data-i18n-key="orders.viewMenu">Ver menú disponible</span>
+        </a>
+    </section>
+}
+else
+{
+    <div class="cart-layout" data-cart-page>
+        <section class="cart-lines" aria-label="Artículos del carrito">
+            @foreach (var line in Model.Lines)
+            {
+                <article class="cart-line" data-cart-line data-key="@line.Key" data-unit-price="@line.UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                    <img src="@line.ImageUrl" alt="@line.Name" loading="lazy" />
+                    <div class="cart-line-main">
+                        <span class="cart-line-type" data-i18n-key="@(line.ItemType == "combo" ? "orders.combo" : "orders.product")">@(line.ItemType == "combo" ? "Combo" : "Producto")</span>
+                        <h2>@line.Name</h2>
+                        <span class="cart-line-price">₡@line.UnitPrice.ToColones() cada uno</span>
+                        <label>
+                            <span data-i18n-key="orders.preparationNotes">Observaciones de preparación</span>
+                            <textarea maxlength="250" rows="2" data-cart-notes
+                                      placeholder="Ejemplo: sin azúcar, leche deslactosada...">@line.Notes</textarea>
+                        </label>
+                    </div>
+                    <div class="cart-line-actions">
+                        <label class="cart-quantity-label" for="quantity-@line.Key" data-i18n-key="orders.quantity">Cantidad</label>
+                        <div class="cart-quantity">
+                            <button type="button" data-cart-step="-1" aria-label="Disminuir cantidad"><i class="bi bi-dash"></i></button>
+                            <input id="quantity-@line.Key" type="number" min="0" max="99" step="1"
+                                   value="@line.Quantity" inputmode="numeric" data-cart-quantity />
+                            <button type="button" data-cart-step="1" aria-label="Aumentar cantidad"><i class="bi bi-plus"></i></button>
+                        </div>
+                        <div class="cart-line-totals">
+                            <small data-i18n-key="orders.subtotal">Subtotal</small><strong data-line-subtotal>₡@line.Subtotal.ToColones()</strong>
+                            <small data-i18n-key="orders.tax">Impuesto (13%)</small><span data-line-tax>₡@line.Tax.ToColones()</span>
+                        </div>
+                        <button type="button" class="cart-remove" data-cart-remove>
+                            <i class="bi bi-trash3"></i> <span data-i18n-key="orders.remove">Eliminar</span>
+                        </button>
+                    </div>
+                </article>
+            }
+        </section>
+
+        <aside class="cart-summary">
+            <span class="cart-summary-eyebrow" data-i18n-key="orders.summary">Resumen del pedido</span>
+            <h2 data-i18n-key="orders.totals">Totales</h2>
+            <dl>
+                <div><dt data-i18n-key="orders.items">Artículos</dt><dd data-summary-count>@Model.ItemCount</dd></div>
+                <div><dt data-i18n-key="orders.totalWithoutTax">Total sin impuestos</dt><dd data-summary-subtotal>₡@Model.Subtotal.ToColones()</dd></div>
+                <div><dt data-i18n-key="orders.tax">Impuesto</dt><dd data-summary-tax>₡@Model.Tax.ToColones()</dd></div>
+                <div class="cart-summary-total"><dt data-i18n-key="orders.total">Total</dt><dd data-summary-total>₡@Model.Total.ToColones()</dd></div>
+            </dl>
+            <a asp-controller="Pedidos" asp-action="Create" class="client-primary-button cart-checkout-button">
+                <span data-i18n-key="orders.continue">Continuar con el pedido</span> <i class="bi bi-arrow-right"></i>
+            </a>
+            <a asp-controller="MenuDisponible" asp-action="Index" class="cart-continue-link">
+                <i class="bi bi-plus-circle"></i> <span data-i18n-key="orders.addMore">Agregar más artículos</span>
+            </a>
+            <p class="cart-summary-note"><i class="bi bi-info-circle"></i> <span data-i18n-key="orders.shippingNotice">El envío se calcula al elegir el método de entrega.</span></p>
+        </aside>
+    </div>
+}

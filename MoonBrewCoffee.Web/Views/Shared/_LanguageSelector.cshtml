@@ -1,0 +1,26 @@
+@using System.Globalization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MoonBrewCoffee.Web.SharedResource> Localizer
+@{
+    var currentCulture = CultureInfo.CurrentUICulture.Name;
+    var returnUrl = $"{Context.Request.PathBase}{Context.Request.Path}{Context.Request.QueryString}";
+}
+
+<form asp-controller="Language"
+      asp-action="SetLanguage"
+      method="post"
+      class="language-selector"
+      aria-label="@Localizer["LanguageSelector"]">
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
+    <i class="bi bi-globe2" aria-hidden="true"></i>
+    <label for="appCulture" class="visually-hidden">@Localizer["Language"]</label>
+    <select id="appCulture"
+            name="culture"
+            aria-label="@Localizer["Language"]"
+            onchange="this.form.submit()">
+        <option value="es-CR" selected="@(currentCulture == "es-CR")">@Localizer["Spanish"]</option>
+        <option value="en-US" selected="@(currentCulture == "en-US")">@Localizer["English"]</option>
+    </select>
+    <noscript>
+        <button type="submit">@Localizer["Apply"]</button>
+    </noscript>
+</form>

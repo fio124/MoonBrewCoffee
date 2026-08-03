@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+@using System.Globalization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MoonBrewCoffee.Web.SharedResource> Localizer
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - MoonBrew Coffee</title>
+
+    <link rel="icon"
+          href="~/Imagenes/Loguito.png" />
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="~/css/typography.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/layout.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/theme.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/client.css"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        @await Html.PartialAsync("_Sidebar")
+
+        <button type="button"
+                class="sidebar-backdrop"
+                data-sidebar-close
+                aria-label="@Localizer["CloseMainMenu"]"
+                tabindex="-1"></button>
+
+        <div class="main-content">
+
+            @await Html.PartialAsync("_Topbar")
+
+            <main class="content-wrapper">
+
+                <div class="page-container">
+
+                    @if (TempData["SuccessMessage"] is string successMessage)
+                    {
+                        <div class="maintenance-notice" role="status">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>@successMessage</span>
+                        </div>
+                    }
+
+                    @RenderBody()
+
+                </div>
+
+            </main>
+
+            <footer class="app-footer">
+                <div class="app-footer-inner">
+                    <a asp-controller="Home" asp-action="Index" class="app-footer-brand" aria-label="MoonBrew Coffee — Inicio">
+                        <span class="app-footer-logo" aria-hidden="true">
+                            <img src="~/Imagenes/moonbrew-mark.png" alt="" />
+                        </span>
+                        <span class="app-footer-brand-copy">
+                            <strong>MoonBrew</strong>
+                            <small>Coffee</small>
+                        </span>
+                    </a>
+
+                    <div class="app-footer-message">
+                        <strong data-i18n-key="screens.shared.footerTagline">Cada taza, una historia.</strong>
+                        <small>© 2026 MoonBrew Coffee</small>
+                    </div>
+
+                    <div class="app-footer-credits">
+                        <span data-i18n-key="screens.shared.authorsLabel">Autoras del proyecto</span>
+                        <strong>Fiorella Solorzano <i>·</i> Yendry Cisneros</strong>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/image-base64.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"></script>
+
+    <script src="~/js/i18n.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

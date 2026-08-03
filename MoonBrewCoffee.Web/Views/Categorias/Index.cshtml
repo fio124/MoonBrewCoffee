@@ -1,0 +1,260 @@
+﻿@model IEnumerable<MoonBrewCoffee.Application.DTOs.CategoriaDTO>
+
+@{
+    ViewData["Title"] = "Categorías";
+}
+
+<div class="maintenance-header">
+
+    <div>
+
+        <h1 class="fw-bold mb-1">
+            Categorías
+        </h1>
+
+        <p class="text-muted mb-0">
+            Administra las categorías del catálogo de MoonBrew Coffee.
+        </p>
+
+    </div>
+
+    <a asp-action="Create"
+       class="btn btn-success">
+
+        <i class="bi bi-plus-circle-fill"></i>
+
+        Nueva Categoría
+
+    </a>
+
+</div>
+
+<div class="card shadow-sm border-0 maintenance-table-panel">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle"
+                   id="tablaCategorias">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Nombre</th>
+
+                        <th>Descripción</th>
+
+                        <th>Estado</th>
+
+                        <th class="text-center">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+
+                                <strong>
+
+                                    @item.Nombre
+
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                @item.Descripcion
+
+                            </td>
+
+                            <td>
+
+                                @if (item.Activo)
+                                {
+                                    <span class="badge bg-success">
+
+                                        Activa
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+
+                                        Inactiva
+
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.IdCategoria"
+                                   class="btn btn-sm btn-info me-1">
+
+                                    <i class="bi bi-eye-fill"></i>
+
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.IdCategoria"
+                                   class="btn btn-sm btn-warning me-1">
+
+                                    <i class="bi bi-pencil-fill"></i>
+
+                                </a>
+
+                                <button class="btn btn-sm btn-danger btn-desactivar"
+                                        data-id="@item.IdCategoria"
+                                        data-nombre="@item.Nombre">
+
+                                    <i class="bi bi-slash-circle-fill"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade"
+     id="modalDesactivar"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 rounded-4">
+
+            <div class="modal-header bg-danger text-white">
+
+                <h5 class="modal-title">
+
+                    Desactivar Categoría
+
+                </h5>
+
+                <button class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body text-center">
+
+                <i class="bi bi-exclamation-triangle-fill
+                          text-danger"
+                   style="font-size:65px;">
+                </i>
+
+                <h4 class="mt-3">
+
+                    ¿Deseas desactivar esta categoría?
+
+                </h4>
+
+                <p id="nombreCategoria"
+                   class="text-muted">
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-light"
+                        data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <form id="formDesactivar"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <button class="btn btn-danger">
+
+                        Sí, Desactivar
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        document.getElementById("buscarCategoria")
+        .addEventListener("keyup",function(){
+
+            let filtro=this.value.toLowerCase();
+
+            let filas=document.querySelectorAll("#tablaCategorias tbody tr");
+
+            filas.forEach(fila=>{
+
+                let texto=fila.innerText.toLowerCase();
+
+                fila.style.display=
+                    texto.includes(filtro) ? "" : "none";
+
+            });
+
+        });
+
+        const modal=new bootstrap.Modal(
+        document.getElementById("modalDesactivar"));
+
+        document.querySelectorAll(".btn-desactivar")
+        .forEach(btn=>{
+
+            btn.addEventListener("click",()=>{
+
+                document.getElementById("nombreCategoria")
+                .innerHTML="<strong>"+btn.dataset.nombre+"</strong>";
+
+                document.getElementById("formDesactivar")
+                .action="/Categorias/Delete/"+btn.dataset.id;
+
+                modal.show();
+
+            });
+
+        });
+
+    </script>
+
+}

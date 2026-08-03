@@ -1,0 +1,235 @@
+﻿/*==================================================
+    MOONBREW TYPOGRAPHY
+==================================================*/
+
+/* Google Fonts
+----------------------------------------------------
+Playfair Display -> Títulos
+Poppins -> Texto general
+==================================================*/
+
+:root {
+    --font-title: 'Playfair Display', serif;
+    --font-body: 'Poppins', sans-serif;
+}
+
+/*==================================================
+    BASE
+==================================================*/
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: #4D403A;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/*==================================================
+    TITULOS
+==================================================*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-title);
+    color: #3A241C;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: .75rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+}
+
+h2 {
+    font-size: 2.7rem;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+h4 {
+    font-size: 1.6rem;
+}
+
+h5 {
+    font-size: 1.3rem;
+}
+
+h6 {
+    font-size: 1.05rem;
+}
+
+/*==================================================
+    PARRAFOS
+==================================================*/
+
+p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #6A5A52;
+    margin-bottom: 1rem;
+}
+
+/*==================================================
+    LINKS
+==================================================*/
+
+a {
+    font-family: var(--font-body);
+    text-decoration: none;
+    transition: .25s;
+}
+
+    a:hover {
+        text-decoration: none;
+    }
+
+/*==================================================
+    LISTAS
+==================================================*/
+
+ul,
+ol {
+    font-family: var(--font-body);
+    color: #5A382C;
+}
+
+/*==================================================
+    BOTONES
+==================================================*/
+
+.btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: .3px;
+}
+
+/*==================================================
+    INPUTS
+==================================================*/
+
+input,
+textarea,
+select {
+    font-family: var(--font-body);
+    font-size: 15px;
+}
+
+.form-control {
+    font-family: var(--font-body);
+}
+
+/*==================================================
+    TABLAS
+==================================================*/
+
+table {
+    font-family: var(--font-body);
+}
+
+thead th {
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: #3A241C;
+}
+
+tbody td {
+    font-family: var(--font-body);
+}
+
+/*==================================================
+    CARDS
+==================================================*/
+
+.card-title {
+    font-family: var(--font-title);
+}
+
+.card-text {
+    font-family: var(--font-body);
+}
+
+/*==================================================
+    SIDEBAR
+==================================================*/
+
+.sidebar h2 {
+    font-family: var(--font-title);
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.sidebar a {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/*==================================================
+    TOPBAR
+==================================================*/
+
+.topbar h4 {
+    font-family: var(--font-title);
+}
+
+.topbar small {
+    font-family: var(--font-body);
+}
+
+/*==================================================
+    NAVBAR
+==================================================*/
+
+.navbar-brand {
+    font-family: var(--font-title);
+    font-size: 32px;
+    font-weight: 700;
+}
+
+/*==================================================
+    BADGES
+==================================================*/
+
+.badge {
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+/*==================================================
+    RESPONSIVE
+==================================================*/
+
+@media(max-width:768px) {
+
+    h1 {
+        font-size: 2.6rem;
+    }
+
+    h2 {
+        font-size: 2.1rem;
+    }
+
+    h3 {
+        font-size: 1.7rem;
+    }
+
+    body {
+        font-size: 15px;
+    }
+}

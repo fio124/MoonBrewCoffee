@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="LanguageSelector" xml:space="preserve"><value>Selector de idioma</value></data>
+  <data name="Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Spanish" xml:space="preserve"><value>Español</value></data>
+  <data name="English" xml:space="preserve"><value>Inglés</value></data>
+  <data name="Apply" xml:space="preserve"><value>Aplicar</value></data>
+  <data name="OpenMainMenu" xml:space="preserve"><value>Abrir menú principal</value></data>
+  <data name="CloseMainMenu" xml:space="preserve"><value>Cerrar menú principal</value></data>
+  <data name="GoodMorning" xml:space="preserve"><value>Buenos días</value></data>
+  <data name="GoodAfternoon" xml:space="preserve"><value>Buenas tardes</value></data>
+  <data name="GoodEvening" xml:space="preserve"><value>Buenas noches</value></data>
+  <data name="Administrator" xml:space="preserve"><value>Administrador</value></data>
+</root>

@@ -1,0 +1,52 @@
+@model MoonBrewCoffee.Application.DTOs.PedidoDTO
+@using MoonBrewCoffee.Web.Formatting
+@using System.Globalization
+@inject MoonBrewCoffee.Web.Services.ICurrentUserService CurrentUserService
+
+@{
+    var current = CurrentUserService.GetCurrent();
+    ViewData["Title"] = $"Pedido #{Model.IdPedido}";
+    Layout = current?.EsAdministrador == true || current?.EsEncargado == true ? "_Layout" : "_ClienteLayout";
+}
+
+<article class="invoice">
+    <header class="invoice-header">
+        <div class="invoice-brand"><img src="~/Imagenes/moonbrew-mark.png" alt="MoonBrew" /><div><strong>MoonBrew Coffee</strong><span data-i18n-key="orders.invoice">Factura de pedido</span></div></div>
+        <div class="invoice-number"><span>Pedido</span><strong>#@Model.IdPedido</strong><small>@Model.FechaPedido.ToString("g", CultureInfo.CurrentCulture)</small></div>
+    </header>
+
+    <section class="invoice-information">
+        <div><span data-i18n-key="orders.customer">Cliente</span><strong>@Model.ClienteNombre</strong><small>@Model.ClienteCorreo · @Model.ClienteTelefono</small></div>
+        <div><span data-i18n-key="orders.manager">Encargado</span><strong>@Model.EncargadoNombre</strong><small>Responsable del registro</small></div>
+        <div><span data-i18n-key="orders.deliveryMethod">Método de entrega</span><strong>@Model.TipoEntrega</strong><small>@(Model.DireccionEntrega ?? "Retiro en la tienda")</small></div>
+        <div><span data-i18n-key="orders.paymentMethod">Método de pago</span><strong>@Model.MetodoPago</strong><small>Pago procesado</small></div>
+        <div><span data-i18n-key="orders.status">Estado</span><strong class="order-status" style="--status-color:@(Model.EstadoColor ?? "#8b634e")">@Model.Estado</strong><small>Estado actual del pedido</small></div>
+    </section>
+
+    <div class="invoice-table-wrap">
+        <table class="invoice-table">
+            <thead><tr><th>Producto o combo</th><th data-i18n-key="orders.price">Precio</th><th data-i18n-key="orders.quantity">Cantidad</th><th data-i18n-key="orders.subtotal">Subtotal</th><th data-i18n-key="orders.tax">Impuesto</th><th data-i18n-key="orders.observations">Observaciones</th></tr></thead>
+            <tbody>
+                @foreach (var line in Model.Detalles)
+                {
+                    <tr>
+                        <td><span class="invoice-item-type">@line.Tipo</span><strong>@line.Nombre</strong></td>
+                        <td>₡@line.PrecioUnitario.ToColones()</td><td>@line.Cantidad</td>
+                        <td>₡@line.Subtotal.ToColones()</td><td>₡@line.Impuesto.ToColones()</td>
+                        <td>@(line.Observaciones ?? "Sin observaciones")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="invoice-footer">
+        <a asp-action="Index" class="invoice-back"><i class="bi bi-arrow-left"></i> Volver al historial</a>
+        <dl>
+            <div><dt data-i18n-key="orders.totalWithoutTax">Total sin impuestos</dt><dd>₡@Model.Subtotal.ToColones()</dd></div>
+            <div><dt data-i18n-key="orders.tax">Impuesto</dt><dd>₡@Model.Impuesto.ToColones()</dd></div>
+            <div><dt data-i18n-key="orders.shipping">Envío</dt><dd>₡@Model.CostoEnvio.ToColones()</dd></div>
+            <div class="invoice-grand-total"><dt data-i18n-key="orders.paidTotal">Total pagado</dt><dd>₡@Model.Total.ToColones()</dd></div>
+        </dl>
+    </footer>
+</article>

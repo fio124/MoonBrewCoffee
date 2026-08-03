@@ -1,0 +1,146 @@
+﻿@model MoonBrewCoffee.Application.DTOs.ProductoDTO
+
+@{
+    ViewData["Title"] = "Detalle Producto";
+    var ingredientes = ViewBag.IngredientesDetalle as IEnumerable<MoonBrewCoffee.Application.DTOs.IngredienteDTO>
+        ?? Enumerable.Empty<MoonBrewCoffee.Application.DTOs.IngredienteDTO>();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="fw-bold mb-1">Detalle del Producto</h1>
+        <p class="text-muted mb-0">Información completa del producto seleccionado.</p>
+    </div>
+
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+        Volver
+    </a>
+</div>
+
+<div class="card shadow border-0">
+    <div class="card-body p-5">
+
+        <div class="row g-5 align-items-center">
+
+            <div class="col-lg-5 text-center">
+                @if (!string.IsNullOrWhiteSpace(Model.Image64))
+                {
+                    <img src="@Url.Action("Image", "Productos", new { id = Model.IdProducto })"
+                         alt="@Model.Nombre"
+                         loading="lazy"
+                         class="img-fluid rounded shadow"
+                         style="max-height:380px; object-fit:cover;" />
+                }
+                else
+                {
+                    <div class="maintenance-image-placeholder">
+                        <i class="bi bi-cup-hot"></i><span>Sin imagen</span>
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-7">
+
+                <span class="badge @(Model.Activo ? "bg-success" : "bg-danger") mb-3">
+                    @(Model.Activo ? "Disponible" : "Inactivo")
+                </span>
+
+                <h2 class="fw-bold">@Model.Nombre</h2>
+
+                <p class="text-muted fs-5">
+                    @Model.Descripcion
+                </p>
+
+                <div class="maintenance-detail-section">
+                    <h3>Ingredientes principales</h3>
+                    <div class="maintenance-chip-list">
+                        @foreach (var ingrediente in ingredientes)
+                        {
+                            <span><i class="bi bi-check2"></i>@ingrediente.Nombre</span>
+                        }
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <div class="stat-card">
+                            <h4>₡@Model.Precio.ToColones()</h4>
+                            <p>Precio</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="stat-card">
+                            <h4>@Model.TiempoPreparacion min</h4>
+                            <p>Preparación</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="stat-card">
+                            <h4>
+                                @(string.IsNullOrEmpty(Model.NombreCategoria)
+                                                                ? "Sin categoría"
+                                                                : Model.NombreCategoria)
+                            </h4>
+                            <p>Categoría</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="stat-card">
+                            <h4>#@Model.IdProducto</h4>
+                            <p>Código</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-5 d-flex gap-3">
+
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.IdProducto"
+                       class="btn btn-warning px-4">
+                        <i class="bi bi-pencil-square"></i>
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@Model.IdProducto"
+                       class="btn btn-danger px-4">
+                        <i class="bi bi-x-circle-fill"></i>
+                        Desactivar
+                    </a>
+
+                    <a asp-controller="ProcesosPreparacion"
+                       asp-action="Details"
+                       asp-route-id="@Model.IdProducto"
+                       class="btn btn-info px-4">
+
+                        <i class="bi bi-diagram-3-fill"></i>
+                        Ver proceso
+
+                    </a>
+
+                    <a asp-controller="ProcesosPreparacion"
+                       asp-action="Create"
+                       asp-route-idProducto="@Model.IdProducto"
+                       class="btn btn-success px-4">
+
+                        <i class="bi bi-plus-circle-fill"></i>
+                        Agregar paso
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,155 @@
+@model IEnumerable<MoonBrewCoffee.Infrastructure.Models.Entidades.Producto>
+
+@{
+    Layout = "_ClienteLayout";
+    ViewData["Title"] = "Catálogo";
+    var productos = Model.ToList();
+    var categorias = productos
+        .Where(producto => producto.Categoria != null)
+        .Select(producto => producto.Categoria!.Nombre)
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .OrderBy(nombre => nombre)
+        .ToList();
+
+    var categoryTranslationKeys = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Bebidas Frías"] = "screens.catalog.categories.coldDrinks",
+        ["Bebidas Frias"] = "screens.catalog.categories.coldDrinks",
+        ["Cafés"] = "screens.catalog.categories.coffee",
+        ["Cafes"] = "screens.catalog.categories.coffee",
+        ["Desserts"] = "screens.catalog.categories.desserts",
+        ["Postres"] = "screens.catalog.categories.desserts",
+        ["Té Caliente"] = "screens.catalog.categories.hotTea",
+        ["Te Caliente"] = "screens.catalog.categories.hotTea",
+        ["Sandwiches"] = "screens.catalog.categories.sandwiches",
+        ["Ensaladas"] = "screens.catalog.categories.salads",
+        ["Sin categoría"] = "screens.catalog.categories.uncategorized"
+    };
+
+    string? CategoryTranslationKey(string categoryName) =>
+        categoryTranslationKeys.TryGetValue(categoryName, out var key) ? key : null;
+
+    string CategoryIcon(string categoryName) => categoryName.ToLowerInvariant() switch
+    {
+        var name when name.Contains("fría") || name.Contains("fria") => "bi-cup-straw",
+        var name when name.Contains("café") || name.Contains("cafe") => "bi-cup-hot",
+        var name when name.Contains("postre") || name.Contains("dessert") => "bi-cake2",
+        var name when name.Contains("té") || name.Contains("te ") => "bi-cup-hot-fill",
+        var name when name.Contains("sand") => "bi-basket2",
+        var name when name.Contains("ensalada") || name.Contains("salad") => "bi-flower1",
+        _ => "bi-grid"
+    };
+}
+
+<section class="catalog-header catalog-menu-header">
+    <div class="catalog-title">
+        <span class="catalog-kicker">
+            <i class="bi bi-cup-hot-fill"></i>
+            <span data-i18n-key="screens.catalog.eyebrow">Nuestro catálogo</span>
+        </span>
+        <h1 data-i18n-key="catalog.title">Descubre nuestros productos</h1>
+        <p data-i18n-key="screens.catalog.copy">
+            Cafés artesanales, postres caseros y sabores preparados
+            con ingredientes de calidad.
+        </p>
+    </div>
+
+    <label class="catalog-search" for="buscarProducto">
+        <i class="bi bi-search"></i>
+        <input type="search"
+               id="buscarProducto"
+               placeholder="Buscar un producto..."
+               autocomplete="off" />
+    </label>
+</section>
+
+<div class="catalog-filters" aria-label="Filtrar productos por categoría">
+    <button type="button"
+            class="filter-btn active"
+            data-filter="todos"
+            aria-pressed="true"><i class="bi bi-grid-fill"></i><span data-i18n-key="screens.catalog.all">Todos</span></button>
+
+    @foreach (var categoria in categorias)
+    {
+        <button type="button"
+                class="filter-btn"
+                data-filter="@categoria"
+                aria-pressed="false"><i class="bi @CategoryIcon(categoria)"></i><span data-i18n-key="@CategoryTranslationKey(categoria)">@categoria</span></button>
+    }
+</div>
+
+<div class="menu-grid catalog-menu-grid" id="catalogoProductos">
+    @foreach (var item in productos)
+    {
+        var categoria = item.Categoria?.Nombre ?? "Sin categoría";
+
+        <article class="menu-card catalog-menu-card producto-card"
+                 data-name="@item.Nombre"
+                 data-category="@categoria">
+            <span class="catalog-card-label"
+                  data-i18n-key="@CategoryTranslationKey(categoria)">@categoria</span>
+
+            <div class="menu-card-image">
+                @if (!string.IsNullOrWhiteSpace(item.Image64))
+                {
+                    <img src="@Url.Action("Image", "Productos", new { id = item.IdProducto })"
+                         alt="@item.Nombre"
+                         loading="lazy"
+                         decoding="async" />
+                }
+                else
+                {
+                    <div class="menu-card-placeholder">
+                        <i class="bi bi-cup-hot-fill"></i>
+                        <span>MoonBrew</span>
+                    </div>
+                }
+            </div>
+
+            <div class="menu-card-content">
+                <div class="menu-card-heading"><h3>@item.Nombre</h3></div>
+
+                <div class="menu-card-divider" aria-hidden="true">
+                    <span></span><i class="bi bi-cup-hot-fill"></i><span></span>
+                </div>
+
+                <p class="menu-card-description">
+                    @if (string.IsNullOrWhiteSpace(item.Descripcion))
+                    {
+                        <span data-i18n-key="screens.catalog.defaultDescription">Una creación MoonBrew preparada para disfrutar en cualquier momento.</span>
+                    }
+                    else
+                    {
+                        @item.Descripcion
+                    }
+                </p>
+
+                <div class="menu-card-footer catalog-card-footer">
+                    <span class="menu-price">@item.Precio.ToColones()</span>
+                    <div class="catalog-card-actions">
+                        <a asp-action="Details" asp-route-id="@item.IdProducto" class="catalog-action catalog-details-button"
+                           aria-label="Ver detalle de @item.Nombre">
+                            <i class="bi bi-eye"></i>
+                            <span data-i18n-key="orders.details">Detalles</span>
+                        </a>
+                        <button type="button" class="catalog-action catalog-add-button" data-cart-add
+                                data-item-type="producto" data-item-id="@item.IdProducto"
+                                aria-label="Agregar @item.Nombre al carrito">
+                            <i class="bi bi-bag-plus"></i><span data-i18n-key="orders.addToCart">Agregar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </article>
+    }
+</div>
+
+<div class="catalog-empty" id="catalogoVacio" hidden>
+    <i class="bi bi-search"></i>
+    <h2 data-i18n-key="catalog.noResults">No encontramos productos</h2>
+    <p data-i18n-key="catalog.tryAgain">Prueba con otro nombre o selecciona una categoría diferente.</p>
+</div>
+
+@section Scripts {
+    <script src="~/js/catalog.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,68 @@
+﻿@model MoonBrewCoffee.Application.DTOs.ProcesoPreparacionDTO
+
+@{
+    ViewData["Title"] = "Nuevo Proceso";
+}
+
+<div class="maintenance-header">
+
+    <div>
+
+        <h1 class="fw-bold mb-1">
+            Nuevo Proceso de Preparación
+        </h1>
+
+        <p class="text-muted mb-0">
+            Registra un paso del proceso de preparación.
+        </p>
+
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Volver
+
+    </a>
+
+</div>
+
+<div class="card shadow border-0 maintenance-form-panel">
+
+    <div class="card-body p-5">
+
+        <form asp-action="Create">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <partial name="_ProcesoPreparacionForm" />
+
+            <hr class="my-4" />
+
+            <div class="d-flex justify-content-end">
+
+                <button class="btn btn-success px-5">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    Guardar
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

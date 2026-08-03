@@ -1,0 +1,13 @@
+.vs/
+**/bin/
+**/obj/
+**/*.user
+*.suo
+*.log
+TestResults/
+.idea/
+.vscode/
+*.mdf
+*.ldf
+publish/
+appsettings.Local.json

@@ -1,0 +1,102 @@
+﻿@model MoonBrewCoffee.Application.DTOs.CategoriaDTO
+
+<div class="row">
+
+    <div class="col-lg-8">
+
+        <div class="mb-4">
+
+            <label asp-for="Nombre"
+                   class="form-label fw-semibold">
+            </label>
+
+            <input asp-for="Nombre"
+                   class="form-control" />
+
+            <span asp-validation-for="Nombre"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label asp-for="Descripcion"
+                   class="form-label fw-semibold">
+            </label>
+
+            <textarea asp-for="Descripcion"
+                      rows="5"
+                      class="form-control">
+            </textarea>
+
+            <span asp-validation-for="Descripcion"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+
+                Estado
+
+            </label>
+
+            <select asp-for="Activo"
+                    class="form-select">
+
+                <option value="true">
+
+                    🟢 Activa
+
+                </option>
+
+                <option value="false">
+
+                    🔴 Inactiva
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="alert alert-light border shadow-sm">
+
+            <h6 class="fw-bold">
+
+                Información
+
+            </h6>
+
+            <hr />
+
+            <p class="mb-2">
+
+                • Las categorías organizan el catálogo.
+
+            </p>
+
+            <p class="mb-2">
+
+                • Solo las categorías activas podrán asignarse a productos.
+
+            </p>
+
+            <p class="mb-0">
+
+                • Se recomienda utilizar nombres cortos.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

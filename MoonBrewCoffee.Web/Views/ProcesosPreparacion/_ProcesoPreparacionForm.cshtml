@@ -1,0 +1,77 @@
+﻿@model MoonBrewCoffee.Application.DTOs.ProcesoPreparacionDTO
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+                Producto
+            </label>
+
+            <select asp-for="IdProducto"
+                    asp-items="ViewBag.Productos"
+                    class="form-select">
+                <option value="">Seleccione un producto</option>
+            </select>
+
+            <span asp-validation-for="IdProducto" class="text-danger"></span>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+                Estación
+            </label>
+
+            <select asp-for="IdEstacion"
+                    asp-items="ViewBag.Estaciones"
+                    class="form-select">
+                <option value="">Seleccione una estación</option>
+            </select>
+
+            <span asp-validation-for="IdEstacion" class="text-danger"></span>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+                Orden
+            </label>
+
+            <input asp-for="Orden"
+                   min="1"
+                   max="100"
+                   class="form-control" />
+
+            <span asp-validation-for="Orden"
+                  class="text-danger"></span>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+                Tiempo de preparación (minutos)
+            </label>
+
+            <input asp-for="TiempoPreparacionMin"
+                   min="1"
+                   max="1440"
+                   class="form-control" />
+
+            <span asp-validation-for="TiempoPreparacionMin"
+                  class="text-danger"></span>
+
+        </div>
+
+    </div>
+
+</div>

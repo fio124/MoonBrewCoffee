@@ -1,0 +1,81 @@
+﻿@model MoonBrewCoffee.Application.DTOs.ProductoDTO
+
+@{
+    ViewData["Title"] = "Editar Producto";
+}
+
+<div class="maintenance-header">
+
+    <div>
+
+        <h1 class="fw-bold mb-1">
+            Editar Producto
+        </h1>
+
+        <p class="text-muted mb-0">
+            Modifica la información del producto seleccionado.
+        </p>
+
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Volver
+
+    </a>
+
+</div>
+
+<div class="card shadow border-0 maintenance-form-panel">
+
+    <div class="card-body p-5">
+
+        <form asp-action="Edit">
+
+            <input type="hidden"
+                   asp-for="IdProducto" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <partial name="_ProductoForm" model="Model" />
+
+            <hr class="my-4" />
+
+            <div class="d-flex justify-content-end gap-3">
+
+                <a asp-action="Index"
+                   class="btn btn-light">
+
+                    Cancelar
+
+                </a>
+
+                <button type="submit"
+                        class="btn btn-warning px-5">
+
+                    <i class="bi bi-pencil-square"></i>
+
+                    Actualizar Producto
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

@@ -1,3 +1,5 @@
+using MoonBrewCoffee.Web.Services;
+
 namespace MoonBrewCoffee.Web.Models
 {
     public class ClienteHomeViewModel
@@ -5,5 +7,6 @@ namespace MoonBrewCoffee.Web.Models
         public int ProductosDisponibles { get; init; }
         public int CombosDisponibles { get; init; }
         public int MenusDisponibles { get; init; }
+        public WeatherRecommendation? Weather { get; init; }
     }
 }

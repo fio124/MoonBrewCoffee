@@ -6,7 +6,7 @@
 }
 
 <section class="client-page-header">
-    <div><span>Tu cuenta</span><h1>Mi perfil</h1><p>Consulta y administra la información asociada a tu cuenta MoonBrew.</p></div>
+    <div><span data-i18n-key="clientPortal.yourAccount">Tu cuenta</span><h1 data-i18n-key="clientPortal.profile">Mi perfil</h1><p data-i18n-key="clientPortal.profileCopy">Consulta y administra la información asociada a tu cuenta MoonBrew.</p></div>
     <span class="client-page-icon"><i class="bi bi-person"></i></span>
 </section>
 
@@ -14,16 +14,16 @@
     <div class="client-profile-summary">
         <span class="client-profile-large-avatar"><i class="bi bi-person"></i></span>
         <div>
-            <span>Cliente activo</span>
+            <span data-i18n-key="clientPortal.activeCustomer">Cliente activo</span>
             <h2>@Model.NombreCompleto</h2>
             <p>@Model.Rol</p>
         </div>
     </div>
 
     <dl class="client-profile-details">
-        <div><dt><i class="bi bi-envelope"></i> Correo electrónico</dt><dd>@(string.IsNullOrWhiteSpace(Model.Correo) ? "No disponible" : Model.Correo)</dd></div>
-        <div><dt><i class="bi bi-telephone"></i> Teléfono</dt><dd>@(string.IsNullOrWhiteSpace(Model.Telefono) ? "No disponible" : Model.Telefono)</dd></div>
-        <div><dt><i class="bi bi-person-badge"></i> Identificador</dt><dd>@(Model.IdUsuario?.ToString() ?? "Sesión de demostración")</dd></div>
-        <div><dt><i class="bi bi-shield-check"></i> Estado</dt><dd><span class="client-profile-status">Activo</span></dd></div>
+        <div><dt><i class="bi bi-envelope"></i> <span data-i18n-key="clientPortal.email">Correo electrónico</span></dt><dd>@(string.IsNullOrWhiteSpace(Model.Correo) ? "No disponible" : Model.Correo)</dd></div>
+        <div><dt><i class="bi bi-telephone"></i> <span data-i18n-key="common.phone">Teléfono</span></dt><dd>@(string.IsNullOrWhiteSpace(Model.Telefono) ? "No disponible" : Model.Telefono)</dd></div>
+        <div><dt><i class="bi bi-person-badge"></i> <span data-i18n-key="clientPortal.identifier">Identificador</span></dt><dd>@(Model.IdUsuario?.ToString() ?? "Sesión de demostración")</dd></div>
+        <div><dt><i class="bi bi-shield-check"></i> <span data-i18n-key="common.status">Estado</span></dt><dd><span class="client-profile-status" data-i18n-key="common.active">Activo</span></dd></div>
     </dl>
 </section>

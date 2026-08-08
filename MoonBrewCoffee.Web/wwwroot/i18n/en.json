@@ -15,7 +15,77 @@
     "catalog": "Catalog",
     "taglineFirst": "Every cup,",
     "taglineSecond": "a story.",
-    "adminPanel": "Administration Panel"
+    "adminPanel": "Administration Panel",
+    "scheduledTasks": "Scheduled tasks",
+    "reports": "Reports",
+    "orders": "Orders",
+    "clientView": "Customer view",
+    "signOut": "Sign out"
+  },
+  "scheduledTasks": {
+    "automation": "AUTOMATION",
+    "title": "Scheduled tasks",
+    "copy": "Monitor Tardeando availability and automatic price changes.",
+    "pauseRefresh": "Pause refresh",
+    "resumeRefresh": "Resume refresh",
+    "service": "Service",
+    "serviceCopy": "It starts and stops with the application.",
+    "priceChanges": "Price changes",
+    "priceSafety": "Production configuration keeps them disabled.",
+    "rules": "Configured rules",
+    "rulesCopy": "Values come from appsettings; they are not hard-coded in the service.",
+    "tardeandoCycle": "Tardeando cycle",
+    "discount": "Discount",
+    "minimumPrice": "Minimum price",
+    "generalCycle": "General cycle",
+    "increase": "Increase",
+    "runLimit": "Limit per start",
+    "prices": "Observed prices",
+    "pricesCopy": "Tardeando receives a discount; the other combos receive the increase.",
+    "history": "Execution history",
+    "historyCopy": "The unique key prevents the same cycle from being applied twice.",
+    "noExecutions": "No executions have been recorded yet.",
+    "active": "Active",
+    "inactive": "Inactive",
+    "available": "Available",
+    "outsideSchedule": "Outside schedule",
+    "menuNotFound": "Menu not found",
+    "enabled": "Enabled",
+    "protected": "Protected",
+    "tardeandoType": "Tardeando",
+    "general": "General",
+    "completed": "Completed",
+    "tardeandoTask": "Tardeando",
+    "generalTask": "General combos",
+    "tardeandoExecution": "Availability and discount evaluated.",
+    "generalExecution": "General increase evaluated.",
+    "howItWorks": "How it works step by step",
+    "howItWorksCopy": "These tasks run in the background while MoonBrew is running; this page does not need to be open for them to execute.",
+    "stepOneTitle": "1. Check Tardeando",
+    "stepOneCopy": "On each cycle it checks that the menu is active and that the current date and time are within its schedule. It updates Available with that result.",
+    "stepTwoTitle": "2. Apply the discount",
+    "stepTwoCopy": "If Tardeando is available and price changes are enabled, it reduces the price of its combos without going below the minimum price.",
+    "stepThreeTitle": "3. Update the other combos",
+    "stepThreeCopy": "A separate cycle increases active combos that do not belong to Tardeando. This prevents the same combo from receiving both a discount and an increase.",
+    "safetyTitle": "Why is it not repeated by accident?",
+    "safetyCopy": "Each cycle creates a unique key in the database. If another execution tries to use the same key, it is stopped before prices are changed again.",
+    "screenPurpose": "This page is only for viewing configuration, prices and history. The tasks start automatically when the application starts."
+    ,"thisRun": "Executions during this run"
+    ,"thisRunCopy": "The counter returns to zero whenever MoonBrew restarts. After reaching the limit, prices stop changing while availability checks continue."
+    ,"executions": "executions"
+    ,"limitReached": "Limit reached"
+    ,"waitingNextCycle": "Waiting for the next cycle"
+    ,"restartToRepeat": "Restart the application to repeat the demonstration from the beginning."
+    ,"lastPriceChanges": "Latest visible changes"
+    ,"lastPriceChangesCopy": "Compare the previous price with the new price applied during this run."
+    ,"noChangesThisRun": "There are no changes during this run yet. Wait for the next cycle and keep this page open."
+    ,"before": "Before"
+    ,"after": "After"
+    ,"tardeandoChanges": "Tardeando discount"
+    ,"generalChanges": "General increase"
+    ,"reportCopy": "Review the latest automatic price changes."
+    ,"noRecentChanges": "There are no recent changes to display yet."
+    ,"reportLatestChanges": "Latest changes"
   },
   "clientPortal": {
     "mySpace": "My space",
@@ -90,8 +160,16 @@
     ,"activeCustomer": "Active customer"
     ,"identifier": "Identifier"
     ,"notAvailable": "Not available"
+    ,"demonstrationSession": "Demonstration session"
+    ,"weatherSource": "Current data provided by Open-Meteo"
+    ,"sanJoseTemperature": "San José: {0} °C"
+    ,"benefitsAria": "MoonBrew benefits"
+    ,"drinksAlt": "MoonBrew drink selection"
+    ,"dessertsAlt": "MoonBrew dessert selection"
+    ,"comboAlt": "MoonBrew special combo"
   },
   "orders": {
+    "history": "Order history",
     "cartSelection": "Your selection",
     "cartTitle": "My cart",
     "cartCopy": "Set the quantity and preparation notes for each item.",
@@ -143,19 +221,136 @@
     "cash": "Cash",
     "cashReceived": "Cash received",
     "change": "Estimated change",
-    "submit": "Place and pay order"
-    ,"details": "Details"
-    ,"addToCart": "Add"
-    ,"added": "Item added to cart."
-    ,"removed": "Item removed."
-    ,"updateError": "The cart could not be updated."
-    ,"quantityError": "Quantity must be a number between 0 and 99."
-    ,"addNamed": "Add {0} to cart"
-    ,"viewNamed": "View details for {0}"
-    ,"openCart": "Open my cart"
+    "submit": "Place and pay order",
+    "details": "Details",
+    "addToCart": "Add",
+    "added": "Item added to cart.",
+    "removed": "Item removed.",
+    "updateError": "The cart could not be updated.",
+    "quantityError": "Quantity must be a number between 0 and 99.",
+    "addNamed": "Add {0} to cart",
+    "viewNamed": "View details for {0}",
+    "openCart": "Open my cart",
+    "preparationBoard": "Order preparation",
+    "automaticFlow": "Automatic workflow",
+    "station": "Station",
+    "startStep": "Start",
+    "completeStep": "Complete",
+    "waitPrevious": "Waiting for previous step",
+    "allCaughtUp": "Everything is up to date",
+    "noPendingSteps": "There are no pending steps right now.",
+    "customerEmail": "Customer email",
+    "customerPhone": "Customer phone",
+    "initialStatus": "Initial status",
+    "automaticAccepted": "Accepted (updated automatically by stations)",
+    "itemType": "Type",
+    "item": "Item",
+    "noNotes": "No notes",
+    "workflowCopy": "Stations advance each order in sequence. The overall status is calculated automatically.",
+    "hotWeatherRecommendation": "An iced coffee is perfect for this weather.",
+    "coolWeatherRecommendation": "Today goes very well with a hot drink.",
+    "statusPending": "Pending",
+    "statusAccepted": "Accepted",
+    "statusPreparation": "Preparation",
+    "statusProcessing": "Processing",
+    "statusDelivered": "Delivered",
+    "stepPending": "Pending",
+    "stepInPreparation": "In preparation",
+    "stepCompleted": "Completed",
+    "trackingTitle": "Order tracking",
+    "trackingCopy": "Every change is recorded automatically.",
+    "historyUnavailable": "This order was created before tracking was enabled.",
+    "systemUser": "MoonBrew System",
+    "control": "Order control",
+    "yourHistory": "Your history",
+    "managementCopy": "Review all orders and filter them by date or status.",
+    "historyCopy": "Review your purchases, ordered from newest to oldest.",
+    "from": "From",
+    "to": "To",
+    "allStatuses": "All statuses",
+    "filter": "Filter",
+    "clear": "Clear",
+    "noOrders": "There are no orders to display",
+    "noFilteredOrders": "No orders match the selected filters.",
+    "firstOrderCopy": "After your first purchase, you can review its details and status here.",
+    "exploreCatalog": "Explore catalog",
+    "order": "Order",
+    "registrationManager": "Responsible for registration",
+    "paymentProcessed": "Payment processed",
+    "currentStatus": "Current order status",
+    "currentStatusIs": "Its current status is",
+    "productOrCombo": "Product or combo",
+    "backToHistory": "Back to history",
+    "finishPurchase": "Complete purchase",
+    "generalDataCopy": "Customer and order-responsibility information.",
+    "orderDate": "Order date",
+    "selectCustomer": "Select a customer",
+    "emailAndPhone": "Email and phone",
+    "homeDeliveryWithCost": "Home delivery (+ ₡2,500)",
+    "purchaseDetailCopy": "Products and combos included in the order.",
+    "paymentCopy": "Secure simulation; card details are not stored.",
+    "finalSummary": "Final summary",
+    "backToCart": "Back to cart",
+    "historyShort": "History",
+    "stationUpper": "STATION",
+    "stationBar": "Bar",
+    "stationKitchen": "Kitchen",
+    "stationPastry": "Pastry",
+    "stationPacking": "Packing",
+    "stationDrinkPreparation": "Drink preparation",
+    "stationFoodPreparation": "Food preparation",
+    "stationDessertPreparation": "Dessert preparation",
+    "stationReviewDispatch": "Review and dispatch",
+    "storeRetirement": "Store pickup",
+    "statusHistoryAria": "Status history",
+    "cartItemsAria": "Cart items",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
+    "viewOrder": "View order",
+    "orderNumber": "Order #{0}",
+    "stageNumber": "Stage {0}",
+    "storeValue": "store",
+    "homeValue": "home delivery",
+    "creditCardValue": "Credit card",
+    "debitCardValue": "Debit card",
+    "onlineOrder": "Online order",
+    "noStatus": "No status",
+    "noStation": "No station",
+    "finalReview": "Final review and delivery",
+    "approved": "Approved",
+    "operationInvalid": "The operation could not be validated. Refresh the page and try again.",
+    "customerUnavailable": "The selected customer is unavailable.",
+    "addAtLeastOne": "Add at least one item to the order.",
+    "deliveryInvalid": "Select a valid delivery method.",
+    "addressRequired": "An address is required for home delivery.",
+    "paymentInvalid": "Select a valid payment method.",
+    "quantityRange": "Quantities must be between 1 and 99.",
+    "productUnavailable": "One of the products is no longer available.",
+    "comboUnavailable": "One of the combos is no longer available.",
+    "invalidItem": "One of the order items is invalid.",
+    "statusesMissing": "No order statuses are configured.",
+    "selectedStepMissing": "The selected stage no longer exists.",
+    "previousStepRequired": "The previous order stage must be completed first.",
+    "stepMustStart": "The stage must be started before it can be completed.",
+    "stepAlreadyStarted": "This stage has already been started.",
+    "statusNotConfigured": "The status '{0}' is not configured.",
+    "stepCompletedNotice": "Stage completed; the order status was updated automatically.",
+    "preparationStartedNotice": "Preparation started; the order status changed automatically.",
+    "addBeforeCheckout": "Add at least one item before continuing.",
+    "paymentSessionExpired": "The payment session expired. Refresh the page before trying again.",
+    "emptyCartShort": "The cart is empty.",
+    "orderRegisteredWithChange": "Order #{0} was registered. Change: ₡{1}.",
+    "orderRegisteredAccepted": "Order #{0} was registered with Accepted status.",
+    "orderListAria": "Order history",
+    "addressPlaceholder": "Province, county, district and exact directions",
+    "cardholderName": "Cardholder name",
+    "cardNumber": "Card number",
+    "cardExpiry": "Expiration",
+    "cardCvv": "CVV security code"
   },
   "common": {
     "name": "Name",
+    "type": "Type",
     "description": "Description",
     "image": "Image",
     "category": "Category",
@@ -309,6 +504,7 @@
     "comboCreated": "The combo was created successfully.",
     "comboUpdated": "The combo was updated successfully.",
     "comboDisabled": "The combo was disabled successfully.",
+    "categoryDisabled": "The category was disabled successfully.",
     "menuCreated": "The menu was created successfully.",
     "menuUpdated": "The menu was updated successfully.",
     "menuDisabled": "The menu was disabled successfully.",
@@ -467,6 +663,8 @@
       "totalTime": "Total Time",
       "stepTotal": "{0} steps · {1} minutes total",
       "stepNumber": "Step {0}"
+      ,"continuousOrderHelp": "Use a continuous sequence: 1, 2, 3… The system suggests the first available order."
+      ,"nextAvailableOrder": "The next available order for this product is {0}."
     },
     "products": {
       "formTitle": "Product Information",
@@ -577,7 +775,19 @@
       "comboProductRequired": "Select at least one product for the combo.",
       "menuDateOrder": "The start date cannot be later than the end date.",
       "menuTimeOrder": "The start time must be earlier than the end time.",
-      "menuContentRequired": "The menu must include at least one product or combo."
+      "menuContentRequired": "The menu must include at least one product or combo.",
+      "deliveryRequired": "Select a delivery method.",
+      "addressLength": "The address cannot exceed 300 characters.",
+      "paymentRequired": "Select a payment method.",
+      "selectOrderCustomer": "Select the customer placing the order.",
+      "homeAddressRequired": "Enter the home-delivery address.",
+      "cardholderRequired": "Enter the cardholder name.",
+      "cardNumberInvalid": "Enter a valid card number.",
+      "cardExpiryInvalid": "Use MM/YY format for expiration.",
+      "cvvInvalid": "Enter a valid CVV.",
+      "cashInsufficient": "The received amount must cover the order total.",
+      "emptyOrder": "Add at least one item to the order.",
+      "operationExpired": "The payment session expired. Refresh the page before trying again."
     }
   }
 }

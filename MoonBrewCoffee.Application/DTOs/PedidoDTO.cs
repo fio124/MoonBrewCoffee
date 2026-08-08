@@ -19,6 +19,15 @@ namespace MoonBrewCoffee.Application.DTOs
         public decimal Impuesto { get; set; }
         public decimal Total { get; set; }
         public List<PedidoDetalleDTO> Detalles { get; set; } = new();
+        public List<PedidoEstadoCambioDTO> HistorialEstados { get; set; } = new();
+    }
+
+    public class PedidoEstadoCambioDTO
+    {
+        public string Estado { get; set; } = string.Empty;
+        public string? ColorHex { get; set; }
+        public DateTime FechaCambio { get; set; }
+        public string Responsable { get; set; } = string.Empty;
     }
 
     public class PedidoDetalleDTO
@@ -35,6 +44,7 @@ namespace MoonBrewCoffee.Application.DTOs
 
     public class RegistrarPedidoDTO
     {
+        public string ClaveOperacion { get; set; } = string.Empty;
         public int IdCliente { get; set; }
         public int? IdEncargado { get; set; }
         public string TipoEntrega { get; set; } = string.Empty;
@@ -57,5 +67,22 @@ namespace MoonBrewCoffee.Application.DTOs
         public int IdPedido { get; set; }
         public decimal Total { get; set; }
         public decimal Vuelto { get; set; }
+        public bool YaExistia { get; set; }
+    }
+
+    public class PedidoProcesoDTO
+    {
+        public int IdPedidoProceso { get; set; }
+        public int IdPedido { get; set; }
+        public string Cliente { get; set; } = string.Empty;
+        public string Estacion { get; set; } = string.Empty;
+        public string? EstacionColor { get; set; }
+        public int Orden { get; set; }
+        public string Descripcion { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
+        public DateTime? FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
+        public bool PuedeIniciar { get; set; }
+        public bool PuedeCompletar { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 @model MoonBrewCoffee.Web.Models.OrderHistoryViewModel
 @using MoonBrewCoffee.Web.Formatting
+@using MoonBrewCoffee.Web.Localization
 @using System.Globalization
 
 @{
@@ -7,11 +8,11 @@
     Layout = Model.IsManagementView ? "_Layout" : "_ClienteLayout";
 }
 
-<section class="client-page-header order-history-header">
+<section class="client-page-header order-history-header" data-i18n-title-key="@(Model.IsManagementView ? "orders.management" : "orders.history")">
     <div>
-        <span>@(Model.IsManagementView ? "Control de pedidos" : "Tu historial")</span>
+        <span data-i18n-key="@(Model.IsManagementView ? "orders.control" : "orders.yourHistory")">@(Model.IsManagementView ? "Control de pedidos" : "Tu historial")</span>
         <h1 data-i18n-key="@(Model.IsManagementView ? "orders.management" : "orders.history")">@ViewData["Title"]</h1>
-        <p>@(Model.IsManagementView ? "Consulta todos los pedidos y filtra por fecha o estado." : "Consulta tus compras ordenadas desde la más reciente.")</p>
+        <p data-i18n-key="@(Model.IsManagementView ? "orders.managementCopy" : "orders.historyCopy")">@(Model.IsManagementView ? "Consulta todos los pedidos y filtra por fecha o estado." : "Consulta tus compras ordenadas desde la más reciente.")</p>
     </div>
     <span class="client-page-icon"><i class="bi bi-receipt"></i></span>
 </section>
@@ -19,11 +20,11 @@
 @if (Model.IsManagementView)
 {
     <form method="get" class="order-filters">
-        <label><span>Desde</span><input type="date" name="from" value="@Model.From?.ToString("yyyy-MM-dd")" /></label>
-        <label><span>Hasta</span><input type="date" name="to" value="@Model.To?.ToString("yyyy-MM-dd")" /></label>
-        <label><span>Estado</span><select name="statusId"><option value="">Todos los estados</option>@foreach (var status in Model.Statuses) { if (Model.StatusId == status.IdEstado) { <option value="@status.IdEstado" selected>@status.Nombre</option> } else { <option value="@status.IdEstado">@status.Nombre</option> } }</select></label>
-        <button type="submit" class="client-primary-button"><i class="bi bi-funnel"></i> Filtrar</button>
-        <a asp-action="Index" class="order-clear-filter">Limpiar</a>
+        <label><span data-i18n-key="orders.from">Desde</span><input type="date" name="from" value="@Model.From?.ToString("yyyy-MM-dd")" /></label>
+        <label><span data-i18n-key="orders.to">Hasta</span><input type="date" name="to" value="@Model.To?.ToString("yyyy-MM-dd")" /></label>
+        <label><span data-i18n-key="orders.status">Estado</span><select name="statusId"><option value="" data-i18n-key="orders.allStatuses">Todos los estados</option>@foreach (var status in Model.Statuses) { if (Model.StatusId == status.IdEstado) { <option value="@status.IdEstado" selected data-i18n-key="@OrderTranslationKeys.Status(status.Nombre)">@status.Nombre</option> } else { <option value="@status.IdEstado" data-i18n-key="@OrderTranslationKeys.Status(status.Nombre)">@status.Nombre</option> } }</select></label>
+        <button type="submit" class="client-primary-button"><i class="bi bi-funnel"></i> <span data-i18n-key="orders.filter">Filtrar</span></button>
+        <a asp-action="Index" class="order-clear-filter" data-i18n-key="orders.clear">Limpiar</a>
     </form>
 }
 
@@ -31,26 +32,26 @@
 {
     <section class="client-empty-state">
         <span class="client-empty-icon"><i class="bi bi-receipt-cutoff"></i></span>
-        <h2>No hay pedidos para mostrar</h2>
-        <p>@(Model.IsManagementView ? "No existen pedidos que coincidan con los filtros seleccionados." : "Cuando realices tu primera compra podrás consultar aquí su detalle y estado.")</p>
+        <h2 data-i18n-key="orders.noOrders">No hay pedidos para mostrar</h2>
+        <p data-i18n-key="@(Model.IsManagementView ? "orders.noFilteredOrders" : "orders.firstOrderCopy")">@(Model.IsManagementView ? "No existen pedidos que coincidan con los filtros seleccionados." : "Cuando realices tu primera compra podrás consultar aquí su detalle y estado.")</p>
         @if (!Model.IsManagementView)
         {
-            <a asp-controller="Catalogo" asp-action="Index" class="client-primary-button"><i class="bi bi-cup-hot"></i> Explorar catálogo</a>
+            <a asp-controller="Catalogo" asp-action="Index" class="client-primary-button"><i class="bi bi-cup-hot"></i> <span data-i18n-key="orders.exploreCatalog">Explorar catálogo</span></a>
         }
     </section>
 }
 else
 {
-    <section class="order-list" aria-label="Historial de pedidos">
+    <section class="order-list" aria-label="Historial de pedidos" data-i18n-aria-key="orders.orderListAria">
         @foreach (var order in Model.Orders)
         {
             <article class="order-history-card">
-                <div class="order-history-id"><span>Pedido</span><strong>#@order.IdPedido</strong></div>
+                <div class="order-history-id"><span data-i18n-key="orders.order">Pedido</span><strong>#@order.IdPedido</strong></div>
                 <div><small data-i18n-key="orders.date">Fecha</small><strong>@order.FechaPedido.ToString("g", CultureInfo.CurrentCulture)</strong></div>
                 @if (Model.IsManagementView) { <div><small data-i18n-key="orders.customer">Cliente</small><strong>@order.ClienteNombre</strong></div> }
-                <div><small data-i18n-key="orders.delivery">Entrega</small><strong>@order.TipoEntrega</strong></div>
+                <div><small data-i18n-key="orders.delivery">Entrega</small><strong data-i18n-key="@OrderTranslationKeys.Delivery(order.TipoEntrega)">@order.TipoEntrega</strong></div>
                 <div><small data-i18n-key="orders.total">Total</small><strong>₡@order.Total.ToColones()</strong></div>
-                <span class="order-status" style="--status-color:@(order.EstadoColor ?? "#8b634e")">@order.Estado</span>
+                <span class="order-status" style="--status-color:@(order.EstadoColor ?? "#8b634e")" data-i18n-key="@OrderTranslationKeys.Status(order.Estado)">@order.Estado</span>
                 <a asp-action="Details" asp-route-id="@order.IdPedido" class="order-detail-link"><span data-i18n-key="orders.viewInvoice">Ver factura</span> <i class="bi bi-arrow-right"></i></a>
             </article>
         }

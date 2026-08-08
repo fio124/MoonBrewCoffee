@@ -13,6 +13,9 @@ namespace MoonBrewCoffee.Infrastructure.Models.Entidades
 
         public int IdEstado { get; set; }
 
+        [MaxLength(64)]
+        public string ClaveOperacion { get; set; } = string.Empty;
+
         public DateTime FechaPedido { get; set; }
 
         public string TipoEntrega { get; set; } = string.Empty;
@@ -40,5 +43,9 @@ namespace MoonBrewCoffee.Infrastructure.Models.Entidades
         public ICollection<DetallePedido> Detalles { get; set; } = new List<DetallePedido>();
 
         public Pago? Pago { get; set; }
+
+        public ICollection<PedidoProceso> Procesos { get; set; } = new List<PedidoProceso>();
+
+        public ICollection<PedidoEstadoHistorial> HistorialEstados { get; set; } = new List<PedidoEstadoHistorial>();
     }
 }

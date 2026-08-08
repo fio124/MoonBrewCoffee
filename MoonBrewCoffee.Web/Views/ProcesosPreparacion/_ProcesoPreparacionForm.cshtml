@@ -12,6 +12,8 @@
 
             <select asp-for="IdProducto"
                     asp-items="ViewBag.Productos"
+                    data-process-product
+                    data-order-url="@Url.Action("OrdenSugerido", "ProcesosPreparacion")"
                     class="form-select">
                 <option value="">Seleccione un producto</option>
             </select>
@@ -53,6 +55,7 @@
 
             <span asp-validation-for="Orden"
                   class="text-danger"></span>
+            <small class="form-text text-muted">Usa una secuencia continua: 1, 2, 3… El sistema sugiere el primer orden libre.</small>
 
         </div>
 
@@ -75,3 +78,5 @@
     </div>
 
 </div>
+
+<script src="~/js/process-form.js" asp-append-version="true"></script>

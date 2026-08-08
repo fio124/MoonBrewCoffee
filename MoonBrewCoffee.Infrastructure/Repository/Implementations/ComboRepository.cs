@@ -140,11 +140,13 @@ namespace MoonBrewCoffee.Infrastructure.Implementations
         {
             var combo = await _context.Combos.FindAsync(id);
 
-            if (combo != null)
-            {
-                _context.Combos.Remove(combo);
-                await _context.SaveChangesAsync();
-            }
+            if (combo == null)
+                return;
+
+            // Borrado lógico: el combo puede estar relacionado con menús,
+            // pedidos y productos que deben conservar su historial.
+            combo.Activo = false;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> ExistsAsync(int id)

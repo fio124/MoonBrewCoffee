@@ -12,30 +12,35 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         private readonly IMenuService _menuService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ICartService _cartService;
+        private readonly IWeatherService _weatherService;
 
         public ClienteController(
             IProductoService productoService,
             IComboService comboService,
             IMenuService menuService,
             ICurrentUserService currentUserService,
-            ICartService cartService)
+            ICartService cartService,
+            IWeatherService weatherService)
         {
             _productoService = productoService;
             _comboService = comboService;
             _menuService = menuService;
             _currentUserService = currentUserService;
             _cartService = cartService;
+            _weatherService = weatherService;
         }
 
         public async Task<IActionResult> Index()
         {
+            var weatherTask = _weatherService.GetSanJoseAsync(HttpContext.RequestAborted);
             var menusDisponibles = await _menuService.GetMenusDisponiblesActualesAsync();
 
             return View(new ClienteHomeViewModel
             {
                 ProductosDisponibles = await _productoService.CountActiveAsync(),
                 CombosDisponibles = await _comboService.CountActiveAsync(),
-                MenusDisponibles = menusDisponibles.Count
+                MenusDisponibles = menusDisponibles.Count,
+                Weather = await weatherTask
             });
         }
 

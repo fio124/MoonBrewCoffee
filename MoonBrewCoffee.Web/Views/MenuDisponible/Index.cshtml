@@ -194,15 +194,14 @@
 
                                         </p>
 
-                                        <div class="menu-card-footer">
+                                        <div class="menu-card-footer available-menu-card-footer">
 
-                                            <span class="menu-price">
+                                            <div class="available-menu-price">
+                                                <small data-i18n-key="common.price">Precio</small>
+                                                <strong>₡@producto.Precio.ToColones()</strong>
+                                            </div>
 
-                                                @producto.Precio.ToColones()
-
-                                            </span>
-
-                                            <button type="button" class="cart-add-button" data-cart-add
+                                            <button type="button" class="cart-add-button available-menu-add" data-cart-add
                                                     data-item-type="producto" data-item-id="@producto.IdProducto">
                                                 <i class="bi bi-bag-plus"></i><span data-i18n-key="orders.addToCart">Agregar</span>
                                             </button>
@@ -298,15 +297,14 @@
 
                                         </p>
 
-                                        <div class="menu-card-footer">
+                                        <div class="menu-card-footer available-menu-card-footer">
 
-                                            <span class="menu-price">
+                                            <div class="available-menu-price">
+                                                <small data-i18n-key="common.price">Precio</small>
+                                                <strong>₡@combo.PrecioCombo.ToColones()</strong>
+                                            </div>
 
-                                                @combo.PrecioCombo.ToColones()
-
-                                            </span>
-
-                                            <button type="button" class="cart-add-button" data-cart-add
+                                            <button type="button" class="cart-add-button available-menu-add" data-cart-add
                                                     data-item-type="combo" data-item-id="@combo.IdCombo">
                                                 <i class="bi bi-bag-plus"></i><span data-i18n-key="orders.addToCart">Agregar</span>
                                             </button>

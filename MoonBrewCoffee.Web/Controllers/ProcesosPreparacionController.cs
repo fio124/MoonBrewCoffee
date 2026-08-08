@@ -42,11 +42,16 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         {
             await CargarCombos(idProducto);
 
-            var modelo = new ProcesoPreparacionDTO();
+            var modelo = new ProcesoPreparacionDTO
+            {
+                Orden = 1,
+                TiempoPreparacionMin = 1
+            };
 
             if (idProducto.HasValue)
             {
                 modelo.IdProducto = idProducto.Value;
+                modelo.Orden = await ObtenerOrdenSugerido(idProducto.Value);
             }
 
             return View(modelo);
@@ -57,6 +62,10 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         public async Task<IActionResult> Create(
             ProcesoPreparacionDTO proceso)
         {
+            var ordenSugerido = await ObtenerOrdenSugerido(proceso.IdProducto);
+            if (proceso.IdProducto > 0 && proceso.Orden != ordenSugerido)
+                ModelState.AddModelError("Orden", $"El siguiente orden disponible para este producto es {ordenSugerido}.");
+
             if (await _procesoService.OrdenExisteAsync(
                     proceso.IdProducto,
                     proceso.Orden))
@@ -81,6 +90,10 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
 
             return View(proceso);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> OrdenSugerido(int idProducto) =>
+            Json(new { order = await ObtenerOrdenSugerido(idProducto) });
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -162,6 +175,17 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
                 await _estacionService.GetAllAsync(false),
                 "IdEstacion",
                 "Nombre");
+        }
+
+        private async Task<int> ObtenerOrdenSugerido(int idProducto)
+        {
+            if (idProducto <= 0) return 1;
+            var usedOrders = (await _procesoService.GetByProductoAsync(idProducto))
+                .Select(step => step.Orden)
+                .ToHashSet();
+            var order = 1;
+            while (usedOrders.Contains(order)) order++;
+            return order;
         }
     }
 }

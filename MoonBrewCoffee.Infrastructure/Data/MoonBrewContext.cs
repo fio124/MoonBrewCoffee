@@ -35,6 +35,10 @@ namespace MoonBrewCoffee.Infrastructure.Data;
 
         public DbSet<Pago> Pagos { get; set; }
 
+        public DbSet<PedidoProceso> PedidoProcesos { get; set; }
+
+        public DbSet<PedidoEstadoHistorial> PedidoEstadoHistorial { get; set; }
+
         public DbSet<EstacionCocina> EstacionesCocina { get; set; }
 
         public DbSet<ProcesoPreparacion> ProcesosPreparacion { get; set; }
@@ -43,6 +47,8 @@ namespace MoonBrewCoffee.Infrastructure.Data;
 
         public DbSet<CarritoDetalle> CarritoDetalles { get; set; }
         public DbSet<MenuCombo> MenuCombos { get; set; }
+
+        public DbSet<ScheduledTaskExecution> ScheduledTaskExecutions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -110,6 +116,11 @@ namespace MoonBrewCoffee.Infrastructure.Data;
 
             modelBuilder.Entity<MenuCombo>().HasOne(mc => mc.Combo).WithMany(c => c.MenuCombos).HasForeignKey(mc => mc.IdCombo);
 
+            modelBuilder.Entity<ScheduledTaskExecution>().HasKey(x => x.IdScheduledTaskExecution);
+            modelBuilder.Entity<ScheduledTaskExecution>()
+                .HasIndex(x => new { x.TaskName, x.ExecutionKey })
+                .IsUnique();
+
             modelBuilder.Entity<Pedido>().Property(p => p.CostoEnvio).HasPrecision(10, 2);
 
             modelBuilder.Entity<Pedido>().Property(p => p.Subtotal).HasPrecision(10, 2);
@@ -117,6 +128,9 @@ namespace MoonBrewCoffee.Infrastructure.Data;
             modelBuilder.Entity<Pedido>().Property(p => p.Impuesto).HasPrecision(10, 2);
 
             modelBuilder.Entity<Pedido>().Property(p => p.Total).HasPrecision(10, 2);
+
+            modelBuilder.Entity<Pedido>().Property(p => p.ClaveOperacion).HasMaxLength(64);
+            modelBuilder.Entity<Pedido>().HasIndex(p => p.ClaveOperacion).IsUnique();
 
             modelBuilder.Entity<Pedido>().HasOne(p => p.Cliente).WithMany().HasForeignKey(p => p.IdCliente).OnDelete(DeleteBehavior.Restrict);
 
@@ -135,6 +149,15 @@ namespace MoonBrewCoffee.Infrastructure.Data;
             modelBuilder.Entity<DetallePedido>().Property(d => d.Impuesto).HasPrecision(10, 2);
 
             modelBuilder.Entity<Pago>().Property(p => p.TotalPagado).HasPrecision(10, 2);
+
+            modelBuilder.Entity<PedidoProceso>().HasOne(p => p.Pedido).WithMany(p => p.Procesos).HasForeignKey(p => p.IdPedido);
+            modelBuilder.Entity<PedidoProceso>().HasOne(p => p.Estacion).WithMany().HasForeignKey(p => p.IdEstacion).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PedidoProceso>().HasOne(p => p.Encargado).WithMany().HasForeignKey(p => p.IdEncargado).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PedidoProceso>().HasIndex(p => new { p.IdPedido, p.Orden });
+
+            modelBuilder.Entity<PedidoEstadoHistorial>().HasOne(h => h.Pedido).WithMany(p => p.HistorialEstados).HasForeignKey(h => h.IdPedido);
+            modelBuilder.Entity<PedidoEstadoHistorial>().HasOne(h => h.Estado).WithMany().HasForeignKey(h => h.IdEstado).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PedidoEstadoHistorial>().HasOne(h => h.Usuario).WithMany().HasForeignKey(h => h.IdUsuario).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ProcesoPreparacion>().HasKey(p => p.IdProceso);
 

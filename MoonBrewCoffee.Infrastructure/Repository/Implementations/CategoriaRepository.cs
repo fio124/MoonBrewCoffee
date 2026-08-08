@@ -48,11 +48,12 @@ namespace MoonBrewCoffee.Infrastructure.Implementations
         {
             var categoria = await _context.Categorias.FindAsync(id);
 
-            if (categoria != null)
-            {
-                _context.Categorias.Remove(categoria);
-                await _context.SaveChangesAsync();
-            }
+            if (categoria == null)
+                return;
+
+            // Se conserva porque los productos existentes mantienen la FK.
+            categoria.Activo = false;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> ExistsAsync(int id)

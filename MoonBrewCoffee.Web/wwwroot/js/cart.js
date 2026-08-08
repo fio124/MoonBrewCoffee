@@ -55,8 +55,10 @@
             const element = document.querySelector(selector);
             if (element) element.textContent = value;
         });
-        if (data.isEmpty && document.querySelector("[data-cart-page]"))
-            window.location.reload();
+        if (data.isEmpty && document.querySelector("[data-cart-page]")) {
+            const page = document.querySelector("[data-cart-page]");
+            page.outerHTML = `<section class="client-empty-state"><span class="client-empty-icon"><i class="bi bi-bag-heart"></i></span><h2>${t("orders.emptyCart", "Tu carrito está vacío")}</h2><p>${t("orders.emptyCartCopy", "Explora nuestro menú y agrega algo delicioso para comenzar tu pedido.")}</p><a href="/MenuDisponible" class="client-primary-button"><i class="bi bi-journal-richtext"></i> <span>${t("orders.viewMenu", "Ver menú disponible")}</span></a></section>`;
+        }
     };
 
     document.addEventListener("click", async event => {

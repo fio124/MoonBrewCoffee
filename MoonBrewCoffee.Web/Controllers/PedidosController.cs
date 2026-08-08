@@ -9,6 +9,7 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
 {
     public class PedidosController : Controller
     {
+        private const string CheckoutOperationKey = "Checkout.OperationKey";
         private readonly IPedidoService _pedidoService;
         private readonly IUsuarioService _usuarioService;
         private readonly ICartService _cartService;
@@ -64,6 +65,21 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ClientInfo(int id)
+        {
+            var current = _currentUserService.GetCurrent();
+            if (current is null || (!current.EsAdministrador && !current.EsEncargado))
+                return Forbid();
+            var client = await _usuarioService.GetByIdAsync(id);
+            return client is null ? NotFound() : Json(new
+            {
+                name = $"{client.Nombre} {client.Apellido}".Trim(),
+                email = client.Correo,
+                phone = client.Telefono
+            });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var current = _currentUserService.GetCurrent();
@@ -87,9 +103,15 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
             if (current is null)
                 return RedirectToAction("IniciarSesion", "Cuenta", new { returnUrl = Url.Action(nameof(Create), "Pedidos") });
 
+            var sessionKey = HttpContext.Session.GetString(CheckoutOperationKey);
+            var validOperation = !string.IsNullOrWhiteSpace(sessionKey) &&
+                string.Equals(sessionKey, model.OperationKey, StringComparison.Ordinal);
+
             model = await BuildCheckoutAsync(model, current);
             ModelState.Clear();
             TryValidateModel(model);
+            if (!validOperation)
+                ModelState.AddModelError(string.Empty, "La sesión de pago venció. Actualiza la página antes de intentarlo de nuevo.");
             if (model.Cart.IsEmpty)
                 ModelState.AddModelError(string.Empty, "El carrito está vacío.");
             if (!ModelState.IsValid)
@@ -98,6 +120,7 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
             var clientId = model.CanSelectClient ? model.ClientId!.Value : current.IdUsuario!.Value;
             var request = new RegistrarPedidoDTO
             {
+                ClaveOperacion = model.OperationKey,
                 IdCliente = clientId,
                 IdEncargado = model.CanSelectClient ? current.IdUsuario : null,
                 TipoEntrega = model.DeliveryType,
@@ -117,9 +140,10 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
             {
                 var result = await _pedidoService.CreateAsync(request);
                 _cartService.Clear();
+                HttpContext.Session.Remove(CheckoutOperationKey);
                 TempData["SuccessMessage"] = result.Vuelto > 0
                     ? $"Pedido #{result.IdPedido} registrado. Vuelto: ₡{result.Vuelto:N0}."
-                    : $"Pedido #{result.IdPedido} registrado correctamente.";
+                    : $"Pedido #{result.IdPedido} registrado en estado Aceptada.";
                 return RedirectToAction(nameof(Details), new { id = result.IdPedido });
             }
             catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
@@ -131,6 +155,11 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
 
         private async Task<CheckoutViewModel> BuildCheckoutAsync(CheckoutViewModel model, CurrentUserViewModel current)
         {
+            if (string.IsNullOrWhiteSpace(model.OperationKey))
+            {
+                model.OperationKey = HttpContext.Session.GetString(CheckoutOperationKey) ?? Guid.NewGuid().ToString("N");
+                HttpContext.Session.SetString(CheckoutOperationKey, model.OperationKey);
+            }
             model.Cart = await _cartService.GetAsync();
             model.CurrentUser = current;
             model.CanSelectClient = current.EsAdministrador || current.EsEncargado;

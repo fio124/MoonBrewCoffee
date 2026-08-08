@@ -21,6 +21,7 @@ builder.Services.AddDbContext<MoonBrewContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>
 {
@@ -32,6 +33,17 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ICartService, SessionCartService>();
+builder.Services.Configure<ScheduledTasksOptions>(
+    builder.Configuration.GetSection(ScheduledTasksOptions.SectionName));
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton<MoonBrewScheduledTasksService>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<MoonBrewScheduledTasksService>());
+builder.Services.AddHostedService<GeneralComboPriceHostedService>();
+builder.Services.AddHttpClient<IWeatherService, OpenMeteoWeatherService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.open-meteo.com/");
+    client.Timeout = TimeSpan.FromSeconds(2);
+});
 
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
@@ -70,7 +82,16 @@ builder.Services.AddAutoMapper(_ => { }, typeof(UsuarioProfile).Assembly);
 // Internacionalización centralizada para toda la interfaz.
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services
-    .AddControllersWithViews()
+    .AddControllersWithViews(options =>
+    {
+        static bool English() => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en";
+        options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(_ =>
+            English() ? "This field is required." : "Este campo es obligatorio.");
+        options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(value =>
+            English() ? $"The value '{value}' is invalid." : $"El valor '{value}' no es válido.");
+        options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((value, field) =>
+            English() ? $"The value '{value}' is not valid for {field}." : $"El valor '{value}' no es válido para {field}.");
+    })
     .AddViewLocalization()
     .AddDataAnnotationsLocalization(options =>
     {
@@ -98,6 +119,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 var app = builder.Build();
+
+await DatabaseSchemaInitializer.InitializeAsync(app.Services);
 
 
 // Configure the HTTP request pipeline.
@@ -127,7 +150,8 @@ var administrativeControllers = new HashSet<string>(StringComparer.OrdinalIgnore
     "Combos",
     "Menus",
     "Usuarios",
-    "ProcesosPreparacion"
+    "ProcesosPreparacion",
+    "TareasProgramadas"
 };
 
 app.Use(async (context, next) =>

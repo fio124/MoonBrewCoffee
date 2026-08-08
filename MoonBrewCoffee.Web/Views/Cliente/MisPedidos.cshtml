@@ -4,15 +4,15 @@
 }
 
 <section class="client-page-header">
-    <div><span>Tu historial</span><h1>Mis pedidos</h1><p>Consulta tus compras y sigue el estado de cada preparación.</p></div>
+    <div><span data-i18n-key="clientPortal.history">Tu historial</span><h1 data-i18n-key="clientPortal.orders">Mis pedidos</h1><p data-i18n-key="clientPortal.ordersHeaderCopy">Consulta tus compras y sigue el estado de cada preparación.</p></div>
     <span class="client-page-icon"><i class="bi bi-receipt"></i></span>
 </section>
 
 <section class="client-empty-state">
     <span class="client-empty-icon"><i class="bi bi-receipt-cutoff"></i></span>
-    <h2>Aún no hay pedidos para mostrar</h2>
-    <p>Cuando realices tu primera compra podrás consultar aquí su detalle y estado.</p>
+    <h2 data-i18n-key="clientPortal.noOrders">Aún no hay pedidos para mostrar</h2>
+    <p data-i18n-key="clientPortal.noOrdersCopy">Cuando realices tu primera compra podrás consultar aquí su detalle y estado.</p>
     <a asp-controller="Catalogo" asp-action="Index" class="client-primary-button">
-        <i class="bi bi-cup-hot"></i> Explorar catálogo
+        <i class="bi bi-cup-hot"></i> <span data-i18n-key="clientPortal.exploreCatalog">Explorar catálogo</span>
     </a>
 </section>

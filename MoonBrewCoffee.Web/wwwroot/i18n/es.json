@@ -15,7 +15,77 @@
     "catalog": "Catálogo",
     "taglineFirst": "Cada taza,",
     "taglineSecond": "una historia.",
-    "adminPanel": "Panel Administrativo"
+    "adminPanel": "Panel Administrativo",
+    "scheduledTasks": "Tareas programadas",
+    "reports": "Reportes",
+    "orders": "Pedidos",
+    "clientView": "Vista del cliente",
+    "signOut": "Cerrar sesión"
+  },
+  "scheduledTasks": {
+    "automation": "AUTOMATIZACIÓN",
+    "title": "Tareas programadas",
+    "copy": "Supervisa la disponibilidad de Tardeando y los cambios automáticos de precios.",
+    "pauseRefresh": "Pausar actualización",
+    "resumeRefresh": "Reanudar actualización",
+    "service": "Servicio",
+    "serviceCopy": "Se inicia y se detiene junto con la aplicación.",
+    "priceChanges": "Cambios de precio",
+    "priceSafety": "La configuración de producción los mantiene desactivados.",
+    "rules": "Reglas configuradas",
+    "rulesCopy": "Valores leídos desde appsettings; no están escritos directamente en el servicio.",
+    "tardeandoCycle": "Ciclo Tardeando",
+    "discount": "Descuento",
+    "minimumPrice": "Precio mínimo",
+    "generalCycle": "Ciclo general",
+    "increase": "Incremento",
+    "runLimit": "Límite por arranque",
+    "prices": "Precios observados",
+    "pricesCopy": "Tardeando se descuenta; los demás combos reciben el incremento.",
+    "history": "Historial de ejecuciones",
+    "historyCopy": "La clave única impide aplicar dos veces el mismo ciclo.",
+    "noExecutions": "Aún no hay ejecuciones registradas.",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "available": "Disponible",
+    "outsideSchedule": "Fuera de horario",
+    "menuNotFound": "Menú no encontrado",
+    "enabled": "Habilitados",
+    "protected": "Protegidos",
+    "tardeandoType": "Tardeando",
+    "general": "General",
+    "completed": "Completado",
+    "tardeandoTask": "Tardeando",
+    "generalTask": "Combos generales",
+    "tardeandoExecution": "Disponibilidad y descuento evaluados.",
+    "generalExecution": "Incremento general evaluado.",
+    "howItWorks": "Cómo funciona paso a paso",
+    "howItWorksCopy": "Estas tareas trabajan en segundo plano mientras MoonBrew está encendido; no es necesario abrir esta pantalla para ejecutarlas.",
+    "stepOneTitle": "1. Revisar Tardeando",
+    "stepOneCopy": "En cada ciclo comprueba que el menú esté activo y que la fecha y la hora actuales estén dentro de su horario. Con ese resultado actualiza Disponible.",
+    "stepTwoTitle": "2. Aplicar el descuento",
+    "stepTwoCopy": "Si Tardeando está disponible y los precios están habilitados, reduce sus combos sin permitir que bajen del precio mínimo.",
+    "stepThreeTitle": "3. Actualizar los demás combos",
+    "stepThreeCopy": "En un ciclo separado aumenta los combos activos que no pertenecen a Tardeando. Así un mismo combo no recibe descuento e incremento.",
+    "safetyTitle": "¿Por qué no se repite por accidente?",
+    "safetyCopy": "Cada ciclo crea una clave única en la base de datos. Si otra ejecución intenta usar la misma clave, se cancela antes de volver a modificar los precios.",
+    "screenPurpose": "Esta pantalla solo permite observar la configuración, los precios y el historial. Las tareas empiezan automáticamente al arrancar la aplicación."
+    ,"thisRun": "Ejecuciones de este arranque"
+    ,"thisRunCopy": "El contador vuelve a cero cada vez que reinicias MoonBrew. Al llegar al límite, los precios dejan de cambiar aunque la revisión de disponibilidad continúa."
+    ,"executions": "ejecuciones"
+    ,"limitReached": "Límite alcanzado"
+    ,"waitingNextCycle": "Esperando el próximo ciclo"
+    ,"restartToRepeat": "Reinicia la aplicación para repetir la demostración desde cero."
+    ,"lastPriceChanges": "Últimos cambios visibles"
+    ,"lastPriceChangesCopy": "Compara el precio anterior con el nuevo precio aplicado durante este arranque."
+    ,"noChangesThisRun": "Todavía no hay cambios en este arranque. Espera el próximo ciclo y mantén esta pantalla abierta."
+    ,"before": "Antes"
+    ,"after": "Después"
+    ,"tardeandoChanges": "Descuento Tardeando"
+    ,"generalChanges": "Incremento general"
+    ,"reportCopy": "Consulta los últimos cambios automáticos aplicados a los precios."
+    ,"noRecentChanges": "Todavía no hay cambios recientes para mostrar."
+    ,"reportLatestChanges": "Últimos cambios"
   },
   "clientPortal": {
     "mySpace": "Mi espacio",
@@ -90,8 +160,16 @@
     ,"activeCustomer": "Cliente activo"
     ,"identifier": "Identificador"
     ,"notAvailable": "No disponible"
+    ,"demonstrationSession": "Sesión de demostración"
+    ,"weatherSource": "Datos actuales proporcionados por Open-Meteo"
+    ,"sanJoseTemperature": "San José: {0} °C"
+    ,"benefitsAria": "Beneficios de MoonBrew"
+    ,"drinksAlt": "Selección de bebidas MoonBrew"
+    ,"dessertsAlt": "Selección de postres MoonBrew"
+    ,"comboAlt": "Combo especial MoonBrew"
   },
   "orders": {
+    "history": "Historial de pedidos",
     "cartSelection": "Tu selección",
     "cartTitle": "Mi carrito",
     "cartCopy": "Configura las cantidades y observaciones de cada preparación.",
@@ -143,19 +221,136 @@
     "cash": "Efectivo",
     "cashReceived": "Monto recibido",
     "change": "Vuelto estimado",
-    "submit": "Registrar y pagar pedido"
-    ,"details": "Detalles"
-    ,"addToCart": "Agregar"
-    ,"added": "Artículo agregado al carrito."
-    ,"removed": "Artículo eliminado."
-    ,"updateError": "No fue posible actualizar el carrito."
-    ,"quantityError": "La cantidad debe ser un número entre 0 y 99."
-    ,"addNamed": "Agregar {0} al carrito"
-    ,"viewNamed": "Ver detalle de {0}"
-    ,"openCart": "Abrir mi carrito"
+    "submit": "Registrar y pagar pedido",
+    "details": "Detalles",
+    "addToCart": "Agregar",
+    "added": "Artículo agregado al carrito.",
+    "removed": "Artículo eliminado.",
+    "updateError": "No fue posible actualizar el carrito.",
+    "quantityError": "La cantidad debe ser un número entre 0 y 99.",
+    "addNamed": "Agregar {0} al carrito",
+    "viewNamed": "Ver detalle de {0}",
+    "openCart": "Abrir mi carrito",
+    "preparationBoard": "Preparación de pedidos",
+    "automaticFlow": "Flujo automático",
+    "station": "Estación",
+    "startStep": "Iniciar",
+    "completeStep": "Completar",
+    "waitPrevious": "Espera etapa anterior",
+    "allCaughtUp": "Todo está al día",
+    "noPendingSteps": "No hay etapas pendientes en este momento.",
+    "customerEmail": "Correo del cliente",
+    "customerPhone": "Teléfono del cliente",
+    "initialStatus": "Estado inicial",
+    "automaticAccepted": "Aceptada (se actualiza automáticamente por las estaciones)",
+    "itemType": "Tipo",
+    "item": "Artículo",
+    "noNotes": "Sin observaciones",
+    "workflowCopy": "Las estaciones avanzan cada pedido en orden. El estado general se calcula automáticamente.",
+    "hotWeatherRecommendation": "Un café frío va perfecto con este clima.",
+    "coolWeatherRecommendation": "Hoy combina muy bien con una bebida caliente.",
+    "statusPending": "Pendiente",
+    "statusAccepted": "Aceptada",
+    "statusPreparation": "Preparación",
+    "statusProcessing": "Procesando",
+    "statusDelivered": "Entregada",
+    "stepPending": "Pendiente",
+    "stepInPreparation": "En preparación",
+    "stepCompleted": "Completado",
+    "trackingTitle": "Seguimiento del pedido",
+    "trackingCopy": "Cada cambio queda registrado automáticamente.",
+    "historyUnavailable": "Este pedido fue creado antes de habilitar el historial.",
+    "systemUser": "Sistema MoonBrew",
+    "control": "Control de pedidos",
+    "yourHistory": "Tu historial",
+    "managementCopy": "Consulta todos los pedidos y filtra por fecha o estado.",
+    "historyCopy": "Consulta tus compras ordenadas desde la más reciente.",
+    "from": "Desde",
+    "to": "Hasta",
+    "allStatuses": "Todos los estados",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "noOrders": "No hay pedidos para mostrar",
+    "noFilteredOrders": "No existen pedidos que coincidan con los filtros seleccionados.",
+    "firstOrderCopy": "Cuando realices tu primera compra podrás consultar aquí su detalle y estado.",
+    "exploreCatalog": "Explorar catálogo",
+    "order": "Pedido",
+    "registrationManager": "Responsable del registro",
+    "paymentProcessed": "Pago procesado",
+    "currentStatus": "Estado actual del pedido",
+    "currentStatusIs": "Su estado actual es",
+    "productOrCombo": "Producto o combo",
+    "backToHistory": "Volver al historial",
+    "finishPurchase": "Finalizar compra",
+    "generalDataCopy": "Información del cliente y responsable del pedido.",
+    "orderDate": "Fecha del pedido",
+    "selectCustomer": "Selecciona un cliente",
+    "emailAndPhone": "Correo y teléfono",
+    "homeDeliveryWithCost": "Entrega a domicilio (+ ₡2.500)",
+    "purchaseDetailCopy": "Productos y combos incluidos en el pedido.",
+    "paymentCopy": "Simulación segura; los datos de tarjeta no se almacenan.",
+    "finalSummary": "Resumen final",
+    "backToCart": "Volver al carrito",
+    "historyShort": "Historial",
+    "stationUpper": "ESTACIÓN",
+    "stationBar": "Barra",
+    "stationKitchen": "Cocina",
+    "stationPastry": "Repostería",
+    "stationPacking": "Empaque",
+    "stationDrinkPreparation": "Preparación de bebidas",
+    "stationFoodPreparation": "Preparación de alimentos",
+    "stationDessertPreparation": "Preparación de postres",
+    "stationReviewDispatch": "Revisión y despacho",
+    "storeRetirement": "Retiro en la tienda",
+    "statusHistoryAria": "Historial de estados",
+    "cartItemsAria": "Artículos del carrito",
+    "decreaseQuantity": "Disminuir cantidad",
+    "increaseQuantity": "Aumentar cantidad",
+    "viewOrder": "Ver pedido",
+    "orderNumber": "Pedido #{0}",
+    "stageNumber": "Etapa {0}",
+    "storeValue": "tienda",
+    "homeValue": "domicilio",
+    "creditCardValue": "Tarjeta de crédito",
+    "debitCardValue": "Tarjeta de débito",
+    "onlineOrder": "Pedido en línea",
+    "noStatus": "Sin estado",
+    "noStation": "Sin estación",
+    "finalReview": "Revisión final y entrega",
+    "approved": "Aprobado",
+    "operationInvalid": "No se pudo validar la operación. Actualiza la página e inténtalo de nuevo.",
+    "customerUnavailable": "El cliente seleccionado no está disponible.",
+    "addAtLeastOne": "Agrega al menos un artículo al pedido.",
+    "deliveryInvalid": "Selecciona un método de entrega válido.",
+    "addressRequired": "La dirección es obligatoria para la entrega a domicilio.",
+    "paymentInvalid": "Selecciona un método de pago válido.",
+    "quantityRange": "Las cantidades deben estar entre 1 y 99.",
+    "productUnavailable": "Uno de los productos ya no está disponible.",
+    "comboUnavailable": "Uno de los combos ya no está disponible.",
+    "invalidItem": "Uno de los artículos del pedido no es válido.",
+    "statusesMissing": "No existen estados de pedido configurados.",
+    "selectedStepMissing": "La etapa seleccionada ya no existe.",
+    "previousStepRequired": "Primero debe completarse la etapa anterior del pedido.",
+    "stepMustStart": "La etapa debe iniciarse antes de completarse.",
+    "stepAlreadyStarted": "Esta etapa ya fue iniciada.",
+    "statusNotConfigured": "No está configurado el estado '{0}'.",
+    "stepCompletedNotice": "Etapa completada; el estado del pedido se actualizó automáticamente.",
+    "preparationStartedNotice": "Preparación iniciada; el pedido cambió de estado automáticamente.",
+    "addBeforeCheckout": "Agrega al menos un artículo antes de continuar.",
+    "paymentSessionExpired": "La sesión de pago venció. Actualiza la página antes de intentarlo de nuevo.",
+    "emptyCartShort": "El carrito está vacío.",
+    "orderRegisteredWithChange": "Pedido #{0} registrado. Vuelto: ₡{1}.",
+    "orderRegisteredAccepted": "Pedido #{0} registrado en estado Aceptada.",
+    "orderListAria": "Historial de pedidos",
+    "addressPlaceholder": "Provincia, cantón, distrito y señas exactas",
+    "cardholderName": "Nombre del titular",
+    "cardNumber": "Número de tarjeta",
+    "cardExpiry": "Vencimiento",
+    "cardCvv": "Código de seguridad CVV"
   },
   "common": {
     "name": "Nombre",
+    "type": "Tipo",
     "description": "Descripción",
     "image": "Imagen",
     "category": "Categoría",
@@ -309,6 +504,7 @@
     "comboCreated": "El combo se creó correctamente.",
     "comboUpdated": "El combo se actualizó correctamente.",
     "comboDisabled": "El combo se desactivó correctamente.",
+    "categoryDisabled": "La categoría se desactivó correctamente.",
     "menuCreated": "El menú se creó correctamente.",
     "menuUpdated": "El menú se actualizó correctamente.",
     "menuDisabled": "El menú se desactivó correctamente.",
@@ -467,6 +663,8 @@
       "totalTime": "Tiempo Total",
       "stepTotal": "{0} pasos · {1} minutos en total",
       "stepNumber": "Paso {0}"
+      ,"continuousOrderHelp": "Usa una secuencia continua: 1, 2, 3… El sistema sugiere el primer orden libre."
+      ,"nextAvailableOrder": "El siguiente orden disponible para este producto es {0}."
     },
     "products": {
       "formTitle": "Información del Producto",
@@ -577,7 +775,19 @@
       "comboProductRequired": "Seleccione al menos un producto para el combo.",
       "menuDateOrder": "La fecha de inicio no puede ser mayor que la fecha final.",
       "menuTimeOrder": "La hora de inicio debe ser menor que la hora final.",
-      "menuContentRequired": "El menú debe incluir al menos un producto o un combo."
+      "menuContentRequired": "El menú debe incluir al menos un producto o un combo.",
+      "deliveryRequired": "Selecciona un método de entrega.",
+      "addressLength": "La dirección no puede superar los 300 caracteres.",
+      "paymentRequired": "Selecciona un método de pago.",
+      "selectOrderCustomer": "Selecciona el cliente que solicita el pedido.",
+      "homeAddressRequired": "Ingresa la dirección para la entrega a domicilio.",
+      "cardholderRequired": "Ingresa el nombre del titular.",
+      "cardNumberInvalid": "Ingresa un número de tarjeta válido.",
+      "cardExpiryInvalid": "Usa el formato MM/AA para el vencimiento.",
+      "cvvInvalid": "Ingresa un CVV válido.",
+      "cashInsufficient": "El monto recibido debe cubrir el total del pedido.",
+      "emptyOrder": "Agrega al menos un artículo al pedido.",
+      "operationExpired": "La sesión de pago venció. Actualiza la página antes de intentarlo de nuevo."
     }
   }
 }

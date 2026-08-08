@@ -7,6 +7,8 @@ namespace MoonBrewCoffee.Web.Models
 {
     public class CheckoutViewModel : IValidatableObject
     {
+        [Required]
+        public string OperationKey { get; set; } = string.Empty;
         public CartViewModel Cart { get; set; } = new();
         public CurrentUserViewModel CurrentUser { get; set; } = new();
         public bool CanSelectClient { get; set; }

@@ -8,6 +8,7 @@
         t: (key, fallback = key) => selectedTranslations[key] ?? fallback
     };
     const translatableAttributes = [
+        "alt",
         "placeholder",
         "title",
         "aria-label",
@@ -64,11 +65,20 @@
         Object.entries(spanish).forEach(([key, source]) => {
             const target = selected[key] ?? source;
             if (source.includes("{0}")) {
-                patternTranslations.push({ ...buildPattern(source), target });
+                patternTranslations.push({
+                    ...buildPattern(source),
+                    target,
+                    // Una frase con más texto fijo es más específica. Por ejemplo,
+                    // "Pedido #{0} registrado..." debe evaluarse antes que
+                    // "Pedido #{0}" para no traducir solamente el inicio.
+                    specificity: source.replace(/\{\d+\}/g, "").length
+                });
             } else if (!exactTranslations.has(source)) {
                 exactTranslations.set(source, target);
             }
         });
+
+        patternTranslations.sort((left, right) => right.specificity - left.specificity);
 
         const translateValue = value => {
             const normalizedValue = normalize(value);
@@ -110,6 +120,26 @@
             const explicitKey = element.dataset.i18nKey;
             if (explicitKey && selected[explicitKey]) {
                 element.textContent = selected[explicitKey];
+            }
+
+            const valueKey = element.dataset.i18nValueKey;
+            if (valueKey && selected[valueKey] && "value" in element) {
+                element.value = selected[valueKey];
+            }
+
+            const placeholderKey = element.dataset.i18nPlaceholderKey;
+            if (placeholderKey && selected[placeholderKey]) {
+                element.setAttribute("placeholder", selected[placeholderKey]);
+            }
+
+            const ariaKey = element.dataset.i18nAriaKey;
+            if (ariaKey && selected[ariaKey]) {
+                element.setAttribute("aria-label", selected[ariaKey]);
+            }
+
+            const titleKey = element.dataset.i18nTitleKey;
+            if (titleKey && selected[titleKey]) {
+                document.title = `${selected[titleKey]} - MoonBrew Coffee`;
             }
 
             translatableAttributes.forEach(attribute => {

@@ -6,7 +6,7 @@
     Layout = "_ClienteLayout";
 }
 
-<section class="client-page-header">
+<section class="client-page-header" data-i18n-title-key="orders.cartTitle">
     <div><span data-i18n-key="orders.cartSelection">Tu selección</span><h1 data-i18n-key="orders.cartTitle">Mi carrito</h1><p data-i18n-key="orders.cartCopy">Configura las cantidades y observaciones de cada preparación.</p></div>
     <span class="client-page-icon"><i class="bi bi-bag"></i></span>
 </section>
@@ -25,7 +25,7 @@
 else
 {
     <div class="cart-layout" data-cart-page>
-        <section class="cart-lines" aria-label="Artículos del carrito">
+        <section class="cart-lines" aria-label="Artículos del carrito" data-i18n-aria-key="orders.cartItemsAria">
             @foreach (var line in Model.Lines)
             {
                 <article class="cart-line" data-cart-line data-key="@line.Key" data-unit-price="@line.UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)">
@@ -33,20 +33,20 @@ else
                     <div class="cart-line-main">
                         <span class="cart-line-type" data-i18n-key="@(line.ItemType == "combo" ? "orders.combo" : "orders.product")">@(line.ItemType == "combo" ? "Combo" : "Producto")</span>
                         <h2>@line.Name</h2>
-                        <span class="cart-line-price">₡@line.UnitPrice.ToColones() cada uno</span>
+                        <span class="cart-line-price">₡@line.UnitPrice.ToColones() <span data-i18n-key="orders.each">cada uno</span></span>
                         <label>
                             <span data-i18n-key="orders.preparationNotes">Observaciones de preparación</span>
                             <textarea maxlength="250" rows="2" data-cart-notes
-                                      placeholder="Ejemplo: sin azúcar, leche deslactosada...">@line.Notes</textarea>
+                                      placeholder="Ejemplo: sin azúcar, leche deslactosada..." data-i18n-placeholder-key="orders.notesPlaceholder">@line.Notes</textarea>
                         </label>
                     </div>
                     <div class="cart-line-actions">
                         <label class="cart-quantity-label" for="quantity-@line.Key" data-i18n-key="orders.quantity">Cantidad</label>
                         <div class="cart-quantity">
-                            <button type="button" data-cart-step="-1" aria-label="Disminuir cantidad"><i class="bi bi-dash"></i></button>
+                            <button type="button" data-cart-step="-1" aria-label="Disminuir cantidad" data-i18n-aria-key="orders.decreaseQuantity"><i class="bi bi-dash"></i></button>
                             <input id="quantity-@line.Key" type="number" min="0" max="99" step="1"
                                    value="@line.Quantity" inputmode="numeric" data-cart-quantity />
-                            <button type="button" data-cart-step="1" aria-label="Aumentar cantidad"><i class="bi bi-plus"></i></button>
+                            <button type="button" data-cart-step="1" aria-label="Aumentar cantidad" data-i18n-aria-key="orders.increaseQuantity"><i class="bi bi-plus"></i></button>
                         </div>
                         <div class="cart-line-totals">
                             <small data-i18n-key="orders.subtotal">Subtotal</small><strong data-line-subtotal>₡@line.Subtotal.ToColones()</strong>

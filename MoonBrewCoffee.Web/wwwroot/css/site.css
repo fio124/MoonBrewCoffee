@@ -1453,6 +1453,56 @@ body {
     }
 }
 
+/* Preparación operativa de pedidos */
+.preparation-header h1 { margin: 8px 0; }
+.preparation-board { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:22px; align-items:start; }
+.preparation-station { overflow:hidden; border:1px solid rgba(90,56,44,.1); border-radius:22px; background:#fff; box-shadow:0 14px 34px rgba(62,38,29,.08); }
+.preparation-station > header { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px; padding:20px; border-top:5px solid var(--station-color); background:#fffaf5; }
+.preparation-station > header > span { width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:var(--station-color); color:#fff; }
+.preparation-station > header small { color:#8a7165; font-weight:800; letter-spacing:.12em; }
+.preparation-station > header h2 { margin:0; font-size:1.25rem; }
+.preparation-station > header b { min-width:32px; padding:6px 9px; border-radius:999px; background:#3d241c; color:#fff; text-align:center; }
+.preparation-list { display:grid; gap:12px; padding:16px; }
+.preparation-ticket { padding:17px; border:1px solid #eee1d5; border-radius:16px; background:#fff; }
+.preparation-ticket-top { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.preparation-ticket h3 { margin:14px 0 7px; font-size:1.05rem; }
+.preparation-ticket p { margin:0 0 7px; color:#78665e; }
+.preparation-ticket > small { color:#a97850; font-weight:700; }
+.preparation-actions { display:flex; align-items:center; gap:8px; margin-top:14px; }
+.preparation-actions form { margin:0; flex:1; }
+.preparation-button { width:100%; min-height:40px; border:0; border-radius:11px; background:#6b422f; color:#fff; font-weight:700; }
+.preparation-button.complete { background:#3e7651; }
+.preparation-wait { display:flex; align-items:center; gap:6px; color:#8a7165; font-size:.78rem; }
+.preparation-empty { padding:55px; border:1px dashed #d9c8b8; border-radius:22px; background:#fffaf5; text-align:center; }
+.preparation-empty i { font-size:3rem; color:#3e7651; }
+.status-pill { padding:6px 10px; border-radius:999px; background:#f4e8dc; color:#603b2c; font-size:.72rem; font-weight:800; }
+.checkout-client-preview { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:14px; border:1px solid #ead9ca; border-radius:14px; background:#fffaf5; }
+.checkout-client-preview[hidden] { display:none; }
+.checkout-client-preview div { display:grid; gap:3px; }
+.checkout-client-preview span { color:#8a7165; font-size:.72rem; text-transform:uppercase; }
+.checkout-table-wrap { overflow-x:auto; }
+.checkout-detail-table { width:100%; border-collapse:collapse; }
+.checkout-detail-table th { padding:12px; background:#3d241c; color:#fff; text-align:left; white-space:nowrap; }
+.checkout-detail-table td { padding:13px 12px; border-bottom:1px solid #eee1d5; color:#66544c; }
+.weather-recommendation { width:max-content; max-width:100%; display:flex; align-items:center; gap:10px; margin-top:18px; padding:10px 14px; border:1px solid rgba(255,255,255,.24); border-radius:14px; background:rgba(25,14,10,.48); color:#fff; backdrop-filter:blur(8px); }
+.weather-recommendation i { font-size:1.35rem; color:#efc28e; }
+.weather-recommendation div { display:grid; }
+.weather-recommendation span { color:rgba(255,255,255,.8); font-size:.78rem; }
+.order-history-timeline { margin:26px 0; padding:22px; border:1px solid #eadfd5; border-radius:18px; background:#fffaf6; }
+.order-history-timeline > header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+.order-history-timeline > header > span { width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:#5a382c; color:#fff; }
+.order-history-timeline h2 { margin:0; font-size:1.25rem; }
+.order-history-timeline header p { margin:2px 0 0; color:#806d64; font-size:.82rem; }
+.order-history-timeline ol { position:relative; display:grid; gap:0; margin:0; padding:0; list-style:none; }
+.order-history-timeline li { position:relative; display:grid; grid-template-columns:38px 1fr auto; align-items:center; gap:10px; min-height:62px; }
+.order-history-timeline li:not(:last-child)::before { content:""; position:absolute; left:18px; top:42px; bottom:-20px; width:2px; background:#dfcfc1; }
+.order-history-dot { z-index:1; width:36px; height:36px; display:grid; place-items:center; border:4px solid #fffaf6; border-radius:50%; background:var(--history-color); color:#fff; }
+.order-history-timeline li div { display:grid; }
+.order-history-timeline li small,.order-history-timeline time { color:#806d64; font-size:.78rem; }
+.order-history-empty { margin:0; color:#806d64; }
+@media(max-width:600px){.order-history-timeline li{grid-template-columns:38px 1fr}.order-history-timeline time{grid-column:2}.order-history-timeline li:not(:last-child)::before{bottom:-30px}}
+@media(max-width:640px){.preparation-board{grid-template-columns:1fr}.preparation-actions{align-items:stretch;flex-wrap:wrap}.preparation-wait{width:100%}}
+
 /* Resumen simple del menú disponible */
 .available-menu-switcher {
     display: grid;

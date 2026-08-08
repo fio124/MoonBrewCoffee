@@ -9,6 +9,8 @@ namespace MoonBrewCoffee.Application.Services.Interfaces
         Task<List<PedidoDTO>> GetByClientAsync(int clientId);
         Task<List<PedidoDTO>> GetAllAsync(DateTime? from = null, DateTime? to = null, int? statusId = null);
         Task<List<EstadoPedidoDTO>> GetStatusesAsync();
+        Task<List<PedidoProcesoDTO>> GetPreparationBoardAsync();
+        Task AdvanceProcessAsync(int processId, bool complete, int? userId);
     }
 
     public class EstadoPedidoDTO

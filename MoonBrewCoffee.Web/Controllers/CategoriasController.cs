@@ -105,6 +105,7 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _categoriaService.DeleteAsync(id);
+            TempData["SuccessMessage"] = "La categoría se desactivó correctamente.";
             return RedirectToAction(nameof(Index));
         }
     }

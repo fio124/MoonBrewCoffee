@@ -1,0 +1,46 @@
+@model IEnumerable<MoonBrewCoffee.Application.DTOs.ProcesoPreparacionDTO>
+
+@{
+    ViewData["Title"] = "Proceso de preparación";
+    var pasos = Model.OrderBy(paso => paso.Orden).ToList();
+    var producto = pasos.FirstOrDefault()?.NombreProducto ?? "Producto";
+    var idProducto = pasos.FirstOrDefault()?.IdProducto;
+}
+
+<div class="maintenance-header">
+    <div>
+        <span class="maintenance-eyebrow">Proceso de preparación</span>
+        <h1>@producto</h1>
+        <p>@pasos.Count pasos · @pasos.Sum(paso => paso.TiempoPreparacionMin) minutos en total</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+        <a asp-action="Create" asp-route-idProducto="@idProducto" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Agregar estación
+        </a>
+    </div>
+</div>
+
+<section class="process-timeline">
+    @foreach (var paso in pasos)
+    {
+        <article class="process-step">
+            <div class="process-step-number">@paso.Orden</div>
+            <div class="process-step-content">
+                <span>Paso @paso.Orden</span>
+                <h2>@paso.NombreEstacion</h2>
+                <p><i class="bi bi-clock"></i> @paso.TiempoPreparacionMin minutos</p>
+            </div>
+            <div class="process-step-actions">
+                <a asp-action="Edit" asp-route-id="@paso.IdProceso" class="btn btn-sm btn-outline-warning" aria-label="Editar paso @paso.Orden">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <a asp-action="Delete" asp-route-id="@paso.IdProceso" class="btn btn-sm btn-outline-danger" aria-label="Eliminar paso @paso.Orden">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </div>
+        </article>
+    }
+</section>

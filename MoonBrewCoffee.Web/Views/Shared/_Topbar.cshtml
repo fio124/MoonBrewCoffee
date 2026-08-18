@@ -1,0 +1,80 @@
+﻿@{
+    var currentUserService = Context.RequestServices.GetRequiredService<MoonBrewCoffee.Web.Services.ICurrentUserService>();
+    var currentUser = currentUserService.GetCurrent();
+    var hora = DateTime.Now.Hour;
+    var localizer =
+        (Microsoft.Extensions.Localization.IStringLocalizer<MoonBrewCoffee.Web.SharedResource>)
+        Context.RequestServices.GetService(
+            typeof(Microsoft.Extensions.Localization.IStringLocalizer<MoonBrewCoffee.Web.SharedResource>))!;
+
+    string saludo = hora switch
+    {
+        >= 5 and < 12 => $"☀️ {localizer["GoodMorning"]}",
+        >= 12 and < 18 => $"🌤️ {localizer["GoodAfternoon"]}",
+        _ => $"🌙 {localizer["GoodEvening"]}"
+    };
+}
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <button type="button"
+                class="sidebar-toggle"
+                data-sidebar-toggle
+                aria-controls="appSidebar"
+                aria-expanded="false"
+                aria-label="@localizer["OpenMainMenu"]">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <h4 class="mb-0 fw-bold">
+            @saludo, @(string.IsNullOrWhiteSpace(currentUser?.Nombre) ? localizer["Administrator"] : currentUser.Nombre)
+        </h4>
+
+    </div>
+
+    <div class="topbar-right">
+
+        @await Html.PartialAsync("_LanguageSelector")
+
+        <button class="icon-btn position-relative">
+
+            <i class="bi bi-bell-fill"></i>
+
+            <span class="notification-dot"></span>
+
+        </button>
+
+        <button class="icon-btn">
+
+            <i class="bi bi-gear-fill"></i>
+
+        </button>
+
+        <div class="profile">
+
+            <img src="~/Imagenes/Loguito.png"
+                 alt="MoonBrew" />
+
+            <div>
+
+                <strong>
+
+                    @(string.IsNullOrWhiteSpace(currentUser?.NombreCompleto) ? "MoonBrew Admin" : currentUser.NombreCompleto)
+
+                </strong>
+
+                <small>
+
+                    @(currentUser?.Rol ?? "Administrador")
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>

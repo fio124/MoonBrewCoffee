@@ -1,0 +1,66 @@
+@model MoonBrewCoffee.Web.Models.ScheduledTasksDashboardViewModel
+@using MoonBrewCoffee.Web.Formatting
+
+@{
+    ViewData["Title"] = "Reportes";
+    var latestChanges = Model.LastTardeandoChanges
+        .Select(change => (TypeKey: "scheduledTasks.tardeandoChanges", TypeFallback: "Tardeando", Change: change))
+        .Concat(Model.LastGeneralChanges.Select(change => (TypeKey: "scheduledTasks.generalChanges", TypeFallback: "General", Change: change)))
+        .ToList();
+}
+
+<div class="maintenance-header reports-header" data-i18n-title-key="navigation.reports">
+    <div>
+        <span class="reports-eyebrow"><i class="bi bi-bar-chart-line"></i> <span data-i18n-key="navigation.reports">REPORTES</span></span>
+        <h1 data-i18n-key="navigation.reports">Reportes</h1>
+        <p class="text-muted mb-0" data-i18n-key="scheduledTasks.reportCopy">Consulta los últimos cambios automáticos aplicados a los precios.</p>
+    </div>
+</div>
+
+<section class="reports-panel">
+    <div class="reports-panel-heading">
+        <h2 data-i18n-key="scheduledTasks.reportLatestChanges">Últimos cambios</h2>
+    </div>
+
+    @if (latestChanges.Count == 0)
+    {
+        <div class="reports-empty">
+            <i class="bi bi-inbox"></i>
+            <span data-i18n-key="scheduledTasks.noRecentChanges">Todavía no hay cambios recientes para mostrar.</span>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table reports-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th data-i18n-key="common.name">Nombre</th>
+                        <th data-i18n-key="common.type">Tipo</th>
+                        <th data-i18n-key="scheduledTasks.before">Antes</th>
+                        <th data-i18n-key="scheduledTasks.after">Después</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in latestChanges)
+                    {
+                        <tr>
+                            <td><strong>@item.Change.Name</strong></td>
+                            <td><span class="report-type" data-i18n-key="@item.TypeKey">@item.TypeFallback</span></td>
+                            <td>₡@item.Change.Before.ToColones()</td>
+                            <td><strong class="report-new-price">₡@item.Change.After.ToColones()</strong></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+<style>
+    .reports-header{margin-bottom:1rem}.reports-eyebrow{display:inline-flex;align-items:center;gap:.5rem;color:#b77845;font-size:.78rem;font-weight:800;letter-spacing:.12em;margin-bottom:.5rem}.reports-panel{overflow:hidden;background:#fff;border:1px solid #eadfd5;border-radius:22px;box-shadow:0 16px 40px rgba(73,43,30,.08)}.reports-panel-heading{padding:1.2rem 1.35rem;border-bottom:1px solid #eee3da}.reports-panel-heading h2{margin:0;color:#42251b;font-size:1.15rem}.reports-table th{background:#42251b;color:#fff;border:0;padding:1rem 1.2rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}.reports-table td{padding:1rem 1.2rem;border-color:#eee3da;color:#614c43}.report-type{display:inline-flex;padding:.32rem .7rem;border-radius:999px;background:#f5e9de;color:#875332;font-size:.76rem;font-weight:800}.report-new-price{color:#247a50}.reports-empty{min-height:220px;display:grid;place-items:center;align-content:center;gap:.65rem;color:#89756b}.reports-empty i{font-size:2rem;color:#b77845}
+</style>
+
+<script>
+    window.setTimeout(() => window.location.reload(), 5000);
+</script>

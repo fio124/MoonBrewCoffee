@@ -1,0 +1,25 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">Ocurrió un error mientras se procesaba la solicitud.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>ID de solicitud:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<h3>Modo de desarrollo</h3>
+<p>
+    Cambiar al entorno <strong>Development</strong> mostrará información más detallada sobre el error ocurrido.
+</p>
+<p>
+    <strong>El entorno Development no debe habilitarse en aplicaciones publicadas.</strong>
+    Podría mostrar información sensible de las excepciones a los usuarios finales.
+    Para depuración local, configura la variable <strong>ASPNETCORE_ENVIRONMENT</strong> con el valor <strong>Development</strong>
+    y reinicia la aplicación.
+</p>

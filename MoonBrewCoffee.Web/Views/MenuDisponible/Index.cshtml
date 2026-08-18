@@ -1,0 +1,328 @@
+﻿@model MoonBrewCoffee.Application.DTOs.MenuDisponibleDTO?
+
+@{
+    Layout = "_ClienteLayout";
+    ViewData["Title"] = "Menú Disponible";
+}
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<div class="menu-wrapper">
+
+    @if (Model == null)
+    {
+        <section class="menu-empty">
+
+            <div class="menu-empty-card">
+
+                <div class="menu-empty-icon">
+
+                    ☕
+
+                </div>
+
+                <h1>No hay un menú disponible</h1>
+
+                <p>
+                    En este momento no existe un menú disponible.
+                    Vuelve más tarde para descubrir nuestras
+                    bebidas y productos.
+                </p>
+
+            </div>
+
+        </section>
+    }
+    else
+    {
+        var totalProductos = Model.Categorias.Sum(categoria => categoria.Productos.Count);
+        var totalCombos = Model.Combos.Count;
+        var menusDisponibles = ViewBag.MenusDisponibles as IEnumerable<MoonBrewCoffee.Application.DTOs.MenuDTO>
+            ?? Enumerable.Empty<MoonBrewCoffee.Application.DTOs.MenuDTO>();
+
+        if (menusDisponibles.Count() > 1)
+        {
+            <section class="available-menu-switcher" aria-label="Menús disponibles ahora">
+                <div class="available-menu-switcher-copy">
+                    <i class="bi bi-journals"></i>
+                    <div>
+                        <span>Hay @menusDisponibles.Count() menús disponibles</span>
+                        <small data-i18n-key="screens.availableMenu.selectHelp">Selecciona el que deseas consultar.</small>
+                    </div>
+                </div>
+
+                <nav class="available-menu-tabs">
+                    @foreach (var menu in menusDisponibles)
+                    {
+                        <a asp-action="Index"
+                           asp-route-menuId="@menu.IdMenu"
+                           class="@(menu.IdMenu == Model.IdMenu ? "active" : null)"
+                           aria-current="@(menu.IdMenu == Model.IdMenu ? "page" : null)">
+                            <span><i class="bi bi-journal-richtext"></i> @menu.Nombre</span>
+                            <small>@menu.HoraInicio.ToString(@"hh\:mm")–@menu.HoraFin.ToString(@"hh\:mm")</small>
+                        </a>
+                    }
+                </nav>
+            </section>
+        }
+
+        <section class="available-menu-overview">
+            <div class="available-menu-overview-main">
+                <span class="available-menu-badge">
+                    <span class="available-menu-pulse"></span>
+                    Disponible ahora
+                </span>
+
+                <span class="available-menu-overview-label" data-i18n-key="screens.availableMenu.activeMenu">Menú activo</span>
+                <h1>@Model.Nombre</h1>
+                <p data-i18n-key="screens.availableMenu.activeCopy">Consulta los productos y combos incluidos en este menú.</p>
+
+                <div class="available-menu-overview-meta">
+                    <span>
+                        <i class="bi bi-clock"></i>
+                        <small data-i18n-key="common.schedule">Horario</small>
+                        <strong>@Model.HoraInicio.ToString(@"hh\:mm") – @Model.HoraFin.ToString(@"hh\:mm")</strong>
+                    </span>
+                    <span>
+                        <i class="bi bi-calendar3"></i>
+                        <small data-i18n-key="screens.availableMenu.dates">Fechas</small>
+                        <strong>@Model.FechaInicio.ToString("dd/MM/yyyy") – @Model.FechaFin.ToString("dd/MM/yyyy")</strong>
+                    </span>
+                </div>
+            </div>
+
+            <aside class="available-menu-overview-side" aria-label="Contenido del menú">
+                <span data-i18n-key="screens.availableMenu.content">Contenido del menú</span>
+                <div class="available-menu-overview-counts">
+                    <div><strong>@totalProductos</strong><small>Productos</small></div>
+                    <div><strong>@totalCombos</strong><small>Combos</small></div>
+                    <div><strong>@Model.Categorias.Count</strong><small>Categorías</small></div>
+                </div>
+                <nav class="available-menu-jump" aria-label="Ir a una sección">
+                    <a href="#productos-menu"><i class="bi bi-cup-hot"></i> <span data-i18n-key="screens.availableMenu.viewProducts">Ver productos</span></a>
+                    @if (totalCombos > 0)
+                    {
+                        <a href="#combos-menu"><i class="bi bi-gift"></i> <span data-i18n-key="screens.availableMenu.viewCombos">Ver combos</span></a>
+                    }
+                </nav>
+            </aside>
+        </section>
+
+
+        <div class="container py-5">
+
+            <header class="available-menu-section-intro" id="productos-menu">
+                <span data-i18n-key="screens.availableMenu.selection">Nuestra selección</span>
+                <h2 data-i18n-key="screens.availableMenu.productsByCategory">Productos por categoría</h2>
+                <p>Explora las opciones incluidas en el menú <strong>@Model.Nombre</strong>.</p>
+            </header>
+
+            @foreach (var categoria in Model.Categorias)
+            {
+
+                <section class="category-section">
+
+                    <div class="category-title">
+
+                        <span class="coffee-icon">
+
+                            ☕
+
+                        </span>
+
+                        <h2>
+
+                            @categoria.Nombre
+
+                        </h2>
+
+                        <div class="category-line"></div>
+
+                    </div>
+
+                    <div class="menu-grid">
+
+                        @foreach (var producto in categoria.Productos)
+                        {
+
+
+                                <article class="menu-card">
+
+                                    <div class="menu-card-image">
+
+                                        @if (!string.IsNullOrWhiteSpace(producto.Image64))
+                                        {
+                                            <img src="@Url.Action("Image", "Productos", new { id = producto.IdProducto })"
+                                                 alt="@producto.Nombre"
+                                                 loading="lazy"
+                                                 decoding="async" />
+                                        }
+                                        else
+                                        {
+                                            <div class="menu-card-placeholder">
+
+                                                <i class="bi bi-cup-hot-fill"></i>
+
+                                                <span>MoonBrew</span>
+
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    <div class="menu-card-content">
+
+                                        <div class="menu-card-heading">
+
+                                            <h3>@producto.Nombre</h3>
+
+                                        </div>
+
+                                        <div class="menu-card-divider">
+
+                                            <span></span>
+
+                                            <i class="bi bi-cup-hot-fill"></i>
+
+                                            <span></span>
+
+                                        </div>
+
+                                        <p class="menu-card-description">
+
+                                            @producto.Descripcion
+
+                                        </p>
+
+                                        <div class="menu-card-footer available-menu-card-footer">
+
+                                            <div class="available-menu-price">
+                                                <small data-i18n-key="common.price">Precio</small>
+                                                <strong>₡@producto.Precio.ToColones()</strong>
+                                            </div>
+
+                                            <button type="button" class="cart-add-button available-menu-add" data-cart-add
+                                                    data-item-type="producto" data-item-id="@producto.IdProducto">
+                                                <i class="bi bi-bag-plus"></i><span data-i18n-key="orders.addToCart">Agregar</span>
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+                           
+                        }
+
+                    </div>
+
+                </section>
+
+            }
+                @if (Model.Combos.Any())
+            {
+                <section class="category-section combos-section" id="combos-menu">
+
+                    <div class="category-title">
+
+                        <span class="coffee-icon">
+                            ⭐
+                        </span>
+
+                        <h2>
+                            <span data-i18n-key="screens.availableMenu.specialCombos">Combos Especiales</span>
+                        </h2>
+
+                        <div class="category-line"></div>
+
+                    </div>
+
+                    <div class="menu-grid">
+
+                        @foreach (var combo in Model.Combos)
+                        {
+
+                                <article class="menu-card menu-combo-card">
+
+                                    <div class="menu-combo-label">
+
+                                        <span data-i18n-key="screens.availableMenu.special">ESPECIAL</span>
+
+                                    </div>
+
+                                    <div class="menu-card-image">
+
+                                        @if (!string.IsNullOrWhiteSpace(combo.ImagenURL))
+                                        {
+                                            <img src="@Url.Action("Image", "Combos", new { id = combo.IdCombo })"
+                                                 alt="@combo.Nombre"
+                                                 loading="lazy"
+                                                 decoding="async" />
+                                        }
+                                        else
+                                        {
+                                            <div class="menu-card-placeholder">
+
+                                                <i class="bi bi-gift-fill"></i>
+
+                                                <span>Combo</span>
+
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    <div class="menu-card-content">
+
+                                        <div class="menu-card-heading">
+
+                                            <h3>@combo.Nombre</h3>
+
+                                        </div>
+
+                                        <div class="menu-card-divider">
+
+                                            <span></span>
+
+                                            <i class="bi bi-star-fill"></i>
+
+                                            <span></span>
+
+                                        </div>
+
+                                        <p class="menu-card-description">
+
+                                            @combo.Descripcion
+
+                                        </p>
+
+                                        <div class="menu-card-footer available-menu-card-footer">
+
+                                            <div class="available-menu-price">
+                                                <small data-i18n-key="common.price">Precio</small>
+                                                <strong>₡@combo.PrecioCombo.ToColones()</strong>
+                                            </div>
+
+                                            <button type="button" class="cart-add-button available-menu-add" data-cart-add
+                                                    data-item-type="combo" data-item-id="@combo.IdCombo">
+                                                <i class="bi bi-bag-plus"></i><span data-i18n-key="orders.addToCart">Agregar</span>
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+                        }
+
+                    </div>
+
+                </section>
+            }
+
+        </div>
+
+    }
+
+</div>

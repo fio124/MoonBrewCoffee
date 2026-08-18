@@ -1,0 +1,35 @@
+@model MoonBrewCoffee.Application.DTOs.MenuDTO
+
+@{
+    ViewData["Title"] = "Desactivar menú";
+}
+
+<div class="maintenance-header">
+    <div>
+        <span class="maintenance-eyebrow">Mantenimiento de menús</span>
+        <h1>Desactivar menú</h1>
+        <p>El menú dejará de considerarse para la disponibilidad actual.</p>
+    </div>
+    <a asp-action="Details" asp-route-id="@Model.IdMenu" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<section class="maintenance-confirm-card">
+    <div class="maintenance-confirm-icon"><i class="bi bi-exclamation-triangle"></i></div>
+    <span class="status-pill is-warning">Confirmación requerida</span>
+    <h2>¿Deseas desactivar “@Model.Nombre”?</h2>
+    <p>El registro y sus productos asociados se conservarán.</p>
+    <div class="maintenance-confirm-summary">
+        <span><strong>Fecha inicial</strong>@Model.FechaInicio.ToString("dd/MM/yyyy")</span>
+        <span><strong>Fecha final</strong>@Model.FechaFin.ToString("dd/MM/yyyy")</span>
+        <span><strong>Horario</strong>@Model.HoraInicio.ToString(@"hh\:mm") – @Model.HoraFin.ToString(@"hh\:mm")</span>
+    </div>
+    <form asp-action="Delete" class="maintenance-actions justify-content-center">
+        <input asp-for="IdMenu" type="hidden" />
+        <a asp-action="Details" asp-route-id="@Model.IdMenu" class="btn btn-light">Cancelar</a>
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-slash-circle"></i> Sí, desactivar
+        </button>
+    </form>
+</section>

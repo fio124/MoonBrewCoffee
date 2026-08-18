@@ -1,0 +1,81 @@
+@model MoonBrewCoffee.Web.Models.CheckoutViewModel
+@using MoonBrewCoffee.Web.Formatting
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Registrar pedido";
+    Layout = Model.CanSelectClient ? "_Layout" : "_ClienteLayout";
+}
+
+<section class="client-page-header" data-i18n-title-key="orders.checkout">
+    <div><span data-i18n-key="orders.finishPurchase">Finalizar compra</span><h1 data-i18n-key="orders.checkout">Registrar pedido</h1><p data-i18n-key="orders.checkoutCopy">Completa la entrega y el pago en este formulario tipo factura.</p></div>
+    <span class="client-page-icon"><i class="bi bi-receipt"></i></span>
+</section>
+
+<form asp-action="Create" method="post" class="checkout" data-checkout data-cart-total="@Model.Cart.Total.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+    <input asp-for="OperationKey" type="hidden" />
+    <div asp-validation-summary="ModelOnly" class="login-validation"></div>
+    <section class="checkout-main">
+        <div class="checkout-section">
+            <header><span>01</span><div><h2 data-i18n-key="orders.generalData">Datos generales</h2><p data-i18n-key="orders.generalDataCopy">Información del cliente y responsable del pedido.</p></div></header>
+            <div class="checkout-fields">
+                <label><span data-i18n-key="orders.orderDate">Fecha del pedido</span><input value="@DateTime.Now.ToString("g", CultureInfo.CurrentCulture)" readonly /></label>
+                @if (Model.CanSelectClient)
+                {
+                    <label><span data-i18n-key="orders.customer">Cliente</span><select asp-for="ClientId" asp-items="Model.Clients" data-client-select data-info-url="@Url.Action("ClientInfo", "Pedidos")"><option value="" data-i18n-key="orders.selectCustomer">Selecciona un cliente</option></select><span asp-validation-for="ClientId"></span></label>
+                    <label><span data-i18n-key="orders.manager">Encargado</span><input value="@Model.CurrentUser.NombreCompleto" readonly /></label>
+                    <div class="checkout-client-preview checkout-wide" data-client-preview hidden><div><span data-i18n-key="orders.customerEmail">Correo del cliente</span><strong data-client-email>—</strong></div><div><span data-i18n-key="orders.customerPhone">Teléfono del cliente</span><strong data-client-phone>—</strong></div></div>
+                }
+                else
+                {
+                    <label><span data-i18n-key="orders.customer">Cliente</span><input value="@Model.CurrentUser.NombreCompleto" readonly /></label>
+                    <label><span data-i18n-key="orders.emailAndPhone">Correo y teléfono</span><input value="@Model.CurrentUser.Correo · @Model.CurrentUser.Telefono" readonly /></label>
+                }
+                <label class="checkout-wide"><span data-i18n-key="orders.deliveryMethod">Método de entrega</span><select asp-for="DeliveryType" data-delivery-type><option value="tienda" data-i18n-key="orders.storePickup">Recogida en tienda</option><option value="domicilio" data-i18n-key="orders.homeDeliveryWithCost">Entrega a domicilio (+ ₡2.500)</option></select></label>
+                <label class="checkout-wide" data-address-field><span data-i18n-key="orders.deliveryAddress">Dirección de entrega</span><textarea asp-for="DeliveryAddress" rows="3" placeholder="Provincia, cantón, distrito y señas exactas" data-i18n-placeholder-key="orders.addressPlaceholder"></textarea><span asp-validation-for="DeliveryAddress"></span></label>
+                <label class="checkout-wide"><span data-i18n-key="orders.initialStatus">Estado inicial</span><input value="Aceptada (se actualiza automáticamente por las estaciones)" data-i18n-value-key="orders.automaticAccepted" readonly /></label>
+            </div>
+        </div>
+
+        <div class="checkout-section">
+            <header><span>02</span><div><h2 data-i18n-key="orders.purchaseDetail">Detalle de compra</h2><p data-i18n-key="orders.purchaseDetailCopy">Productos y combos incluidos en el pedido.</p></div></header>
+            <div class="checkout-table-wrap"><table class="checkout-detail-table"><thead><tr><th data-i18n-key="orders.itemType">Tipo</th><th data-i18n-key="orders.item">Artículo</th><th data-i18n-key="orders.observations">Observaciones</th><th data-i18n-key="orders.quantity">Cantidad</th><th data-i18n-key="orders.price">Precio</th><th data-i18n-key="orders.subtotal">Subtotal</th></tr></thead><tbody>
+                @foreach (var line in Model.Cart.Lines)
+                {
+                    <tr><td><span data-i18n-key="@(line.ItemType == "combo" ? "orders.combo" : "orders.product")">@(line.ItemType == "combo" ? "Combo" : "Producto")</span></td><td><strong>@line.Name</strong></td><td>@if (string.IsNullOrWhiteSpace(line.Notes)) { <span data-i18n-key="orders.noNotes">Sin observaciones</span> } else { @line.Notes }</td><td>@line.Quantity</td><td>₡@line.UnitPrice.ToColones()</td><td><strong>₡@line.Subtotal.ToColones()</strong></td></tr>
+                }
+            </tbody></table></div>
+        </div>
+
+        <div class="checkout-section">
+            <header><span>03</span><div><h2 data-i18n-key="orders.paymentProcess">Proceso de pago</h2><p data-i18n-key="orders.paymentCopy">Simulación segura; los datos de tarjeta no se almacenan.</p></div></header>
+            <div class="payment-methods">
+                <label><input asp-for="PaymentMethod" type="radio" value="credito" /><span><i class="bi bi-credit-card"></i> <b data-i18n-key="orders.credit">Crédito</b></span></label>
+                <label><input asp-for="PaymentMethod" type="radio" value="debito" /><span><i class="bi bi-credit-card-2-front"></i> <b data-i18n-key="orders.debit">Débito</b></span></label>
+                <label><input asp-for="PaymentMethod" type="radio" value="efectivo" /><span><i class="bi bi-cash-coin"></i> <b data-i18n-key="orders.cash">Efectivo</b></span></label>
+            </div>
+            <div class="checkout-fields" data-card-fields>
+                <label class="checkout-wide"><span data-i18n-key="orders.cardholderName">Nombre del titular</span><input asp-for="CardholderName" autocomplete="cc-name" /><span asp-validation-for="CardholderName"></span></label>
+                <label class="checkout-wide"><span data-i18n-key="orders.cardNumber">Número de tarjeta</span><input asp-for="CardNumber" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="0000 0000 0000 0000" /><span asp-validation-for="CardNumber"></span></label>
+                <label><span data-i18n-key="orders.cardExpiry">Vencimiento</span><input asp-for="CardExpiry" autocomplete="cc-exp" maxlength="5" placeholder="MM/AA" /><span asp-validation-for="CardExpiry"></span></label>
+                <label><span data-i18n-key="orders.cardCvv">Código de seguridad CVV</span><input asp-for="CardCvv" type="password" inputmode="numeric" autocomplete="cc-csc" maxlength="4" /><span asp-validation-for="CardCvv"></span></label>
+            </div>
+            <div class="checkout-fields" data-cash-fields>
+                <label class="checkout-wide"><span data-i18n-key="orders.cashReceived">Monto recibido</span><input asp-for="CashReceived" type="number" min="0" step="100" data-cash-received /><span asp-validation-for="CashReceived"></span></label>
+                <div class="checkout-change"><span data-i18n-key="orders.change">Vuelto estimado</span><strong data-cash-change>₡0</strong></div>
+            </div>
+        </div>
+    </section>
+
+    <aside class="cart-summary checkout-summary">
+        <span class="cart-summary-eyebrow" data-i18n-key="orders.finalSummary">Resumen final</span><h2 data-i18n-key="orders.totals">Totales</h2>
+        <dl><div><dt data-i18n-key="orders.items">Artículos</dt><dd>@Model.Cart.ItemCount</dd></div><div><dt data-i18n-key="orders.totalWithoutTax">Total sin impuestos</dt><dd>₡@Model.Cart.Subtotal.ToColones()</dd></div><div><dt data-i18n-key="orders.tax">Impuesto</dt><dd>₡@Model.Cart.Tax.ToColones()</dd></div><div><dt data-i18n-key="orders.shipping">Envío</dt><dd data-checkout-shipping>₡@Model.ShippingCost.ToColones()</dd></div><div class="cart-summary-total"><dt data-i18n-key="orders.total">Total</dt><dd data-checkout-total>₡@Model.GrandTotal.ToColones()</dd></div></dl>
+        <button type="submit" class="client-primary-button checkout-submit"><i class="bi bi-shield-check"></i> <span data-i18n-key="orders.submit">Registrar y pagar pedido</span></button>
+        <a asp-controller="Cliente" asp-action="Carrito" class="cart-continue-link"><i class="bi bi-arrow-left"></i> <span data-i18n-key="orders.backToCart">Volver al carrito</span></a>
+    </aside>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/checkout.js" asp-append-version="true"></script>
+}

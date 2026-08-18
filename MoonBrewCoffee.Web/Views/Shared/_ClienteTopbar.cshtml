@@ -1,0 +1,42 @@
+@{
+    var currentUserService = Context.RequestServices.GetRequiredService<MoonBrewCoffee.Web.Services.ICurrentUserService>();
+    var currentUser = currentUserService.GetCurrent();
+    var hora = DateTime.Now.Hour;
+    var saludo = hora switch
+    {
+        >= 5 and < 12 => "Buenos días",
+        >= 12 and < 18 => "Buenas tardes",
+        _ => "Buenas noches"
+    };
+}
+
+<header class="topbar client-topbar">
+    <div class="topbar-left">
+        <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-controls="appSidebar"
+                aria-expanded="false" aria-label="Abrir menú principal"><i class="bi bi-list"></i></button>
+        <div class="client-greeting">
+            <span>@saludo</span>
+            <strong>@(currentUser is null ? "Bienvenido a MoonBrew" : $"Bienvenido, {currentUser.Nombre}")</strong>
+        </div>
+    </div>
+
+    <div class="topbar-right">
+        @await Html.PartialAsync("_LanguageSelector")
+        <a asp-controller="Cliente" asp-action="Carrito" class="icon-btn client-cart-button" aria-label="Abrir mi carrito">
+            <i class="bi bi-cart3"></i><span class="client-cart-badge" data-cart-count>0</span>
+        </a>
+        @if (currentUser is null)
+        {
+            <a asp-controller="Cuenta" asp-action="IniciarSesion" class="client-signin-button">
+                <i class="bi bi-box-arrow-in-right"></i><span>Iniciar sesión</span>
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Cliente" asp-action="Perfil" class="profile client-profile">
+                <span class="client-profile-avatar"><i class="bi bi-person"></i></span>
+                <div><strong>@currentUser.NombreCompleto</strong><small>@currentUser.Rol</small></div>
+            </a>
+        }
+    </div>
+</header>

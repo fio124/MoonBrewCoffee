@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
@@ -61,3 +62,13 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+=======
+* text=auto
+*.cs text eol=crlf
+*.cshtml text eol=crlf
+*.json text eol=crlf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+>>>>>>> 0421a49b3f93c1b4bec46d04033b9a74f576c37a

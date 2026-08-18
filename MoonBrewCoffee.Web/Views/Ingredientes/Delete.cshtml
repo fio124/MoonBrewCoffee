@@ -1,0 +1,73 @@
+﻿@model MoonBrewCoffee.Application.DTOs.IngredienteDTO
+
+@{
+    ViewData["Title"] = "Desactivar Ingrediente";
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-6">
+
+        <div class="card shadow border-0">
+
+            <div class="card-header bg-danger text-white">
+
+                <h3 class="mb-0">
+
+                    Desactivar Ingrediente
+
+                </h3>
+
+            </div>
+
+            <div class="card-body text-center p-5">
+
+                <i class="bi bi-exclamation-triangle-fill text-danger"
+                   style="font-size:70px;"></i>
+
+                <h4 class="mt-4">
+
+                    ¿Desea desactivar este ingrediente?
+
+                </h4>
+
+                <h2 class="fw-bold">
+
+                    @Model.Nombre
+
+                </h2>
+
+                <form asp-action="Delete"
+                      class="mt-4">
+
+                    <input asp-for="IdIngrediente"
+                           type="hidden" />
+
+                    <div class="d-flex justify-content-center gap-3">
+
+                        <a asp-action="Index"
+                           class="btn btn-secondary">
+
+                            Cancelar
+
+                        </a>
+
+                        <button class="btn btn-danger">
+
+                            <i class="bi bi-slash-circle-fill"></i>
+
+                            Desactivar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

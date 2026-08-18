@@ -1,0 +1,33 @@
+@model MoonBrewCoffee.Application.DTOs.ProcesoPreparacionDTO
+
+@{
+    ViewData["Title"] = "Eliminar paso";
+}
+
+<div class="maintenance-header">
+    <div>
+        <span class="maintenance-eyebrow">Proceso de preparación</span>
+        <h1>Eliminar paso</h1>
+        <p>Esta acción elimina definitivamente el paso seleccionado.</p>
+    </div>
+    <a asp-action="Details" asp-route-id="@Model.IdProducto" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<section class="maintenance-confirm-card">
+    <div class="maintenance-confirm-icon"><i class="bi bi-exclamation-triangle"></i></div>
+    <span class="status-pill is-warning">Acción permanente</span>
+    <h2>¿Deseas eliminar el paso @Model.Orden?</h2>
+    <p>@Model.NombreProducto · @Model.NombreEstacion</p>
+    <div class="maintenance-confirm-summary maintenance-confirm-summary-single">
+        <span><strong>Tiempo de preparación</strong>@Model.TiempoPreparacionMin minutos</span>
+    </div>
+    <form asp-action="Delete" class="maintenance-actions justify-content-center">
+        <input asp-for="IdProceso" type="hidden" />
+        <a asp-action="Details" asp-route-id="@Model.IdProducto" class="btn btn-light">Cancelar</a>
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Sí, eliminar
+        </button>
+    </form>
+</section>

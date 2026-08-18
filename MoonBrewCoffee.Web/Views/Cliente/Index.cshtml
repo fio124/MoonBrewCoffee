@@ -1,0 +1,104 @@
+@model MoonBrewCoffee.Web.Models.ClienteHomeViewModel
+
+@{
+    ViewData["Title"] = "Inicio";
+    Layout = "_ClienteLayout";
+}
+
+<div class="home-dashboard client-home-dashboard">
+    <section class="home-reference-hero fade-up">
+        <div class="home-reference-overlay"></div>
+
+        <div class="home-reference-content">
+            <span class="home-reference-kicker" data-i18n-key="home.welcome">Bienvenido a</span>
+            <h1>MoonBrew Coffee</h1>
+            <p><span data-i18n-key="screens.home.heroLineOne">El mejor café, preparado con pasión</span><br />
+                <span data-i18n-key="screens.home.heroLineTwo">para cada momento de tu día.</span></p>
+
+            <a asp-controller="MenuDisponible" asp-action="Index" class="home-reference-button">
+                <i class="bi bi-journal-richtext"></i>
+                <span data-i18n-key="clientPortal.todayMenu">Ver menú de hoy</span>
+            </a>
+            @if (Model.Weather is not null)
+            {
+                <div class="weather-recommendation" title="Datos actuales proporcionados por Open-Meteo">
+                    <i class="bi bi-cloud-sun"></i><div><strong>San José: @Model.Weather.Temperature.ToString("0.#") °C</strong><span>@Model.Weather.Recommendation</span></div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="home-benefits" aria-label="Beneficios de MoonBrew">
+        <article class="home-benefit">
+            <span class="home-benefit-icon"><i class="bi bi-flower1"></i></span>
+            <div><h2 data-i18n-key="home.qualityTitle">Café de calidad</h2><p data-i18n-key="home.qualityCopy">Granos seleccionados de la mejor calidad.</p></div>
+        </article>
+        <article class="home-benefit">
+            <span class="home-benefit-icon"><i class="bi bi-heart"></i></span>
+            <div><h2 data-i18n-key="home.loveTitle">Hecho con amor</h2><p data-i18n-key="home.loveCopy">Preparaciones artesanales hechas para ti.</p></div>
+        </article>
+        <article class="home-benefit">
+            <span class="home-benefit-icon"><i class="bi bi-bag-check"></i></span>
+            <div><h2 data-i18n-key="clientPortal.simplePurchase">Compra sencilla</h2><p data-i18n-key="clientPortal.simplePurchaseCopy">Encuentra tus favoritos y prepara tu próximo pedido.</p></div>
+        </article>
+    </section>
+
+    <section class="home-categories-section">
+        <header class="home-section-heading">
+            <div><span data-i18n-key="home.discover">Descubre MoonBrew</span><h2 data-i18n-key="home.mainCategories">Categorías principales</h2></div>
+            <a asp-controller="Catalogo" asp-action="Index" class="home-section-link">
+                <i class="bi bi-grid"></i> <span data-i18n-key="screens.home.viewCatalog">Ver catálogo</span> <i class="bi bi-arrow-right"></i>
+            </a>
+        </header>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="category-card menu-card home-menu-card">
+                    <div class="category-image"><img src="~/Imagenes/CatBebidas.png" alt="Selección de bebidas MoonBrew" loading="lazy" /></div>
+                    <div class="category-content">
+                        <div class="category-icon"><i class="bi bi-cup-straw"></i></div>
+                        <h3 data-i18n-key="home.drinks">Bebidas</h3>
+                        <p data-i18n-key="screens.home.drinksCopy">Cafés calientes, fríos, frappés y bebidas especiales preparadas por nuestros baristas.</p>
+                        <a asp-controller="Catalogo" asp-action="Index" class="category-btn">
+                            <i class="bi bi-cup-hot"></i> <span data-i18n-key="screens.home.exploreDrinks">Explorar bebidas →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="category-card menu-card home-menu-card">
+                    <div class="category-image"><img src="~/Imagenes/CatPostres.png" alt="Selección de postres MoonBrew" loading="lazy" /></div>
+                    <div class="category-content">
+                        <div class="category-icon"><i class="bi bi-cake2"></i></div>
+                        <h3 data-i18n-key="home.desserts">Postres</h3>
+                        <p data-i18n-key="screens.home.dessertsCopy">Cheesecakes, brownies, galletas y postres artesanales recién preparados.</p>
+                        <a asp-controller="Catalogo" asp-action="Index" class="category-btn">
+                            <i class="bi bi-cake2"></i> <span data-i18n-key="screens.home.exploreDesserts">Explorar postres →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="category-card menu-card home-menu-card">
+                    <div class="category-image"><img src="~/Imagenes/ComboDulce.png" alt="Combo especial MoonBrew" loading="lazy" /></div>
+                    <div class="category-content">
+                        <div class="category-icon"><i class="bi bi-gift"></i></div>
+                        <h3 data-i18n-key="clientPortal.combos">Combos</h3>
+                        <p data-i18n-key="screens.home.combosCopy">Combina tus bebidas favoritas con deliciosos postres y aprovecha nuestras promociones.</p>
+                        <a asp-controller="MenuDisponible" asp-action="Index" asp-fragment="combos-menu" class="category-btn">
+                            <i class="bi bi-gift"></i> <span data-i18n-key="screens.home.exploreCombos">Explorar combos →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-stats-strip client-home-stats" aria-label="Opciones disponibles en MoonBrew">
+        <div class="home-stat-item"><i class="bi bi-cup-hot-fill"></i><strong>@Model.ProductosDisponibles</strong><span data-i18n-key="navigation.products">Productos</span></div>
+        <div class="home-stat-item"><i class="bi bi-gift-fill"></i><strong>@Model.CombosDisponibles</strong><span data-i18n-key="navigation.combos">Combos</span></div>
+        <div class="home-stat-item"><i class="bi bi-journal-check"></i><strong>@Model.MenusDisponibles</strong><span data-i18n-key="clientPortal.availableMenus">Menús disponibles</span></div>
+    </section>
+</div>

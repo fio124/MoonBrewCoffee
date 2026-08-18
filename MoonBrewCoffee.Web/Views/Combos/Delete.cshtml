@@ -1,0 +1,33 @@
+@model MoonBrewCoffee.Application.DTOs.ComboDTO
+
+@{
+    ViewData["Title"] = "Desactivar combo";
+}
+
+<div class="maintenance-header">
+    <div>
+        <span class="maintenance-eyebrow">Mantenimiento de combos</span>
+        <h1>Desactivar combo</h1>
+        <p>El combo dejará de estar disponible para nuevas selecciones.</p>
+    </div>
+    <a asp-action="Details" asp-route-id="@Model.IdCombo" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<section class="maintenance-confirm-card">
+    <div class="maintenance-confirm-icon"><i class="bi bi-exclamation-triangle"></i></div>
+    <span class="status-pill is-warning">Confirmación requerida</span>
+    <h2>¿Deseas desactivar “@Model.Nombre”?</h2>
+    <p>El registro se conservará y podrá reactivarse posteriormente.</p>
+    <div class="maintenance-confirm-summary maintenance-confirm-summary-single">
+        <span><strong>Precio</strong>₡@Model.PrecioCombo.ToColones()</span>
+    </div>
+    <form asp-action="Delete" class="maintenance-actions justify-content-center">
+        <input asp-for="IdCombo" type="hidden" />
+        <a asp-action="Details" asp-route-id="@Model.IdCombo" class="btn btn-light">Cancelar</a>
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-slash-circle"></i> Sí, desactivar
+        </button>
+    </form>
+</section>

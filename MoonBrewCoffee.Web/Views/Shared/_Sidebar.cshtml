@@ -1,0 +1,100 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<aside class="sidebar" id="appSidebar" aria-label="Navegación principal">
+    <div class="sidebar-header">
+        <a asp-controller="Home" asp-action="Index" class="sidebar-brand" aria-label="MoonBrew Coffee — Inicio">
+            <span class="sidebar-brand-mark" aria-hidden="true">
+                <img src="~/Imagenes/moonbrew-mark.png" alt="" />
+            </span>
+            <span class="sidebar-brand-copy">
+                <strong>MoonBrew</strong>
+                <small>Coffee</small>
+            </span>
+        </a>
+
+        <button type="button" class="sidebar-close" data-sidebar-close aria-label="Cerrar menú">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <nav class="sidebar-menu">
+        <a asp-controller="Home" asp-action="Index"
+           class="@(controller == "Home" ? "active" : "")"
+           aria-current="@(controller == "Home" ? "page" : null)">
+            <i class="bi bi-house-door"></i><span data-i18n-key="navigation.home">Inicio</span>
+        </a>
+
+        <div class="sidebar-title" data-i18n-key="navigation.maintenance">Mantenimientos</div>
+
+        <a asp-controller="Productos" asp-action="Index"
+           class="@(controller == "Productos" ? "active" : "")">
+            <i class="bi bi-cup-hot"></i><span data-i18n-key="navigation.products">Productos</span>
+        </a>
+        <a asp-controller="Categorias" asp-action="Index"
+           class="@(controller == "Categorias" ? "active" : "")">
+            <i class="bi bi-grid"></i><span data-i18n-key="navigation.categories">Categorías</span>
+        </a>
+        <a asp-controller="Ingredientes" asp-action="Index"
+           class="@(controller == "Ingredientes" ? "active" : "")">
+            <i class="bi bi-box-seam"></i><span data-i18n-key="navigation.ingredients">Ingredientes</span>
+        </a>
+        <a asp-controller="Combos" asp-action="Index"
+           class="@(controller == "Combos" ? "active" : "")">
+            <i class="bi bi-gift"></i><span data-i18n-key="navigation.combos">Combos</span>
+        </a>
+        <a asp-controller="Menus" asp-action="Index"
+           class="@(controller == "Menus" ? "active" : "")">
+            <i class="bi bi-journal-richtext"></i><span data-i18n-key="navigation.menus">Menús</span>
+        </a>
+        <a asp-controller="Usuarios" asp-action="Index"
+           class="@(controller == "Usuarios" ? "active" : "")">
+            <i class="bi bi-people"></i><span data-i18n-key="navigation.users">Usuarios</span>
+        </a>
+
+        <div class="sidebar-title" data-i18n-key="navigation.operations">Operaciones</div>
+
+        <a asp-controller="ProcesosPreparacion" asp-action="Index"
+           class="@(controller == "ProcesosPreparacion" ? "active" : "")">
+            <i class="bi bi-diagram-3"></i><span data-i18n-key="navigation.processes">Procesos</span>
+        </a>
+        <a asp-controller="PreparacionPedidos" asp-action="Index"
+           class="@(controller == "PreparacionPedidos" ? "active" : "")">
+            <i class="bi bi-kanban"></i><span data-i18n-key="orders.preparationBoard">Preparación de pedidos</span>
+        </a>
+        <a asp-controller="TareasProgramadas" asp-action="Index"
+           class="@(controller == "TareasProgramadas" ? "active" : "")">
+            <i class="bi bi-bar-chart-line"></i><span data-i18n-key="navigation.reports">Reportes</span>
+        </a>
+        <a asp-controller="MenuDisponible" asp-action="Index"
+           class="@(controller == "MenuDisponible" ? "active" : "")">
+            <i class="bi bi-calendar-check"></i><span data-i18n-key="navigation.availableMenu">Menú disponible</span>
+        </a>
+
+        <div class="sidebar-title" data-i18n-key="navigation.customer">Cliente</div>
+
+        <a asp-controller="Catalogo" asp-action="Index"
+           class="@(controller == "Catalogo" ? "active" : "")">
+            <i class="bi bi-shop"></i><span data-i18n-key="navigation.catalog">Catálogo</span>
+        </a>
+        <a asp-controller="Pedidos" asp-action="Index" class="@(controller == "Pedidos" ? "active" : "")">
+            <i class="bi bi-receipt-cutoff"></i><span data-i18n-key="navigation.orders">Pedidos</span>
+        </a>
+        <a asp-controller="Cliente" asp-action="Index" class="client-view-link">
+            <i class="bi bi-person-heart"></i><span data-i18n-key="navigation.clientView">Vista del cliente</span>
+        </a>
+
+        <form asp-controller="Cuenta" asp-action="CerrarSesion" method="post" class="sidebar-logout-form">
+            <button type="submit"><i class="bi bi-box-arrow-left"></i><span data-i18n-key="navigation.signOut">Cerrar sesión</span></button>
+        </form>
+    </nav>
+
+    <div class="sidebar-footer">
+        <i class="bi bi-moon-stars"></i>
+        <div>
+            <strong data-i18n-key="navigation.taglineFirst">Cada taza,</strong>
+            <span data-i18n-key="navigation.taglineSecond">una historia.</span>
+        </div>
+    </div>
+</aside>

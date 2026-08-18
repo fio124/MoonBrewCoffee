@@ -1,0 +1,86 @@
+@model MoonBrewCoffee.Application.DTOs.MenuDTO
+
+@{
+    ViewData["Title"] = "Detalle del menú";
+}
+
+<div class="maintenance-header">
+    <div>
+        <span class="maintenance-eyebrow">Mantenimiento de menús</span>
+        <h1>@Model.Nombre</h1>
+        <p>Disponibilidad, horario y elementos asociados al menú.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<section class="maintenance-detail-panel">
+    <div class="maintenance-detail-summary">
+        <article>
+            <i class="bi bi-calendar3"></i>
+            <span>Rango de fechas</span>
+            <strong>@Model.FechaInicio.ToString("dd/MM/yyyy") – @Model.FechaFin.ToString("dd/MM/yyyy")</strong>
+        </article>
+        <article>
+            <i class="bi bi-clock"></i>
+            <span>Horario</span>
+            <strong>@Model.HoraInicio.ToString(@"hh\:mm") – @Model.HoraFin.ToString(@"hh\:mm")</strong>
+        </article>
+        <article>
+            <i class="bi bi-broadcast"></i>
+            <span>Disponibilidad</span>
+            <strong>@(Model.Disponible ? "Disponible" : "No disponible")</strong>
+        </article>
+        <article>
+            <i class="bi bi-activity"></i>
+            <span>Estado</span>
+            <strong>@(Model.Activo ? "Activo" : "Inactivo")</strong>
+        </article>
+    </div>
+
+    <div class="maintenance-associations">
+        <div>
+            <h2><i class="bi bi-cup-hot"></i> Productos (@Model.Productos.Count)</h2>
+            @if (Model.Productos.Count == 0)
+            {
+                <p class="maintenance-empty-inline">No hay productos asociados.</p>
+            }
+            else
+            {
+                <ul class="maintenance-related-list">
+                    @foreach (var producto in Model.Productos)
+                    {
+                        <li><span>@producto.Nombre</span><small>₡@producto.Precio.ToColones()</small></li>
+                    }
+                </ul>
+            }
+        </div>
+
+        <div>
+            <h2><i class="bi bi-gift"></i> Combos (@Model.Combos.Count)</h2>
+            @if (Model.Combos.Count == 0)
+            {
+                <p class="maintenance-empty-inline">No hay combos asociados.</p>
+            }
+            else
+            {
+                <ul class="maintenance-related-list">
+                    @foreach (var combo in Model.Combos)
+                    {
+                        <li><span>@combo.Nombre</span><small>₡@combo.PrecioCombo.ToColones()</small></li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+
+    <div class="maintenance-actions">
+        <a asp-action="Edit" asp-route-id="@Model.IdMenu" class="btn btn-warning">
+            <i class="bi bi-pencil-square"></i> Editar menú
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.IdMenu" class="btn btn-outline-danger">
+            <i class="bi bi-slash-circle"></i> Desactivar
+        </a>
+    </div>
+</section>

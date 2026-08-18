@@ -1,0 +1,164 @@
+﻿@model MoonBrewCoffee.Application.DTOs.UsuarioDTO
+
+@{
+    ViewData["Title"] = "Detalle Usuario";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h1 class="fw-bold mb-1">
+            Detalle del Usuario
+        </h1>
+
+        <p class="text-muted mb-0">
+            Información completa del usuario seleccionado.
+        </p>
+
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Volver
+
+    </a>
+
+</div>
+
+<div class="card shadow border-0">
+
+    <div class="card-body p-5">
+
+        <div class="row g-5 align-items-center">
+
+            <div class="col-lg-4 text-center">
+
+                <div class="rounded-circle bg-dark text-white
+                            d-flex justify-content-center align-items-center mx-auto shadow"
+                     style="width:180px;height:180px;font-size:70px;font-weight:bold;">
+
+                    @(string.IsNullOrEmpty(Model.Nombre)
+                                        ? "?"
+                                        : Model.Nombre.Substring(0, 1).ToUpper())
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-8">
+
+                <span class="badge @(Model.Activo ? "bg-success" : "bg-danger") mb-3">
+
+                    @(Model.Activo ? "Activo" : "Inactivo")
+
+                </span>
+
+                <h2 class="fw-bold">
+
+                    @Model.Nombre @Model.Apellido
+
+                </h2>
+
+                <p class="text-muted fs-5">
+
+                    @Model.Correo
+
+                </p>
+
+                <hr />
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+
+                        <div class="stat-card">
+
+                            <h5>@Model.NombreRol</h5>
+
+                            <p>Rol</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="stat-card">
+
+                            <h5>@Model.Telefono</h5>
+
+                            <p>Teléfono</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="stat-card">
+
+                            <h5>
+
+                                @Model.FechaRegistro.ToString("dd/MM/yyyy")
+
+                            </h5>
+
+                            <p>Fecha Registro</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="stat-card">
+
+                            <h5>
+
+                                #@Model.IdUsuario
+
+                            </h5>
+
+                            <p>ID Usuario</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-5 d-flex gap-3">
+
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.IdUsuario"
+                       class="btn btn-warning px-4">
+
+                        <i class="bi bi-pencil-square"></i>
+
+                        Editar
+
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@Model.IdUsuario"
+                       class="btn btn-danger px-4">
+
+                        <i class="bi bi-person-x-fill"></i>
+
+                        Desactivar
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

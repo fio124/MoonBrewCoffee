@@ -1,0 +1,274 @@
+﻿@model MoonBrewCoffee.Application.DTOs.MenuDTO
+
+<div class="row">
+
+    <div class="col-lg-8">
+
+        <div class="mb-4">
+
+            <label asp-for="Nombre"
+                   class="form-label fw-semibold"></label>
+
+            <input asp-for="Nombre"
+                   class="form-control" />
+
+            <span asp-validation-for="Nombre"
+                  class="text-danger"></span>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="mb-4">
+
+                    <label asp-for="FechaInicio"
+                           class="form-label fw-semibold"></label>
+
+                    <input asp-for="FechaInicio"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="FechaInicio"
+                          class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="mb-4">
+
+                    <label asp-for="FechaFin"
+                           class="form-label fw-semibold"></label>
+
+                    <input asp-for="FechaFin"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="FechaFin"
+                          class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="mb-4">
+
+                    <label asp-for="HoraInicio"
+                           class="form-label fw-semibold"></label>
+
+                    <input asp-for="HoraInicio"
+                           type="time"
+                           class="form-control" />
+
+                    <span asp-validation-for="HoraInicio"
+                          class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="mb-4">
+
+                    <label asp-for="HoraFin"
+                           class="form-label fw-semibold"></label>
+
+                    <input asp-for="HoraFin"
+                           type="time"
+                           class="form-control" />
+
+                    <span asp-validation-for="HoraFin"
+                          class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+
+                Productos del Menú
+
+            </label>
+
+            <div class="row">
+
+                @foreach (var producto in (IEnumerable<MoonBrewCoffee.Application.DTOs.ProductoDTO>)ViewBag.Productos)
+                {
+                    <div class="col-md-6 mb-2">
+
+                        <div class="form-check">
+
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="prod_@producto.IdProducto"
+                                   name="ProductosSeleccionados"
+                                   value="@producto.IdProducto"
+                                   @(Model.ProductosSeleccionados.Contains(producto.IdProducto) ? "checked" : "") />
+
+                            <label class="form-check-label"
+                                   for="prod_@producto.IdProducto">
+
+                                @producto.Nombre
+
+                            </label>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+
+                Combos del Menú
+
+            </label>
+
+            <div class="row">
+
+                @foreach (var combo in (IEnumerable<MoonBrewCoffee.Application.DTOs.ComboDTO>)ViewBag.Combos)
+                {
+                    <div class="col-md-6 mb-2">
+
+                        <div class="form-check">
+
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="combo_@combo.IdCombo"
+                                   name="CombosSeleccionados"
+                                   value="@combo.IdCombo"
+                                   @(Model.CombosSeleccionados.Contains(combo.IdCombo) ? "checked" : "") />
+
+                            <label class="form-check-label"
+                                   for="combo_@combo.IdCombo">
+
+                                @combo.Nombre
+
+                            </label>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+
+                Disponible
+
+            </label>
+
+            <select asp-for="Disponible"
+                    class="form-select">
+
+                <option value="true">
+
+                    🟢 Disponible
+
+                </option>
+
+                <option value="false">
+
+                    🔴 No Disponible
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+
+                Estado
+
+            </label>
+
+            <select asp-for="Activo"
+                    class="form-select">
+
+                <option value="true">
+
+                    🟢 Activo
+
+                </option>
+
+                <option value="false">
+
+                    🔴 Inactivo
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="alert alert-light border shadow-sm">
+
+            <h6 class="fw-bold">
+
+                Información
+
+            </h6>
+
+            <hr />
+
+            <p class="mb-2">
+
+                • El menú debe tener un rango de fechas válido.
+
+            </p>
+
+            <p class="mb-2">
+
+                • La hora de inicio debe ser menor que la hora final.
+
+            </p>
+
+            <p class="mb-2">
+
+                • Debe contener al menos un producto o un combo.
+
+            </p>
+
+            <p class="mb-0">
+
+                • Solo los menús activos y disponibles podrán mostrarse al cliente.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

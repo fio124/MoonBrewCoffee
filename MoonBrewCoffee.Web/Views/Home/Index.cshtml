@@ -1,0 +1,164 @@
+@model MoonBrewCoffee.Web.Models.HomeDashboardViewModel
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="home-dashboard">
+    <section class="home-reference-hero fade-up">
+        <div class="home-reference-overlay"></div>
+
+        <div class="home-reference-content">
+            <span class="home-reference-kicker">Bienvenido a</span>
+
+            <h1>MoonBrew Coffee</h1>
+
+            <p>
+                El mejor café, preparado con pasión<br />
+                para cada momento de tu día.
+            </p>
+
+            <a asp-controller="MenuDisponible"
+               asp-action="Index"
+               class="home-reference-button">
+                <i class="bi bi-cup-hot-fill"></i>
+                Ver menú
+            </a>
+        </div>
+    </section>
+
+    <section class="home-benefits" aria-label="Beneficios de MoonBrew">
+        <article class="home-benefit">
+            <span class="home-benefit-icon"><i class="bi bi-flower1"></i></span>
+            <div>
+                <h2>Café de calidad</h2>
+                <p>Granos seleccionados de la mejor calidad.</p>
+            </div>
+        </article>
+
+        <article class="home-benefit">
+            <span class="home-benefit-icon"><i class="bi bi-heart"></i></span>
+            <div>
+                <h2>Hecho con amor</h2>
+                <p>Preparaciones artesanales hechas para ti.</p>
+            </div>
+        </article>
+
+        <article class="home-benefit">
+            <span class="home-benefit-icon"><i class="bi bi-lightning-charge"></i></span>
+            <div>
+                <h2>Servicio ágil</h2>
+                <p>Todo listo para disfrutar cuando quieras.</p>
+            </div>
+        </article>
+    </section>
+
+    <section class="home-categories-section">
+        <header class="home-section-heading">
+            <div>
+                <span>Descubre MoonBrew</span>
+                <h2>Categorías principales</h2>
+            </div>
+
+            <a asp-controller="Catalogo"
+               asp-action="Index"
+               class="home-section-link">
+                Ver catálogo <i class="bi bi-arrow-right"></i>
+            </a>
+        </header>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="category-card menu-card home-menu-card">
+                    <div class="category-image">
+                        <img src="~/Imagenes/CatBebidas.png"
+                             alt="Selección de bebidas MoonBrew"
+                             loading="lazy" />
+                    </div>
+
+                    <div class="category-content">
+                        <div class="category-icon">☕</div>
+                        <h3>Bebidas</h3>
+                        <p>
+                            Cafés calientes, fríos, frappés y bebidas especiales
+                            preparadas por nuestros baristas.
+                        </p>
+                        <a asp-controller="Catalogo" asp-action="Index" class="category-btn">
+                            Explorar bebidas →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="category-card menu-card home-menu-card">
+                    <div class="category-image">
+                        <img src="~/Imagenes/CatPostres.png"
+                             alt="Selección de postres MoonBrew"
+                             loading="lazy" />
+                    </div>
+
+                    <div class="category-content">
+                        <div class="category-icon">🍰</div>
+                        <h3>Postres</h3>
+                        <p>
+                            Cheesecakes, brownies, galletas y postres
+                            artesanales recién preparados.
+                        </p>
+                        <a asp-controller="Catalogo" asp-action="Index" class="category-btn">
+                            Explorar postres →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="category-card menu-card home-menu-card">
+                    <div class="category-image">
+                        <img src="~/Imagenes/ComboDulce.png"
+                             alt="Combo especial MoonBrew"
+                             loading="lazy" />
+                    </div>
+
+                    <div class="category-content">
+                        <div class="category-icon">🎁</div>
+                        <h3>Combos</h3>
+                        <p>
+                            Combina tus bebidas favoritas con deliciosos
+                            postres y aprovecha nuestras promociones.
+                        </p>
+                        <a asp-controller="Combos" asp-action="Index" class="category-btn">
+                            Explorar combos →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-stats-strip" aria-label="MoonBrew en números">
+        <div class="home-stat-item">
+            <i class="bi bi-cup-hot-fill"></i>
+            <strong>@Model.ProductosActivos</strong>
+            <span>Productos</span>
+        </div>
+
+        <div class="home-stat-item">
+            <i class="bi bi-gift-fill"></i>
+            <strong>@Model.CombosActivos</strong>
+            <span>Combos</span>
+        </div>
+
+        <div class="home-stat-item">
+            <i class="bi bi-journal-richtext"></i>
+            <strong>@Model.MenusActivos</strong>
+            <span>Menús activos</span>
+        </div>
+
+        <div class="home-stat-item">
+            <i class="bi bi-people-fill"></i>
+            <strong>@Model.UsuariosActivos</strong>
+            <span>Usuarios activos</span>
+        </div>
+    </section>
+</div>

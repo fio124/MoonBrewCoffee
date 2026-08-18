@@ -1,0 +1,283 @@
+﻿@model MoonBrewCoffee.Application.DTOs.ProductoDTO
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-white border-0 pt-4">
+
+        <h4 class="fw-bold text-coffee mb-1">
+            <i class="bi bi-cup-hot-fill me-2"></i>
+            Información del Producto
+        </h4>
+
+        <p class="text-muted mb-0">
+            Complete la información general del producto.
+        </p>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-8">
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+                        Nombre del producto
+                    </label>
+
+                    <input asp-for="Nombre" class="form-control form-control-lg" />
+
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+                        Categoría
+                    </label>
+
+                    <select asp-for="IdCategoria"
+                            asp-items="ViewBag.IdCategoria"
+                            class="form-select form-select-lg">
+                        <option value="">Seleccione una categoría</option>
+                    </select>
+
+                    <span asp-validation-for="IdCategoria" class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+                Descripción
+            </label>
+
+            <textarea asp-for="Descripcion"
+                      rows="4"
+                      class="form-control"></textarea>
+
+            <span asp-validation-for="Descripcion"
+                  class="text-danger"></span>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <label class="form-label fw-semibold">
+                    Precio
+                </label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+
+                        ₡
+
+                    </span>
+
+                    <input asp-for="Precio"
+                           min="1"
+                           step="0.01"
+                           class="form-control" />
+
+                </div>
+
+                <span asp-validation-for="Precio" class="text-danger"></span>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="form-label fw-semibold">
+                    Tiempo de preparación
+                </label>
+
+                <div class="input-group">
+
+                    <input asp-for="TiempoPreparacion"
+                           min="1"
+                           max="1440"
+                           class="form-control" />
+
+                    <span class="input-group-text">
+
+                        Min
+
+                    </span>
+
+                </div>
+
+                <span asp-validation-for="TiempoPreparacion" class="text-danger"></span>
+
+            </div>
+
+            <div class="col-md-4 d-flex align-items-end">
+
+                <div class="form-check form-switch fs-5">
+
+                    <input asp-for="Activo"
+                           class="form-check-input" />
+
+                    <label asp-for="Activo"
+                           class="form-check-label fw-semibold ms-2">
+                        Producto Activo
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-white border-0 pt-4">
+
+        <h4 class="fw-bold text-coffee">
+
+            Ingredientes
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            @foreach (var ingrediente in (IEnumerable<MoonBrewCoffee.Application.DTOs.IngredienteDTO>)ViewBag.Ingredientes)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6">
+
+                    <label class="ingredient-card">
+
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="IngredientesSeleccionados"
+                               value="@ingrediente.IdIngrediente"
+                               id="ing_@ingrediente.IdIngrediente"
+                               @(Model.IngredientesSeleccionados.Contains(ingrediente.IdIngrediente) ? "checked" : "") />
+
+                        <label class="form-check-label fw-semibold"
+                               for="ing_@ingrediente.IdIngrediente">
+
+                            @ingrediente.Nombre
+
+                        </label>
+
+                    </label>
+
+                </div>
+            }
+
+        </div>
+
+        <span asp-validation-for="IngredientesSeleccionados" class="text-danger d-block mt-3"></span>
+
+    </div>
+
+</div>
+
+
+
+<div class="card border-0 shadow-sm">
+
+    <div class="card-header bg-white border-0 pt-4">
+
+        <h4 class="fw-bold text-coffee">
+
+            <i class="bi bi-image-fill me-2"></i>
+
+            Imagen del Producto
+
+        </h4>
+
+    </div>
+
+    <div class="card-body text-center">
+
+        <input type="file"
+               id="fileImagen"
+               accept="image/*"
+               class="form-control mb-4" />
+
+        <small id="imageStatus" class="d-block mb-3 text-muted">
+            La imagen se optimizará y guardará en formato Base64.
+        </small>
+
+        <input asp-for="Image64"
+               id="Image64"
+               type="hidden" />
+
+        <span asp-validation-for="Image64" class="text-danger d-block mb-3"></span>
+
+        <img id="preview"
+             src="@(string.IsNullOrEmpty(Model?.Image64)
+                              ? "https://placehold.co/500x320/F8F5F2/5A382C?text=Vista+Previa"
+                              : Model.Image64)"
+             class="img-fluid rounded shadow"
+             style="max-height:320px;" />
+
+    </div>
+
+</div>
+
+<script>
+
+    const file=document.getElementById("fileImagen");
+
+    const preview=document.getElementById("preview");
+
+    const image64=document.getElementById("Image64");
+
+    const imageStatus=document.getElementById("imageStatus");
+
+    file?.addEventListener("change",async function(e){
+
+        const archivo=e.target.files[0];
+
+        if(!archivo) return;
+
+        try {
+            file.disabled=true;
+            imageStatus.textContent="Optimizando imagen...";
+
+            const base64=await window.MoonBrewImage.toBase64(archivo);
+
+            preview.src=base64;
+            image64.value=base64;
+            image64.dispatchEvent(new Event("change", { bubbles:true }));
+            imageStatus.textContent="Imagen lista para guardar.";
+            imageStatus.classList.remove("text-danger");
+            imageStatus.classList.add("text-success");
+        } catch (error) {
+            file.value="";
+            imageStatus.textContent=error.message;
+            imageStatus.classList.remove("text-muted", "text-success");
+            imageStatus.classList.add("text-danger");
+        } finally {
+            file.disabled=false;
+        }
+
+    });
+
+</script>

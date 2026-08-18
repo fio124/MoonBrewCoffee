@@ -1,0 +1,70 @@
+@{
+    var currentUserService = Context.RequestServices.GetRequiredService<MoonBrewCoffee.Web.Services.ICurrentUserService>();
+    var currentUser = currentUserService.GetCurrent();
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<aside class="sidebar client-sidebar" id="appSidebar" aria-label="Navegación del cliente">
+    <div class="sidebar-header">
+        <a asp-controller="Cliente" asp-action="Index" class="sidebar-brand" aria-label="MoonBrew Coffee — Inicio">
+            <span class="sidebar-brand-mark" aria-hidden="true"><img src="~/Imagenes/moonbrew-mark.png" alt="" /></span>
+            <span class="sidebar-brand-copy"><strong>MoonBrew</strong><small>Coffee</small></span>
+        </a>
+        <button type="button" class="sidebar-close" data-sidebar-close aria-label="Cerrar menú"><i class="bi bi-x-lg"></i></button>
+    </div>
+
+    <nav class="sidebar-menu">
+        <div class="client-nav-caption">
+            <span>Mi espacio</span>
+            <small>Disfruta MoonBrew a tu manera</small>
+        </div>
+
+        <a asp-controller="Cliente" asp-action="Index" class="@(controller == "Cliente" && action == "Index" ? "active" : "")">
+            <i class="bi bi-house-door"></i><span>Inicio</span>
+        </a>
+        <a asp-controller="MenuDisponible" asp-action="Index" class="@(controller == "MenuDisponible" ? "active" : "")">
+            <i class="bi bi-journal-richtext"></i><span>Menú disponible</span>
+        </a>
+        <a asp-controller="Catalogo" asp-action="Index" class="@(controller == "Catalogo" ? "active" : "")">
+            <i class="bi bi-grid"></i><span>Catálogo</span>
+        </a>
+
+        <div class="sidebar-title">Mis compras</div>
+
+        <a asp-controller="Cliente" asp-action="Carrito" class="@(controller == "Cliente" && action == "Carrito" ? "active" : "")">
+            <i class="bi bi-bag"></i><span>Mi carrito</span><span class="client-nav-count" data-cart-count>0</span>
+        </a>
+        <a asp-controller="Pedidos" asp-action="Index" class="@(controller == "Pedidos" && action == "Index" ? "active" : "")">
+            <i class="bi bi-receipt"></i><span>Mis pedidos</span>
+        </a>
+        <a asp-controller="Cliente" asp-action="Perfil" class="@(controller == "Cliente" && action == "Perfil" ? "active" : "")">
+            <i class="bi bi-person"></i><span>Mi perfil</span>
+        </a>
+
+        @if (currentUser is null)
+        {
+            <a asp-controller="Cuenta" asp-action="IniciarSesion" class="client-admin-switch">
+                <i class="bi bi-box-arrow-in-right"></i><span>Iniciar sesión</span>
+            </a>
+        }
+        else
+        {
+            @if (currentUser.EsAdministrador)
+            {
+                <a asp-controller="Home" asp-action="Index" class="client-admin-switch">
+                    <i class="bi bi-shield-lock"></i><span>Vista administrativa</span>
+                </a>
+            }
+
+            <form asp-controller="Cuenta" asp-action="CerrarSesion" method="post" class="client-logout-form">
+                <button type="submit"><i class="bi bi-box-arrow-left"></i><span>Cerrar sesión</span></button>
+            </form>
+        }
+    </nav>
+
+    <div class="sidebar-footer client-sidebar-footer">
+        <i class="bi bi-stars"></i>
+        <div><strong>Cada taza,</strong><span>una historia.</span></div>
+    </div>
+</aside>

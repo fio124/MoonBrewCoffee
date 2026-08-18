@@ -1,0 +1,55 @@
+@model IReadOnlyList<MoonBrewCoffee.Application.DTOs.PedidoProcesoDTO>
+@{
+    ViewData["Title"] = "Preparación de pedidos";
+}
+
+<section class="maintenance-header preparation-header">
+    <div>
+        <span class="catalog-kicker"><i class="bi bi-lightning-charge"></i> <span data-i18n-key="orders.automaticFlow">Flujo automático</span></span>
+        <h1 data-i18n-key="orders.preparationBoard">Preparación de pedidos</h1>
+        <p data-i18n-key="orders.workflowCopy">Las estaciones avanzan cada pedido en orden. El estado general se calcula automáticamente.</p>
+    </div>
+    <a asp-controller="Pedidos" asp-action="Index" class="menu-primary-action"><i class="bi bi-receipt"></i> <span data-i18n-key="orders.historyShort">Historial</span></a>
+</section>
+
+@if (Model.Count == 0)
+{
+    <section class="preparation-empty"><i class="bi bi-check2-circle"></i><h2 data-i18n-key="orders.allCaughtUp">Todo está al día</h2><p data-i18n-key="orders.noPendingSteps">No hay etapas pendientes en este momento.</p></section>
+}
+else
+{
+    <div class="preparation-board">
+        @foreach (var station in Model.GroupBy(item => new { item.Estacion, item.EstacionColor }))
+        {
+            <section class="preparation-station" style="--station-color:@(station.Key.EstacionColor ?? "#a97850")">
+                <header><span><i class="bi bi-geo-alt"></i></span><div><small data-i18n-key="orders.stationUpper">ESTACIÓN</small><h2>@station.Key.Estacion</h2></div><b>@station.Count()</b></header>
+                <div class="preparation-list">
+                    @foreach (var step in station)
+                    {
+                        <article class="preparation-ticket">
+                            <div class="preparation-ticket-top"><strong>Pedido #@step.IdPedido</strong><span class="status-pill">@step.Estado</span></div>
+                            <h3>@step.Descripcion</h3>
+                            <p><i class="bi bi-person"></i> @step.Cliente</p>
+                            <small>Etapa @step.Orden</small>
+                            <div class="preparation-actions">
+                                <a asp-controller="Pedidos" asp-action="Details" asp-route-id="@step.IdPedido" class="menu-icon-action menu-icon-action-view" aria-label="Ver pedido"><i class="bi bi-eye"></i></a>
+                                @if (step.PuedeIniciar)
+                                {
+                                    <form asp-action="Avanzar" method="post"><input type="hidden" name="id" value="@step.IdPedidoProceso" /><input type="hidden" name="completar" value="false" /><button class="preparation-button"><i class="bi bi-play-fill"></i> <span data-i18n-key="orders.startStep">Iniciar</span></button></form>
+                                }
+                                else if (step.PuedeCompletar)
+                                {
+                                    <form asp-action="Avanzar" method="post"><input type="hidden" name="id" value="@step.IdPedidoProceso" /><input type="hidden" name="completar" value="true" /><button class="preparation-button complete"><i class="bi bi-check2"></i> <span data-i18n-key="orders.completeStep">Completar</span></button></form>
+                                }
+                                else
+                                {
+                                    <span class="preparation-wait"><i class="bi bi-lock"></i> <span data-i18n-key="orders.waitPrevious">Espera etapa anterior</span></span>
+                                }
+                            </div>
+                        </article>
+                    }
+                </div>
+            </section>
+        }
+    </div>
+}

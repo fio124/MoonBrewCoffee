@@ -1,0 +1,195 @@
+﻿@model MoonBrewCoffee.Application.DTOs.ComboDTO
+
+<div class="row">
+
+    <div class="col-lg-7">
+
+        <div class="mb-4">
+
+            <label asp-for="Nombre" class="form-label fw-semibold"></label>
+
+            <input asp-for="Nombre" class="form-control" />
+
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label asp-for="Descripcion" class="form-label fw-semibold"></label>
+
+            <textarea asp-for="Descripcion"
+                      rows="4"
+                      class="form-control"></textarea>
+
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+                        Precio Combo
+                    </label>
+
+            <input asp-for="PrecioCombo"
+                   min="1"
+                   step="0.01"
+                   class="form-control" />
+
+            <span asp-validation-for="PrecioCombo"
+                  class="text-danger"></span>
+
+        </div>
+
+    </div>
+
+    <div class="mb-4">
+
+        <label class="form-label fw-semibold">
+
+            Productos del Combo
+
+        </label>
+
+        <div class="row">
+
+            @foreach (var producto in (IEnumerable<MoonBrewCoffee.Application.DTOs.ProductoDTO>)ViewBag.Productos)
+            {
+                <div class="col-md-6 mb-2">
+
+                    <div class="form-check">
+
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="prod_@producto.IdProducto"
+                               name="ProductosSeleccionados"
+                               value="@producto.IdProducto"
+                               @(Model.ProductosSeleccionados.Contains(producto.IdProducto) ? "checked" : "") />
+
+                        <label class="form-check-label"
+                               for="prod_@producto.IdProducto">
+
+                            @producto.Nombre
+
+                        </label>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+        <span asp-validation-for="ProductosSeleccionados" class="text-danger d-block mt-3"></span>
+
+    </div>
+
+    <div class="col-lg-5">
+
+        <div class="mb-4">
+
+            <label asp-for="ImagenURL"
+                   class="form-label fw-semibold">
+
+                Imagen
+
+            </label>
+
+            <input type="file"
+                   id="fileImagen"
+                   accept="image/*"
+                   class="form-control mb-3" />
+
+            <small id="imageStatus" class="d-block mb-3 text-muted">
+                La imagen se optimizará y guardará en formato Base64.
+            </small>
+
+            <input asp-for="ImagenURL"
+                   id="ImagenURL"
+                   type="hidden" />
+
+        </div>
+
+        <div class="text-center">
+
+            <img id="preview"
+                 src="@(string.IsNullOrEmpty(Model?.ImagenURL)
+                                     ? "https://placehold.co/350x250?text=Vista+Previa"
+                                     : Model.ImagenURL)"
+                 class="img-fluid rounded shadow"
+                 style="max-height:250px;" />
+
+        </div>
+
+        <div class="mt-4">
+
+            <label class="form-label fw-semibold">
+
+                Estado
+
+            </label>
+
+            <select asp-for="Activo"
+                    class="form-select">
+
+                <option value="true">
+
+                    🟢 Activo
+
+                </option>
+
+                <option value="false">
+
+                    🔴 Inactivo
+
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+        const file=document.getElementById("fileImagen");
+
+    const preview=document.getElementById("preview");
+
+    const image64=document.getElementById("ImagenURL");
+
+    const imageStatus=document.getElementById("imageStatus");
+
+    file?.addEventListener("change",async function(e){
+
+        const archivo=e.target.files[0];
+
+        if(!archivo) return;
+
+        try {
+            file.disabled=true;
+            imageStatus.textContent="Optimizando imagen...";
+
+            const base64=await window.MoonBrewImage.toBase64(archivo);
+
+            preview.src=base64;
+            image64.value=base64;
+            image64.dispatchEvent(new Event("change", { bubbles:true }));
+            imageStatus.textContent="Imagen lista para guardar.";
+            imageStatus.classList.remove("text-danger");
+            imageStatus.classList.add("text-success");
+        } catch (error) {
+            file.value="";
+            imageStatus.textContent=error.message;
+            imageStatus.classList.remove("text-muted", "text-success");
+            imageStatus.classList.add("text-danger");
+        } finally {
+            file.disabled=false;
+        }
+
+    });
+
+</script>

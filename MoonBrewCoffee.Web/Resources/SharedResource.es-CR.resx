@@ -66,4 +66,29 @@
   <data name="Products" xml:space="preserve"><value>Productos</value></data>
   <data name="ActiveMenus" xml:space="preserve"><value>Menús activos</value></data>
   <data name="ActiveUsers" xml:space="preserve"><value>Usuarios activos</value></data>
+  <data name="ReportsTitle" xml:space="preserve"><value>Reportes</value></data>
+  <data name="ReportsEyebrow" xml:space="preserve"><value>Análisis de ventas</value></data>
+  <data name="ReportsDescription" xml:space="preserve"><value>Filtra los pedidos, consulta los resultados y descarga el reporte en PDF.</value></data>
+  <data name="DownloadPdf" xml:space="preserve"><value>Descargar PDF</value></data>
+  <data name="FromDate" xml:space="preserve"><value>Desde</value></data>
+  <data name="ToDate" xml:space="preserve"><value>Hasta</value></data>
+  <data name="OrderStatus" xml:space="preserve"><value>Estado del pedido</value></data>
+  <data name="AllStatuses" xml:space="preserve"><value>Todos los estados</value></data>
+  <data name="ApplyFilters" xml:space="preserve"><value>Aplicar filtros</value></data>
+  <data name="ReportSummary" xml:space="preserve"><value>Resumen del reporte</value></data>
+  <data name="OrdersCount" xml:space="preserve"><value>Pedidos</value></data>
+  <data name="Subtotal" xml:space="preserve"><value>Subtotal</value></data>
+  <data name="Taxes" xml:space="preserve"><value>Impuestos</value></data>
+  <data name="TotalSales" xml:space="preserve"><value>Ventas totales</value></data>
+  <data name="OrdersDetail" xml:space="preserve"><value>Detalle de pedidos</value></data>
+  <data name="OrdersLower" xml:space="preserve"><value>pedidos</value></data>
+  <data name="NoReportResults" xml:space="preserve"><value>No se encontraron pedidos</value></data>
+  <data name="ChangeReportFilters" xml:space="preserve"><value>Prueba cambiando las fechas o el estado seleccionado.</value></data>
+  <data name="OrderNumber" xml:space="preserve"><value>Pedido</value></data>
+  <data name="Date" xml:space="preserve"><value>Fecha</value></data>
+  <data name="Customer" xml:space="preserve"><value>Cliente</value></data>
+  <data name="Items" xml:space="preserve"><value>Artículos</value></data>
+  <data name="Total" xml:space="preserve"><value>Total</value></data>
+  <data name="ProductsSold" xml:space="preserve"><value>Productos vendidos</value></data>
+  <data name="ProductsSoldDescription" xml:space="preserve"><value>Resumen de unidades e ingresos por producto.</value></data>
 </root>

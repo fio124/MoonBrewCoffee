@@ -1,0 +1,125 @@
+@model MoonBrewCoffee.Web.Models.ReportesViewModel
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<MoonBrewCoffee.Web.SharedResource> Localizer
+
+@{
+    ViewData["Title"] = Localizer["ReportsTitle"];
+}
+
+<div class="reports-page">
+    <header class="maintenance-header reports-main-header">
+        <div>
+            <span class="reports-eyebrow"><i class="bi bi-file-earmark-pdf"></i> @Localizer["ReportsEyebrow"]</span>
+            <h1>@Localizer["ReportsTitle"]</h1>
+            <p>@Localizer["ReportsDescription"]</p>
+        </div>
+        <a asp-action="DescargarPedidosPdf"
+           asp-route-desde="@Model.Desde.ToString("yyyy-MM-dd")"
+           asp-route-hasta="@Model.Hasta.ToString("yyyy-MM-dd")"
+           asp-route-idEstado="@Model.IdEstado"
+           class="reports-download-button">
+            <i class="bi bi-file-earmark-arrow-down"></i>
+            @Localizer["DownloadPdf"]
+        </a>
+    </header>
+
+    <form method="get" class="reports-filter-card">
+        <label>
+            <span>@Localizer["FromDate"]</span>
+            <input type="date" name="desde" value="@Model.Desde.ToString("yyyy-MM-dd")" />
+        </label>
+        <label>
+            <span>@Localizer["ToDate"]</span>
+            <input type="date" name="hasta" value="@Model.Hasta.ToString("yyyy-MM-dd")" />
+        </label>
+        <label>
+            <span>@Localizer["OrderStatus"]</span>
+            <select name="idEstado">
+                <option value="">@Localizer["AllStatuses"]</option>
+                @foreach (var estado in Model.Estados)
+                {
+                    if (Model.IdEstado == estado.IdEstado)
+                    {
+                        <option value="@estado.IdEstado" selected>@estado.Nombre</option>
+                    }
+                    else
+                    {
+                        <option value="@estado.IdEstado">@estado.Nombre</option>
+                    }
+                }
+            </select>
+        </label>
+        <button type="submit"><i class="bi bi-funnel"></i> @Localizer["ApplyFilters"]</button>
+    </form>
+
+    <section class="reports-summary-grid" aria-label="@Localizer["ReportSummary"]">
+        <article><i class="bi bi-receipt"></i><div><span>@Localizer["OrdersCount"]</span><strong>@Model.CantidadPedidos</strong></div></article>
+        <article><i class="bi bi-cash-stack"></i><div><span>@Localizer["Subtotal"]</span><strong>₡@Model.Subtotal.ToColones()</strong></div></article>
+        <article><i class="bi bi-percent"></i><div><span>@Localizer["Taxes"]</span><strong>₡@Model.Impuesto.ToColones()</strong></div></article>
+        <article><i class="bi bi-graph-up-arrow"></i><div><span>@Localizer["TotalSales"]</span><strong>₡@Model.TotalVentas.ToColones()</strong></div></article>
+    </section>
+
+    <section class="reports-results-card">
+        <header>
+            <div>
+                <h2>@Localizer["OrdersDetail"]</h2>
+                <p>@Model.Desde.ToString("dd/MM/yyyy") – @Model.Hasta.ToString("dd/MM/yyyy")</p>
+            </div>
+            <span>@Model.CantidadPedidos @Localizer["OrdersLower"]</span>
+        </header>
+
+        @if (Model.Pedidos.Count == 0)
+        {
+            <div class="reports-empty">
+                <i class="bi bi-inbox"></i>
+                <strong>@Localizer["NoReportResults"]</strong>
+                <span>@Localizer["ChangeReportFilters"]</span>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table reports-table align-middle mb-0">
+                    <thead><tr>
+                        <th>@Localizer["OrderNumber"]</th>
+                        <th>@Localizer["Date"]</th>
+                        <th>@Localizer["Customer"]</th>
+                        <th>@Localizer["OrderStatus"]</th>
+                        <th>@Localizer["Items"]</th>
+                        <th>@Localizer["Total"]</th>
+                    </tr></thead>
+                    <tbody>
+                    @foreach (var pedido in Model.Pedidos)
+                    {
+                        <tr>
+                            <td><strong>#@pedido.IdPedido</strong></td>
+                            <td>@pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@pedido.ClienteNombre</td>
+                            <td><span class="report-status">@pedido.Estado</span></td>
+                            <td>@pedido.Detalles.Sum(x => x.Cantidad)</td>
+                            <td><strong class="report-new-price">₡@pedido.Total.ToColones()</strong></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+
+    @if (Model.Productos.Count > 0)
+    {
+        <section class="reports-results-card reports-products-card">
+            <header><div><h2>@Localizer["ProductsSold"]</h2><p>@Localizer["ProductsSoldDescription"]</p></div></header>
+            <div class="reports-product-list">
+                @foreach (var producto in Model.Productos.Take(8))
+                {
+                    <article>
+                        <span class="reports-product-icon"><i class="bi bi-cup-hot"></i></span>
+                        <div><strong>@producto.Nombre</strong><small>@producto.Cantidad @Localizer["UnitsSold"]</small></div>
+                        <b>₡@producto.Total.ToColones()</b>
+                    </article>
+                }
+            </div>
+        </section>
+    }
+</div>

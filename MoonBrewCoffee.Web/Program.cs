@@ -12,8 +12,11 @@ using MoonBrewCoffee.Infrastructure.Interfaces;
 using MoonBrewCoffee.Infrastructure.Repository.Implementations;
 using MoonBrewCoffee.Infrastructure.Repository.Interfaces;
 using MoonBrewCoffee.Web.Services;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 
 builder.Services.AddDbContext<MoonBrewContext>(options =>
@@ -33,6 +36,7 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ICartService, SessionCartService>();
+builder.Services.AddScoped<IPedidoReportPdfService, PedidoReportPdfService>();
 builder.Services.Configure<ScheduledTasksOptions>(
     builder.Configuration.GetSection(ScheduledTasksOptions.SectionName));
 builder.Services.AddSingleton(TimeProvider.System);
@@ -151,7 +155,8 @@ var administrativeControllers = new HashSet<string>(StringComparer.OrdinalIgnore
     "Menus",
     "Usuarios",
     "ProcesosPreparacion",
-    "TareasProgramadas"
+    "TareasProgramadas",
+    "Reportes"
 };
 
 app.Use(async (context, next) =>

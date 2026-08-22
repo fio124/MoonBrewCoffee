@@ -2,17 +2,17 @@
 @using MoonBrewCoffee.Web.Formatting
 
 @{
-    ViewData["Title"] = "Reportes";
+    ViewData["Title"] = "Tareas programadas";
     var latestChanges = Model.LastTardeandoChanges
         .Select(change => (TypeKey: "scheduledTasks.tardeandoChanges", TypeFallback: "Tardeando", Change: change))
         .Concat(Model.LastGeneralChanges.Select(change => (TypeKey: "scheduledTasks.generalChanges", TypeFallback: "General", Change: change)))
         .ToList();
 }
 
-<div class="maintenance-header reports-header" data-i18n-title-key="navigation.reports">
+<div class="maintenance-header reports-header" data-i18n-title-key="navigation.scheduledTasks">
     <div>
-        <span class="reports-eyebrow"><i class="bi bi-bar-chart-line"></i> <span data-i18n-key="navigation.reports">REPORTES</span></span>
-        <h1 data-i18n-key="navigation.reports">Reportes</h1>
+        <span class="reports-eyebrow"><i class="bi bi-clock-history"></i> <span data-i18n-key="navigation.scheduledTasks">TAREAS PROGRAMADAS</span></span>
+        <h1 data-i18n-key="navigation.scheduledTasks">Tareas programadas</h1>
         <p class="text-muted mb-0" data-i18n-key="scheduledTasks.reportCopy">Consulta los últimos cambios automáticos aplicados a los precios.</p>
     </div>
 </div>

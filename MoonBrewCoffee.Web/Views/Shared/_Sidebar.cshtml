@@ -63,9 +63,13 @@
            class="@(controller == "PreparacionPedidos" ? "active" : "")">
             <i class="bi bi-kanban"></i><span data-i18n-key="orders.preparationBoard">Preparación de pedidos</span>
         </a>
+        <a asp-controller="Reportes" asp-action="Index"
+           class="@(controller == "Reportes" ? "active" : "")">
+            <i class="bi bi-file-earmark-pdf"></i><span data-i18n-key="navigation.reports">Reportes</span>
+        </a>
         <a asp-controller="TareasProgramadas" asp-action="Index"
            class="@(controller == "TareasProgramadas" ? "active" : "")">
-            <i class="bi bi-bar-chart-line"></i><span data-i18n-key="navigation.reports">Reportes</span>
+            <i class="bi bi-clock-history"></i><span data-i18n-key="navigation.scheduledTasks">Tareas programadas</span>
         </a>
         <a asp-controller="MenuDisponible" asp-action="Index"
            class="@(controller == "MenuDisponible" ? "active" : "")">

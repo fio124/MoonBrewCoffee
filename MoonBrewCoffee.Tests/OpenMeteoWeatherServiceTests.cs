@@ -5,10 +5,10 @@ using MoonBrewCoffee.Web.Services;
 
 namespace MoonBrewCoffee.Tests;
 
-public class OpenMeteoWeatherServiceTests
+public class ServicioClimaTests
 {
     [Fact]
-    public async Task WeatherResponse_IsMappedAndCached()
+    public async Task RespuestaClima_SeTransformaYGuardaEnCache()
     {
         var handler = new StubHandler("{\"current\":{\"temperature_2m\":27.4,\"weather_code\":2}}");
         var client = new HttpClient(handler) { BaseAddress = new Uri("https://api.open-meteo.com/") };
@@ -25,7 +25,7 @@ public class OpenMeteoWeatherServiceTests
     }
 
     [Fact]
-    public async Task NetworkFailure_DoesNotBreakHomePage()
+    public async Task FalloDeRed_NoInterrumpePaginaInicio()
     {
         var client = new HttpClient(new StubHandler(null)) { BaseAddress = new Uri("https://api.open-meteo.com/") };
         var service = new OpenMeteoWeatherService(client, new MemoryCache(new MemoryCacheOptions()));

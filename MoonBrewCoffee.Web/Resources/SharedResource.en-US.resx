@@ -15,4 +15,55 @@
   <data name="GoodAfternoon" xml:space="preserve"><value>Good afternoon</value></data>
   <data name="GoodEvening" xml:space="preserve"><value>Good evening</value></data>
   <data name="Administrator" xml:space="preserve"><value>Administrator</value></data>
+  <data name="HomeTitle" xml:space="preserve"><value>Home</value></data>
+  <data name="WelcomeTo" xml:space="preserve"><value>Welcome to</value></data>
+  <data name="HomeHeroDescription" xml:space="preserve"><value>The best coffee, prepared with passion for every moment of your day.</value></data>
+  <data name="ViewMenu" xml:space="preserve"><value>View menu</value></data>
+  <data name="MoonBrewBenefits" xml:space="preserve"><value>MoonBrew benefits</value></data>
+  <data name="QualityCoffee" xml:space="preserve"><value>Quality coffee</value></data>
+  <data name="QualityCoffeeDescription" xml:space="preserve"><value>Carefully selected, high-quality coffee beans.</value></data>
+  <data name="MadeWithLove" xml:space="preserve"><value>Made with love</value></data>
+  <data name="MadeWithLoveDescription" xml:space="preserve"><value>Handcrafted preparations made especially for you.</value></data>
+  <data name="FastService" xml:space="preserve"><value>Fast service</value></data>
+  <data name="FastServiceDescription" xml:space="preserve"><value>Everything ready to enjoy whenever you want.</value></data>
+  <data name="DailySummary" xml:space="preserve"><value>Daily summary</value></data>
+  <data name="DashboardOverview" xml:space="preserve"><value>MoonBrew activity</value></data>
+  <data name="DashboardOverviewDescription" xml:space="preserve"><value>Quickly review sales and the current status of orders.</value></data>
+  <data name="OrdersToday" xml:space="preserve"><value>Today's orders</value></data>
+  <data name="SalesToday" xml:space="preserve"><value>Today's sales</value></data>
+  <data name="TopSellingProducts" xml:space="preserve"><value>Top-selling products</value></data>
+  <data name="TopSellingProductsDescription" xml:space="preserve"><value>The three products with the highest quantity sold.</value></data>
+  <data name="UnitsSold" xml:space="preserve"><value>units</value></data>
+  <data name="OrdersByStatus" xml:space="preserve"><value>Orders by status</value></data>
+  <data name="OrdersByStatusDescription" xml:space="preserve"><value>Distribution of orders registered today.</value></data>
+  <data name="NoSalesData" xml:space="preserve"><value>There are no product sales to display yet.</value></data>
+  <data name="NoOrdersToday" xml:space="preserve"><value>No orders have been registered today.</value></data>
+  <data name="Orders" xml:space="preserve"><value>orders</value></data>
+  <data name="StatusPending" xml:space="preserve"><value>Pending</value></data>
+  <data name="StatusPendingPayment" xml:space="preserve"><value>Pending payment</value></data>
+  <data name="StatusAccepted" xml:space="preserve"><value>Accepted</value></data>
+  <data name="StatusPreparation" xml:space="preserve"><value>Preparation</value></data>
+  <data name="StatusProcessing" xml:space="preserve"><value>Processing</value></data>
+  <data name="StatusDelivered" xml:space="preserve"><value>Delivered</value></data>
+  <data name="StatusCancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="StatusUnknown" xml:space="preserve"><value>No status</value></data>
+  <data name="DiscoverMoonBrew" xml:space="preserve"><value>Discover MoonBrew</value></data>
+  <data name="MainCategories" xml:space="preserve"><value>Main categories</value></data>
+  <data name="ViewCatalog" xml:space="preserve"><value>View catalog</value></data>
+  <data name="Drinks" xml:space="preserve"><value>Drinks</value></data>
+  <data name="DrinksDescription" xml:space="preserve"><value>Hot and cold coffees, frappes and specialty drinks prepared by our baristas.</value></data>
+  <data name="ExploreDrinks" xml:space="preserve"><value>Explore drinks</value></data>
+  <data name="DrinksImageAlt" xml:space="preserve"><value>MoonBrew drink selection</value></data>
+  <data name="Desserts" xml:space="preserve"><value>Desserts</value></data>
+  <data name="DessertsDescription" xml:space="preserve"><value>Freshly prepared cheesecakes, brownies, cookies and handcrafted desserts.</value></data>
+  <data name="ExploreDesserts" xml:space="preserve"><value>Explore desserts</value></data>
+  <data name="DessertsImageAlt" xml:space="preserve"><value>MoonBrew dessert selection</value></data>
+  <data name="Combos" xml:space="preserve"><value>Combos</value></data>
+  <data name="CombosDescription" xml:space="preserve"><value>Pair your favorite drinks with delicious desserts and enjoy our promotions.</value></data>
+  <data name="ExploreCombos" xml:space="preserve"><value>Explore combos</value></data>
+  <data name="CombosImageAlt" xml:space="preserve"><value>MoonBrew special combo</value></data>
+  <data name="MoonBrewInNumbers" xml:space="preserve"><value>MoonBrew in numbers</value></data>
+  <data name="Products" xml:space="preserve"><value>Products</value></data>
+  <data name="ActiveMenus" xml:space="preserve"><value>Active menus</value></data>
+  <data name="ActiveUsers" xml:space="preserve"><value>Active users</value></data>
 </root>

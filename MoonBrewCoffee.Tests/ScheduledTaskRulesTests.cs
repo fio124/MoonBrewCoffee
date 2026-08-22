@@ -3,10 +3,10 @@ using MoonBrewCoffee.Web.Services;
 
 namespace MoonBrewCoffee.Tests;
 
-public class ScheduledTaskRulesTests
+public class ReglasTareasProgramadasTests
 {
     [Fact]
-    public void IsMenuAvailable_ReturnsTrueInsideDateAndTimeRange()
+    public void MenuDisponible_EsVerdaderoDentroDelHorario()
     {
         var menu = CreateMenu();
 
@@ -19,7 +19,7 @@ public class ScheduledTaskRulesTests
     [InlineData("2026-07-31T15:30:00")]
     [InlineData("2026-08-08T11:59:00")]
     [InlineData("2026-08-08T18:01:00")]
-    public void IsMenuAvailable_ReturnsFalseOutsideSchedule(string date)
+    public void MenuDisponible_EsFalsoFueraDelHorario(string date)
     {
         var menu = CreateMenu();
 
@@ -29,7 +29,7 @@ public class ScheduledTaskRulesTests
     }
 
     [Fact]
-    public void ApplyDiscount_RespectsConfiguredMinimum()
+    public void AplicarDescuento_RespetaPrecioMinimo()
     {
         var result = ScheduledTaskRules.ApplyDiscount(1510m, 5m, 1500m);
 
@@ -37,7 +37,7 @@ public class ScheduledTaskRulesTests
     }
 
     [Fact]
-    public void ApplyDiscount_RoundsCurrencyToTwoDecimals()
+    public void AplicarDescuento_RedondeaADosDecimales()
     {
         var result = ScheduledTaskRules.ApplyDiscount(3501m, 5m, 1500m);
 
@@ -45,14 +45,14 @@ public class ScheduledTaskRulesTests
     }
 
     [Fact]
-    public void ApplyIncrease_AddsOnlyNonNegativeAmount()
+    public void AplicarAumento_SoloAgregaMontosNoNegativos()
     {
         Assert.Equal(3510m, ScheduledTaskRules.ApplyIncrease(3500m, 10m));
         Assert.Equal(3500m, ScheduledTaskRules.ApplyIncrease(3500m, -10m));
     }
 
     [Fact]
-    public void BuildExecutionKey_IsStableInsideSameInterval()
+    public void CrearClaveEjecucion_SeMantieneEnElMismoIntervalo()
     {
         var first = ScheduledTaskRules.BuildExecutionKey(
             "TardeandoDiscount",

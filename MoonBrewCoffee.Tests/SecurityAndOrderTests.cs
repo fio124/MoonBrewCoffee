@@ -2,10 +2,10 @@ using MoonBrewCoffee.Web.Models;
 
 namespace MoonBrewCoffee.Tests;
 
-public class DefenseEvidenceTests
+public class CarritoYPermisosTests
 {
     [Fact]
-    public void CartCount_SumsProductAndComboQuantities()
+    public void CantidadCarrito_SumaProductosYCombos()
     {
         var cart = new CartViewModel
         {
@@ -23,7 +23,7 @@ public class DefenseEvidenceTests
     }
 
     [Fact]
-    public void HomeDelivery_AddsConfiguredShippingCost()
+    public void EntregaDomicilio_AgregaCostoDeEnvio()
     {
         var checkout = new CheckoutViewModel
         {
@@ -45,7 +45,7 @@ public class DefenseEvidenceTests
     [InlineData("Cliente", true, false, false)]
     [InlineData("Administrador", false, true, false)]
     [InlineData("Encargado", false, false, true)]
-    public void CurrentUser_ResolvesRolePermissions(
+    public void UsuarioActual_IdentificaPermisosSegunRol(
         string role,
         bool expectedClient,
         bool expectedAdministrator,

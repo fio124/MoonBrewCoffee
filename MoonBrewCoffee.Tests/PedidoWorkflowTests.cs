@@ -5,36 +5,36 @@ using MoonBrewCoffee.Infrastructure.Workflow;
 
 namespace MoonBrewCoffee.Tests;
 
-public class PedidoWorkflowTests
+public class FlujoPedidoTests
 {
     [Fact]
-    public void StartingFirstStep_MovesOrderToPreparation()
+    public void IniciarPrimerPaso_MuevePedidoAPreparacion()
     {
         Assert.Equal("En preparación", PedidoWorkflowRules.AdvanceStep("Pendiente", false));
         Assert.Equal("Preparación", PedidoWorkflowRules.ResolveOrderStatus(false, false));
     }
 
     [Fact]
-    public void CompletingIntermediateStep_MovesOrderToProcessing()
+    public void CompletarPasoIntermedio_MantienePedidoEnProceso()
     {
         Assert.Equal("Completado", PedidoWorkflowRules.AdvanceStep("En preparación", true));
         Assert.Equal("Procesando", PedidoWorkflowRules.ResolveOrderStatus(true, false));
     }
 
     [Fact]
-    public void CompletingLastStep_MovesOrderToDelivered()
+    public void CompletarUltimoPaso_MuevePedidoAEntregado()
     {
         Assert.Equal("Entregada", PedidoWorkflowRules.ResolveOrderStatus(true, true));
     }
 
     [Fact]
-    public void CompletingPendingStep_IsRejected()
+    public void CompletarPasoPendiente_EsRechazado()
     {
         Assert.Throws<InvalidOperationException>(() => PedidoWorkflowRules.AdvanceStep("Pendiente", true));
     }
 
     [Fact]
-    public void OperationKey_HasUniqueDatabaseIndex()
+    public void ClaveOperacion_TieneIndiceUnicoEnBaseDatos()
     {
         using var context = new MoonBrewContext(new DbContextOptionsBuilder<MoonBrewContext>()
             .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MoonBrewModelTest;Trusted_Connection=True")

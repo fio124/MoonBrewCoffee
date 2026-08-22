@@ -3,10 +3,10 @@ using MoonBrewCoffee.Web.Models;
 
 namespace MoonBrewCoffee.Tests;
 
-public class CheckoutViewModelTests
+public class ValidacionPagoTests
 {
     [Fact]
-    public void HomeDelivery_RequiresAddress()
+    public void EntregaDomicilio_RequiereDireccion()
     {
         var model = ValidCardCheckout();
         model.DeliveryType = "domicilio";
@@ -16,7 +16,7 @@ public class CheckoutViewModelTests
     }
 
     [Fact]
-    public void CashPayment_RequiresEnoughMoney()
+    public void PagoEfectivo_RequiereMontoSuficiente()
     {
         var model = ValidCardCheckout();
         model.PaymentMethod = "efectivo";
@@ -26,7 +26,7 @@ public class CheckoutViewModelTests
     }
 
     [Fact]
-    public void ManagerCheckout_RequiresCustomer()
+    public void PedidoDeEncargado_RequiereCliente()
     {
         var model = ValidCardCheckout();
         model.CanSelectClient = true;
@@ -36,7 +36,7 @@ public class CheckoutViewModelTests
     }
 
     [Fact]
-    public void CardPayment_RejectsInvalidCardFields()
+    public void PagoTarjeta_RechazaDatosInvalidos()
     {
         var model = ValidCardCheckout();
         model.CardNumber = "123";
@@ -50,7 +50,7 @@ public class CheckoutViewModelTests
     }
 
     [Fact]
-    public void ValidCheckout_HasNoBusinessValidationErrors()
+    public void PagoValido_NoPresentaErrores()
     {
         Assert.Empty(Validate(ValidCardCheckout()));
     }

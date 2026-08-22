@@ -1,7 +1,23 @@
 @model MoonBrewCoffee.Web.Models.HomeDashboardViewModel
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<MoonBrewCoffee.Web.SharedResource> Localizer
 
 @{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = Localizer["HomeTitle"];
+
+    string TraducirEstado(string estado) => estado.Trim().ToLowerInvariant() switch
+    {
+        "pendiente" => Localizer["StatusPending"],
+        "pendiente de pago" => Localizer["StatusPendingPayment"],
+        "aceptada" or "aceptado" => Localizer["StatusAccepted"],
+        "preparación" or "preparacion" => Localizer["StatusPreparation"],
+        "procesando" => Localizer["StatusProcessing"],
+        "entregada" or "entregado" => Localizer["StatusDelivered"],
+        "cancelada" or "cancelado" => Localizer["StatusCancelled"],
+        "sin estado" => Localizer["StatusUnknown"],
+        _ => estado
+    };
 }
 
 <div class="home-dashboard">
@@ -9,61 +25,163 @@
         <div class="home-reference-overlay"></div>
 
         <div class="home-reference-content">
-            <span class="home-reference-kicker">Bienvenido a</span>
+            <span class="home-reference-kicker">@Localizer["WelcomeTo"]</span>
 
             <h1>MoonBrew Coffee</h1>
 
             <p>
-                El mejor café, preparado con pasión<br />
-                para cada momento de tu día.
+                @Localizer["HomeHeroDescription"]
             </p>
 
             <a asp-controller="MenuDisponible"
                asp-action="Index"
                class="home-reference-button">
                 <i class="bi bi-cup-hot-fill"></i>
-                Ver menú
+                @Localizer["ViewMenu"]
             </a>
         </div>
     </section>
 
-    <section class="home-benefits" aria-label="Beneficios de MoonBrew">
+    <section class="home-benefits" aria-label="@Localizer["MoonBrewBenefits"]">
         <article class="home-benefit">
             <span class="home-benefit-icon"><i class="bi bi-flower1"></i></span>
             <div>
-                <h2>Café de calidad</h2>
-                <p>Granos seleccionados de la mejor calidad.</p>
+                <h2>@Localizer["QualityCoffee"]</h2>
+                <p>@Localizer["QualityCoffeeDescription"]</p>
             </div>
         </article>
 
         <article class="home-benefit">
             <span class="home-benefit-icon"><i class="bi bi-heart"></i></span>
             <div>
-                <h2>Hecho con amor</h2>
-                <p>Preparaciones artesanales hechas para ti.</p>
+                <h2>@Localizer["MadeWithLove"]</h2>
+                <p>@Localizer["MadeWithLoveDescription"]</p>
             </div>
         </article>
 
         <article class="home-benefit">
             <span class="home-benefit-icon"><i class="bi bi-lightning-charge"></i></span>
             <div>
-                <h2>Servicio ágil</h2>
-                <p>Todo listo para disfrutar cuando quieras.</p>
+                <h2>@Localizer["FastService"]</h2>
+                <p>@Localizer["FastServiceDescription"]</p>
             </div>
         </article>
+    </section>
+
+    <section class="dashboard-summary" aria-labelledby="dashboard-summary-title">
+        <header class="home-section-heading dashboard-summary-heading">
+            <div>
+                <span>@Localizer["DailySummary"]</span>
+                <h2 id="dashboard-summary-title">@Localizer["DashboardOverview"]</h2>
+                <p>@Localizer["DashboardOverviewDescription"]</p>
+            </div>
+
+            <div class="dashboard-today-cards">
+                <article>
+                    <i class="bi bi-receipt"></i>
+                    <div><strong>@Model.PedidosHoy</strong><span>@Localizer["OrdersToday"]</span></div>
+                </article>
+                <article>
+                    <i class="bi bi-cash-coin"></i>
+                    <div><strong>₡@Model.VentasHoy.ToColones()</strong><span>@Localizer["SalesToday"]</span></div>
+                </article>
+            </div>
+        </header>
+
+        <div class="dashboard-charts-grid">
+            <article class="dashboard-chart-card">
+                <header>
+                    <span class="dashboard-chart-icon"><i class="bi bi-cup-hot"></i></span>
+                    <div>
+                        <h3>@Localizer["TopSellingProducts"]</h3>
+                        <p>@Localizer["TopSellingProductsDescription"]</p>
+                    </div>
+                </header>
+
+                @if (Model.ProductosMasVendidos.Count == 0)
+                {
+                    <div class="dashboard-empty">
+                        <i class="bi bi-bar-chart"></i>
+                        <span>@Localizer["NoSalesData"]</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="dashboard-bars" role="img" aria-label="@Localizer["TopSellingProducts"]">
+                        @foreach (var producto in Model.ProductosMasVendidos)
+                        {
+                            var porcentaje = Model.MayorCantidadProducto == 0
+                                ? 0
+                                : producto.Cantidad * 100m / Model.MayorCantidadProducto;
+                            var ancho = porcentaje.ToString("0.##", CultureInfo.InvariantCulture);
+
+                            <div class="dashboard-bar-row">
+                                <div class="dashboard-bar-label">
+                                    <strong>@producto.Nombre</strong>
+                                    <span>@producto.Cantidad @Localizer["UnitsSold"] · ₡@producto.TotalVendido.ToColones()</span>
+                                </div>
+                                <div class="dashboard-bar-track" aria-hidden="true">
+                                    <span style="--bar-width: @ancho%;"></span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </article>
+
+            <article class="dashboard-chart-card">
+                <header>
+                    <span class="dashboard-chart-icon"><i class="bi bi-pie-chart"></i></span>
+                    <div>
+                        <h3>@Localizer["OrdersByStatus"]</h3>
+                        <p>@Localizer["OrdersByStatusDescription"]</p>
+                    </div>
+                </header>
+
+                @if (Model.PedidosPorEstado.Count == 0)
+                {
+                    <div class="dashboard-empty">
+                        <i class="bi bi-inbox"></i>
+                        <span>@Localizer["NoOrdersToday"]</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="dashboard-bars" role="img" aria-label="@Localizer["OrdersByStatus"]">
+                        @foreach (var estado in Model.PedidosPorEstado)
+                        {
+                            var porcentaje = Model.MayorCantidadEstado == 0
+                                ? 0
+                                : estado.Cantidad * 100m / Model.MayorCantidadEstado;
+                            var ancho = porcentaje.ToString("0.##", CultureInfo.InvariantCulture);
+
+                            <div class="dashboard-bar-row">
+                                <div class="dashboard-bar-label">
+                                    <strong><i class="dashboard-status-dot" style="--status-color: @estado.Color;"></i>@TraducirEstado(estado.Estado)</strong>
+                                    <span>@estado.Cantidad @Localizer["Orders"]</span>
+                                </div>
+                                <div class="dashboard-bar-track dashboard-status-track" aria-hidden="true">
+                                    <span style="--bar-width: @ancho%; --status-color: @estado.Color;"></span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </article>
+        </div>
     </section>
 
     <section class="home-categories-section">
         <header class="home-section-heading">
             <div>
-                <span>Descubre MoonBrew</span>
-                <h2>Categorías principales</h2>
+                <span>@Localizer["DiscoverMoonBrew"]</span>
+                <h2>@Localizer["MainCategories"]</h2>
             </div>
 
             <a asp-controller="Catalogo"
                asp-action="Index"
                class="home-section-link">
-                Ver catálogo <i class="bi bi-arrow-right"></i>
+                @Localizer["ViewCatalog"] <i class="bi bi-arrow-right"></i>
             </a>
         </header>
 
@@ -72,19 +190,16 @@
                 <div class="category-card menu-card home-menu-card">
                     <div class="category-image">
                         <img src="~/Imagenes/CatBebidas.png"
-                             alt="Selección de bebidas MoonBrew"
+                             alt="@Localizer["DrinksImageAlt"]"
                              loading="lazy" />
                     </div>
 
                     <div class="category-content">
                         <div class="category-icon">☕</div>
-                        <h3>Bebidas</h3>
-                        <p>
-                            Cafés calientes, fríos, frappés y bebidas especiales
-                            preparadas por nuestros baristas.
-                        </p>
+                        <h3>@Localizer["Drinks"]</h3>
+                        <p>@Localizer["DrinksDescription"]</p>
                         <a asp-controller="Catalogo" asp-action="Index" class="category-btn">
-                            Explorar bebidas →
+                            @Localizer["ExploreDrinks"] →
                         </a>
                     </div>
                 </div>
@@ -94,19 +209,16 @@
                 <div class="category-card menu-card home-menu-card">
                     <div class="category-image">
                         <img src="~/Imagenes/CatPostres.png"
-                             alt="Selección de postres MoonBrew"
+                             alt="@Localizer["DessertsImageAlt"]"
                              loading="lazy" />
                     </div>
 
                     <div class="category-content">
                         <div class="category-icon">🍰</div>
-                        <h3>Postres</h3>
-                        <p>
-                            Cheesecakes, brownies, galletas y postres
-                            artesanales recién preparados.
-                        </p>
+                        <h3>@Localizer["Desserts"]</h3>
+                        <p>@Localizer["DessertsDescription"]</p>
                         <a asp-controller="Catalogo" asp-action="Index" class="category-btn">
-                            Explorar postres →
+                            @Localizer["ExploreDesserts"] →
                         </a>
                     </div>
                 </div>
@@ -116,19 +228,16 @@
                 <div class="category-card menu-card home-menu-card">
                     <div class="category-image">
                         <img src="~/Imagenes/ComboDulce.png"
-                             alt="Combo especial MoonBrew"
+                             alt="@Localizer["CombosImageAlt"]"
                              loading="lazy" />
                     </div>
 
                     <div class="category-content">
                         <div class="category-icon">🎁</div>
-                        <h3>Combos</h3>
-                        <p>
-                            Combina tus bebidas favoritas con deliciosos
-                            postres y aprovecha nuestras promociones.
-                        </p>
+                        <h3>@Localizer["Combos"]</h3>
+                        <p>@Localizer["CombosDescription"]</p>
                         <a asp-controller="Combos" asp-action="Index" class="category-btn">
-                            Explorar combos →
+                            @Localizer["ExploreCombos"] →
                         </a>
                     </div>
                 </div>
@@ -136,29 +245,29 @@
         </div>
     </section>
 
-    <section class="home-stats-strip" aria-label="MoonBrew en números">
+    <section class="home-stats-strip" aria-label="@Localizer["MoonBrewInNumbers"]">
         <div class="home-stat-item">
             <i class="bi bi-cup-hot-fill"></i>
             <strong>@Model.ProductosActivos</strong>
-            <span>Productos</span>
+            <span>@Localizer["Products"]</span>
         </div>
 
         <div class="home-stat-item">
             <i class="bi bi-gift-fill"></i>
             <strong>@Model.CombosActivos</strong>
-            <span>Combos</span>
+            <span>@Localizer["Combos"]</span>
         </div>
 
         <div class="home-stat-item">
             <i class="bi bi-journal-richtext"></i>
             <strong>@Model.MenusActivos</strong>
-            <span>Menús activos</span>
+            <span>@Localizer["ActiveMenus"]</span>
         </div>
 
         <div class="home-stat-item">
             <i class="bi bi-people-fill"></i>
             <strong>@Model.UsuariosActivos</strong>
-            <span>Usuarios activos</span>
+            <span>@Localizer["ActiveUsers"]</span>
         </div>
     </section>
 </div>

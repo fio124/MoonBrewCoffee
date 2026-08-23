@@ -168,7 +168,27 @@
     ,"dessertsAlt": "Selección de postres MoonBrew"
     ,"comboAlt": "Combo especial MoonBrew"
   },
+  "account": {
+    "createHero": "Tu historia con MoonBrew comienza aquí.",
+    "createHeroCopy": "Crea tu cuenta para comprar, consultar tus pedidos y seguir cada preparación.",
+    "newCustomer": "NUEVO CLIENTE",
+    "createAccount": "Crear cuenta",
+    "createCopy": "Completa tus datos. El sistema asignará automáticamente el rol Cliente.",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "passwordHelp": "La contraseña debe incluir 8 caracteres, mayúscula, minúscula y número.",
+    "createButton": "Crear mi cuenta",
+    "alreadyRegistered": "Ya tengo una cuenta",
+    "noAccount": "¿No tienes cuenta?",
+    "register": "Regístrate"
+  },
   "orders": {
+    "printInvoice": "Imprimir",
+    "downloadInvoice": "Descargar PDF",
     "history": "Historial de pedidos",
     "cartSelection": "Tu selección",
     "cartTitle": "Mi carrito",

@@ -56,6 +56,9 @@ namespace MoonBrewCoffee.Infrastructure.Data;
 
             modelBuilder.Entity<Usuario>().HasKey(x => x.IdUsuario);
 
+            modelBuilder.Entity<Usuario>().Property(x => x.Correo).HasMaxLength(256);
+            modelBuilder.Entity<Usuario>().HasIndex(x => x.Correo).IsUnique();
+
             modelBuilder.Entity<Usuario>().HasOne(u => u.Rol).WithMany(r => r.Usuarios).HasForeignKey(u => u.IdRol);
 
             modelBuilder.Entity<Categoria>().HasKey(x => x.IdCategoria);

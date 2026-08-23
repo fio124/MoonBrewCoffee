@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MoonBrewCoffee.Application.DTOs;
 using MoonBrewCoffee.Application.Services.Interfaces;
 using MoonBrewCoffee.Web.Controllers;
+using MoonBrewCoffee.Web.Services;
 
 namespace MoonBrewCoffee.Infrastructure.Controllers
 {
@@ -12,17 +13,20 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         private readonly ICategoriaService _categoriaService;
         private readonly IIngredienteService _ingredienteService;
         private readonly IProductoIngredienteService _productoIngredienteService;
+        private readonly IServicioImagenes _servicioImagenes;
 
         public ProductosController(
             IProductoService productoService,
             ICategoriaService categoriaService,
             IIngredienteService ingredienteService,
-            IProductoIngredienteService productoIngredienteService)
+            IProductoIngredienteService productoIngredienteService,
+            IServicioImagenes servicioImagenes)
         {
             _productoService = productoService;
             _categoriaService = categoriaService;
             _ingredienteService = ingredienteService;
             _productoIngredienteService = productoIngredienteService;
+            _servicioImagenes = servicioImagenes;
         }
 
         // GET: Productos
@@ -70,8 +74,15 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         // POST: Productos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductoDTO producto)
+        public async Task<IActionResult> Create(
+            ProductoDTO producto,
+            IFormFile? imagenArchivo,
+            CancellationToken cancellationToken)
         {
+            ModelState.Remove(nameof(producto.Image64));
+            if (imagenArchivo is null)
+                ModelState.AddModelError(nameof(producto.Image64), "Seleccione una imagen para el producto.");
+
             if (!string.IsNullOrWhiteSpace(producto.Nombre) &&
                 await _productoService.ExistsByNameAsync(producto.Nombre))
             {
@@ -82,9 +93,26 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
 
             if (ModelState.IsValid)
             {
-                await _productoService.AddAsync(producto);
-                TempData["SuccessMessage"] = "El producto se creó correctamente.";
-                return RedirectToAction(nameof(Index));
+                string? newImagePath = null;
+                try
+                {
+                    newImagePath = await _servicioImagenes.GuardarAsync(
+                        imagenArchivo!, "productos", cancellationToken);
+                    producto.Image64 = newImagePath;
+                    await _productoService.AddAsync(producto);
+                    TempData["SuccessMessage"] = "El producto se creó correctamente.";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (ArgumentException exception)
+                {
+                    _servicioImagenes.EliminarSiEsLocal(newImagePath);
+                    ModelState.AddModelError(nameof(producto.Image64), exception.Message);
+                }
+                catch
+                {
+                    _servicioImagenes.EliminarSiEsLocal(newImagePath);
+                    throw;
+                }
             }
 
             await CargarCategorias();
@@ -115,10 +143,21 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         // POST: Productos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ProductoDTO producto)
+        public async Task<IActionResult> Edit(
+            int id,
+            ProductoDTO producto,
+            IFormFile? imagenArchivo,
+            CancellationToken cancellationToken)
         {
             if (id != producto.IdProducto)
                 return NotFound();
+
+            var existing = await _productoService.GetByIdAsync(id);
+            if (existing is null)
+                return NotFound();
+
+            producto.Image64 = existing.Image64;
+            ModelState.Remove(nameof(producto.Image64));
 
             if (!string.IsNullOrWhiteSpace(producto.Nombre) &&
                 await _productoService.ExistsByNameAsync(producto.Nombre, id))
@@ -130,10 +169,34 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
 
             if (ModelState.IsValid)
             {
-                await _productoService.UpdateAsync(producto);
-                TempData["SuccessMessage"] = "El producto se actualizó correctamente.";
+                string? newImagePath = null;
+                try
+                {
+                    if (imagenArchivo is not null)
+                    {
+                        newImagePath = await _servicioImagenes.GuardarAsync(
+                            imagenArchivo, "productos", cancellationToken);
+                        producto.Image64 = newImagePath;
+                    }
 
-                return RedirectToAction(nameof(Index));
+                    await _productoService.UpdateAsync(producto);
+                    if (newImagePath is not null)
+                        _servicioImagenes.EliminarSiEsLocal(existing.Image64);
+
+                    TempData["SuccessMessage"] = "El producto se actualizó correctamente.";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (ArgumentException exception)
+                {
+                    _servicioImagenes.EliminarSiEsLocal(newImagePath);
+                    producto.Image64 = existing.Image64;
+                    ModelState.AddModelError(nameof(producto.Image64), exception.Message);
+                }
+                catch
+                {
+                    _servicioImagenes.EliminarSiEsLocal(newImagePath);
+                    throw;
+                }
             }
 
             await CargarCategorias();

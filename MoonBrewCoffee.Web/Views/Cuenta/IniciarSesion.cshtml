@@ -33,7 +33,7 @@
                 <label asp-for="Email"></label>
                 <div class="login-input">
                     <i class="bi bi-envelope"></i>
-                    <input asp-for="Email" autocomplete="email" placeholder="nombre@correo.com" autofocus />
+                    <input asp-for="Email" autocomplete="email" placeholder="nombre@correo.com" data-i18n-placeholder-key="clientPortal.emailPlaceholder" autofocus />
                 </div>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
@@ -52,6 +52,12 @@
                 Iniciar sesión
             </button>
         </form>
+
+        <a asp-action="Registrarse" class="login-register-link">
+            <i class="bi bi-person-plus"></i>
+            <span data-i18n-key="account.noAccount">¿No tienes cuenta?</span>
+            <strong data-i18n-key="account.register">Regístrate</strong>
+        </a>
 
         <a asp-controller="Cliente" asp-action="Index" class="login-back">
             <i class="bi bi-arrow-left"></i> Continuar como invitado

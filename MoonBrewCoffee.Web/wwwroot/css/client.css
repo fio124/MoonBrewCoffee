@@ -306,6 +306,15 @@
 .login-submit:hover { background: #684238; }
 .login-back { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; margin-top: 1rem; color: #7f6a60; font-size: .82rem; font-weight: 600; text-decoration: none; }
 .login-back:hover { color: var(--client-coffee); }
+.login-register-link { display: flex; align-items: center; justify-content: center; gap: .45rem; margin-top: 1rem; padding: .8rem; border: 1px solid #ead9ca; border-radius: 13px; color: #765f55; background: #fcf8f3; font-size: .82rem; text-decoration: none; }
+.login-register-link strong { color: var(--client-coffee); }
+.login-register-link:hover { border-color: var(--client-caramel); color: var(--client-coffee); }
+.register-shell { grid-template-columns: minmax(320px, .8fr) minmax(540px, 1.2fr); }
+.register-visual { background-image: linear-gradient(0deg, rgba(28,14,10,.94), rgba(40,20,13,.28)), url("../Imagenes/Cafe con espuma.png"); }
+.register-visual h1 { font-size: clamp(2.2rem, 3.4vw, 3rem); }
+.register-panel { padding-block: 2rem; }
+.register-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.register-password-help { margin: -.15rem 0 0; color: #806c62; font-size: .72rem; }
 
 .catalog-card-footer { flex-wrap: wrap; }
 .catalog-card-actions { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; }
@@ -516,6 +525,10 @@
 .invoice-item-type { color: var(--client-caramel); font-size: .6rem; font-weight: 800; text-transform: uppercase; }
 .invoice-footer { display: flex; justify-content: space-between; align-items: end; gap: 2rem; padding: 1.2rem 1.5rem 1.5rem; background: #fcf9f6; }
 .invoice-back { color: var(--client-coffee); font-size: .75rem; font-weight: 700; text-decoration: none; }
+.invoice-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .65rem; }
+.invoice-action-button { min-height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; padding: .55rem .8rem; border: 1px solid #d8c2af; border-radius: 10px; color: var(--client-coffee); background: #fff; font: inherit; font-size: .72rem; font-weight: 700; text-decoration: none; cursor: pointer; }
+.invoice-action-button:hover { border-color: var(--client-coffee); color: var(--client-coffee); }
+.invoice-action-button.primary { border-color: var(--client-coffee); color: #fff; background: var(--client-coffee); }
 .invoice-footer dl { width: min(100%, 360px); margin: 0; }
 .invoice-footer dl > div { display: flex; justify-content: space-between; gap: 1rem; padding: .45rem 0; color: #765f55; font-size: .76rem; }
 .invoice-footer dd { margin: 0; color: var(--client-ink); font-weight: 700; }
@@ -531,6 +544,7 @@
     .client-quick-grid, .client-stats { grid-template-columns: 1fr; }
     .client-profile-card { grid-template-columns: 1fr; }
     .login-shell { grid-template-columns: 1fr; }
+    .register-shell { grid-template-columns: 1fr; }
     .login-visual { min-height: 300px; }
     .cart-layout { grid-template-columns: 1fr; }
     .cart-summary { position: static; }
@@ -555,6 +569,7 @@
     .login-visual { min-height: 250px; padding: 1.5rem; }
     .login-visual h1 { font-size: 2.5rem; }
     .login-panel { padding: 1.5rem; }
+    .register-fields { grid-template-columns: 1fr; }
     .cart-line { grid-template-columns: 76px minmax(0, 1fr); }
     .cart-line > img { width: 76px; height: 76px; }
     .cart-line-actions { grid-column: 1 / -1; }
@@ -569,4 +584,13 @@
     .invoice-header, .invoice-footer { align-items: flex-start; flex-direction: column; }
     .invoice-number { text-align: left; }
     .invoice-information { grid-template-columns: 1fr; }
+}
+
+@media print {
+    .sidebar, .topbar, .app-footer, .sidebar-backdrop, .invoice-actions, .toast-container { display: none !important; }
+    .app-container, .main-content, .content-wrapper, .page-container, .client-page-container { display: block !important; width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+    body { background: #fff !important; }
+    .invoice { border: 0 !important; box-shadow: none !important; }
+    .invoice-table-wrap { overflow: visible; }
+    @page { size: A4; margin: 12mm; }
 }

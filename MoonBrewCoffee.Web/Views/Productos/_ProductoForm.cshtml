@@ -217,11 +217,12 @@
 
         <input type="file"
                id="fileImagen"
+               name="imagenArchivo"
                accept="image/*"
                class="form-control mb-4" />
 
         <small id="imageStatus" class="d-block mb-3 text-muted">
-            La imagen se optimizará y guardará en formato Base64.
+            El archivo se guardará en la carpeta de imágenes y la base de datos conservará únicamente su ruta.
         </small>
 
         <input asp-for="Image64"
@@ -231,9 +232,9 @@
         <span asp-validation-for="Image64" class="text-danger d-block mb-3"></span>
 
         <img id="preview"
-             src="@(string.IsNullOrEmpty(Model?.Image64)
-                              ? "https://placehold.co/500x320/F8F5F2/5A382C?text=Vista+Previa"
-                              : Model.Image64)"
+             src="@(Model?.IdProducto > 0 && !string.IsNullOrEmpty(Model.Image64)
+                              ? Url.Action("Image", "Productos", new { id = Model.IdProducto })
+                              : "https://placehold.co/500x320/F8F5F2/5A382C?text=Vista+Previa")"
              class="img-fluid rounded shadow"
              style="max-height:320px;" />
 
@@ -247,8 +248,6 @@
 
     const preview=document.getElementById("preview");
 
-    const image64=document.getElementById("Image64");
-
     const imageStatus=document.getElementById("imageStatus");
 
     file?.addEventListener("change",async function(e){
@@ -258,15 +257,12 @@
         if(!archivo) return;
 
         try {
-            file.disabled=true;
-            imageStatus.textContent="Optimizando imagen...";
+            if (!archivo.type.startsWith("image/") || archivo.size > 5 * 1024 * 1024) {
+                throw new Error("Seleccione una imagen JPG, PNG o WEBP de hasta 5 MB.");
+            }
 
-            const base64=await window.MoonBrewImage.toBase64(archivo);
-
-            preview.src=base64;
-            image64.value=base64;
-            image64.dispatchEvent(new Event("change", { bubbles:true }));
-            imageStatus.textContent="Imagen lista para guardar.";
+            preview.src=URL.createObjectURL(archivo);
+            imageStatus.textContent="Imagen lista. Se guardará como archivo al enviar el formulario.";
             imageStatus.classList.remove("text-danger");
             imageStatus.classList.add("text-success");
         } catch (error) {
@@ -274,9 +270,7 @@
             imageStatus.textContent=error.message;
             imageStatus.classList.remove("text-muted", "text-success");
             imageStatus.classList.add("text-danger");
-        } finally {
-            file.disabled=false;
-        }
+        } finally { file.disabled=false; }
 
     });
 

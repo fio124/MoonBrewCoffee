@@ -16,6 +16,13 @@ using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// En algunas computadoras Windows el proveedor del Visor de eventos requiere
+// permisos de administrador. La consola y la salida de depuración son
+// suficientes para la aplicación y evitan que un error de conexión la cierre.
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 QuestPDF.Settings.License = LicenseType.Community;
 
 
@@ -37,6 +44,8 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ICartService, SessionCartService>();
 builder.Services.AddScoped<IPedidoReportPdfService, PedidoReportPdfService>();
+builder.Services.AddScoped<IFacturaPdfService, FacturaPdfService>();
+builder.Services.AddScoped<IServicioImagenes, ServicioImagenes>();
 builder.Services.Configure<ScheduledTasksOptions>(
     builder.Configuration.GetSection(ScheduledTasksOptions.SectionName));
 builder.Services.AddSingleton(TimeProvider.System);
@@ -125,6 +134,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 var app = builder.Build();
 
 await DatabaseSchemaInitializer.InitializeAsync(app.Services);
+await ConversorImagenesAntiguas.ConvertirAsync(app.Services);
 
 
 // Configure the HTTP request pipeline.
@@ -147,7 +157,6 @@ app.UseRouting();
 var administrativeControllers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 {
     "Home",
-    "Dashboard",
     "Productos",
     "Categorias",
     "Ingredientes",

@@ -16,6 +16,8 @@ namespace MoonBrewCoffee.Web.Services
                 var commands = new[]
                 {
                     "IF COL_LENGTH('dbo.Pedidos','IdEncargado') IS NULL ALTER TABLE dbo.Pedidos ADD IdEncargado INT NULL;",
+                    "IF EXISTS(SELECT 1 FROM sys.columns WHERE object_id=OBJECT_ID('dbo.Usuarios') AND name='Correo' AND max_length=-1) BEGIN UPDATE dbo.Usuarios SET Correo=LEFT(LTRIM(RTRIM(Correo)),256); ALTER TABLE dbo.Usuarios ALTER COLUMN Correo NVARCHAR(256) NOT NULL; END;",
+                    "IF NOT EXISTS(SELECT 1 FROM sys.indexes WHERE object_id=OBJECT_ID('dbo.Usuarios') AND name='IX_Usuarios_Correo') AND NOT EXISTS(SELECT Correo FROM dbo.Usuarios GROUP BY Correo HAVING COUNT(*) > 1) CREATE UNIQUE INDEX IX_Usuarios_Correo ON dbo.Usuarios(Correo);",
                     "IF NOT EXISTS(SELECT 1 FROM sys.foreign_keys WHERE name='FK_Pedidos_Usuarios_IdEncargado') ALTER TABLE dbo.Pedidos WITH CHECK ADD CONSTRAINT FK_Pedidos_Usuarios_IdEncargado FOREIGN KEY(IdEncargado) REFERENCES dbo.Usuarios(IdUsuario);",
                     "IF COL_LENGTH('dbo.DetallePedidos','Impuesto') IS NULL ALTER TABLE dbo.DetallePedidos ADD Impuesto DECIMAL(10,2) NOT NULL CONSTRAINT DF_DetallePedidos_Impuesto DEFAULT(0);",
                     "IF COL_LENGTH('dbo.Pedidos','ClaveOperacion') IS NULL ALTER TABLE dbo.Pedidos ADD ClaveOperacion NVARCHAR(64) NULL;",

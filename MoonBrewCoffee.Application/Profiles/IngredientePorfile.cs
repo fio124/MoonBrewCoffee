@@ -13,7 +13,6 @@ namespace MoonBrewCoffee.Application.Profiles
             CreateMap<IngredienteDTO, Ingrediente>()
                 .ForMember(dest => dest.IdIngrediente, opt => opt.MapFrom(src => src.IdIngrediente))
                 .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombre))
-                //.ForMember(dest => dest.UnidadMedida, opt => opt.MapFrom(src => src.UnidadMedida))
                 .ForMember(dest => dest.Activo, opt => opt.MapFrom(src => src.Activo));
         }
     }

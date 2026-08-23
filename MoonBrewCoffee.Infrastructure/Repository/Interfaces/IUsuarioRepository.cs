@@ -10,6 +10,8 @@ namespace MoonBrewCoffee.Infrastructure.Repository.Interfaces
 
         Task<Usuario?> GetByIdAsync(int id);
 
+        Task<bool> EmailExistsAsync(string email);
+
         Task AddAsync(Usuario usuario);
 
         Task UpdateAsync(Usuario usuario);

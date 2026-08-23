@@ -4,6 +4,7 @@ using MoonBrewCoffee.Application.DTOs;
 using MoonBrewCoffee.Application.Services.Interfaces;
 using MoonBrewCoffee.Web.Models;
 using MoonBrewCoffee.Web.Services;
+using System.Globalization;
 
 namespace MoonBrewCoffee.Infrastructure.Controllers
 {
@@ -14,17 +15,20 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
         private readonly IUsuarioService _usuarioService;
         private readonly ICartService _cartService;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IFacturaPdfService _facturaPdfService;
 
         public PedidosController(
             IPedidoService pedidoService,
             IUsuarioService usuarioService,
             ICartService cartService,
-            ICurrentUserService currentUserService)
+            ICurrentUserService currentUserService,
+            IFacturaPdfService facturaPdfService)
         {
             _pedidoService = pedidoService;
             _usuarioService = usuarioService;
             _cartService = cartService;
             _currentUserService = currentUserService;
+            _facturaPdfService = facturaPdfService;
         }
 
         public async Task<IActionResult> Index(DateTime? from = null, DateTime? to = null, int? statusId = null)
@@ -62,6 +66,24 @@ namespace MoonBrewCoffee.Infrastructure.Controllers
                 return Forbid();
 
             return View(order);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DescargarFactura(int id)
+        {
+            var current = _currentUserService.GetCurrent();
+            if (current is null)
+                return RedirectToAction("IniciarSesion", "Cuenta", new { returnUrl = Url.Action(nameof(DescargarFactura), "Pedidos", new { id }) });
+
+            var order = await _pedidoService.GetByIdAsync(id);
+            if (order is null)
+                return NotFound();
+            if (!current.EsAdministrador && !current.EsEncargado && order.IdCliente != current.IdUsuario)
+                return Forbid();
+
+            var ingles = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en";
+            var file = _facturaPdfService.Generar(order, ingles);
+            return File(file, "application/pdf", $"MoonBrew-Factura-{order.IdPedido}.pdf");
         }
 
         [HttpGet]

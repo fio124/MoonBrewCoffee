@@ -63,7 +63,11 @@
     </div>
 
     <footer class="invoice-footer">
-        <a asp-action="Index" class="invoice-back"><i class="bi bi-arrow-left"></i> <span data-i18n-key="orders.backToHistory">Volver al historial</span></a>
+        <div class="invoice-actions">
+            <a asp-action="Index" class="invoice-back"><i class="bi bi-arrow-left"></i> <span data-i18n-key="orders.backToHistory">Volver al historial</span></a>
+            <button type="button" class="invoice-action-button" onclick="window.print()"><i class="bi bi-printer"></i> <span data-i18n-key="orders.printInvoice">Imprimir</span></button>
+            <a asp-action="DescargarFactura" asp-route-id="@Model.IdPedido" class="invoice-action-button primary"><i class="bi bi-file-earmark-pdf"></i> <span data-i18n-key="orders.downloadInvoice">Descargar PDF</span></a>
+        </div>
         <dl>
             <div><dt data-i18n-key="orders.totalWithoutTax">Total sin impuestos</dt><dd>₡@Model.Subtotal.ToColones()</dd></div>
             <div><dt data-i18n-key="orders.tax">Impuesto</dt><dd>₡@Model.Impuesto.ToColones()</dd></div>

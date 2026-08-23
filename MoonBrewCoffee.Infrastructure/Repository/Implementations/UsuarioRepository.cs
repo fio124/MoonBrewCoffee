@@ -35,6 +35,14 @@ namespace MoonBrewCoffee.Infrastructure.Repository.Implementations
                 .FirstOrDefaultAsync(u => u.IdUsuario == id);
         }
 
+        public Task<bool> EmailExistsAsync(string email)
+        {
+            var normalizedEmail = email.Trim().ToLower();
+            return _context.Usuarios
+                .AsNoTracking()
+                .AnyAsync(usuario => usuario.Correo.ToLower() == normalizedEmail);
+        }
+
         public async Task AddAsync(Usuario usuario)
         {
             _context.Usuarios.Add(usuario);

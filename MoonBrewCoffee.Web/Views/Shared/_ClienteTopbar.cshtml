@@ -22,7 +22,8 @@
 
     <div class="topbar-right">
         @await Html.PartialAsync("_LanguageSelector")
-        <a asp-controller="Cliente" asp-action="Carrito" class="icon-btn client-cart-button" aria-label="Abrir mi carrito">
+        <a asp-controller="Cliente" asp-action="Carrito" class="icon-btn client-cart-button"
+           aria-label="Abrir mi carrito" data-i18n-aria-key="orders.openCart">
             <i class="bi bi-cart3"></i><span class="client-cart-badge" data-cart-count>0</span>
         </a>
         @if (currentUser is null)

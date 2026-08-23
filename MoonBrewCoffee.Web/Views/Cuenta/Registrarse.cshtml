@@ -1,0 +1,73 @@
+@model MoonBrewCoffee.Web.Models.RegistroViewModel
+
+@{
+    ViewData["Title"] = "Crear cuenta";
+    Layout = "_ClienteLayout";
+}
+
+<section class="login-shell register-shell">
+    <div class="login-visual register-visual" aria-hidden="true">
+        <div class="login-visual-content">
+            <span><i class="bi bi-stars"></i> MoonBrew Coffee</span>
+            <h1 data-i18n-key="account.createHero">Tu historia con MoonBrew comienza aquí.</h1>
+            <p data-i18n-key="account.createHeroCopy">Crea tu cuenta para comprar, consultar tus pedidos y seguir cada preparación.</p>
+        </div>
+    </div>
+
+    <div class="login-panel register-panel">
+        <div class="login-heading">
+            <span class="login-icon"><i class="bi bi-person-plus"></i></span>
+            <div>
+                <span data-i18n-key="account.newCustomer">NUEVO CLIENTE</span>
+                <h2 data-i18n-key="account.createAccount">Crear cuenta</h2>
+                <p data-i18n-key="account.createCopy">Completa tus datos. El sistema asignará automáticamente el rol Cliente.</p>
+            </div>
+        </div>
+
+        <form asp-action="Registrarse" method="post" class="login-form register-form">
+            <div asp-validation-summary="ModelOnly" class="login-validation" role="alert"></div>
+
+            <div class="register-fields">
+                <div class="login-field">
+                    <label asp-for="Nombre" data-i18n-key="account.firstName">Nombre</label>
+                    <div class="login-input"><i class="bi bi-person"></i><input asp-for="Nombre" autocomplete="given-name" /></div>
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+                <div class="login-field">
+                    <label asp-for="Apellido" data-i18n-key="account.lastName">Apellido</label>
+                    <div class="login-input"><i class="bi bi-person"></i><input asp-for="Apellido" autocomplete="family-name" /></div>
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+                <div class="login-field">
+                    <label asp-for="Correo" data-i18n-key="account.email">Correo electrónico</label>
+                    <div class="login-input"><i class="bi bi-envelope"></i><input asp-for="Correo" autocomplete="email" placeholder="nombre@correo.com" data-i18n-placeholder-key="clientPortal.emailPlaceholder" /></div>
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+                <div class="login-field">
+                    <label asp-for="Telefono" data-i18n-key="account.phone">Teléfono</label>
+                    <div class="login-input"><i class="bi bi-telephone"></i><input asp-for="Telefono" autocomplete="tel" placeholder="8888-8888" /></div>
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </div>
+                <div class="login-field">
+                    <label asp-for="Password" data-i18n-key="account.password">Contraseña</label>
+                    <div class="login-input"><i class="bi bi-lock"></i><input asp-for="Password" autocomplete="new-password" /></div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="login-field">
+                    <label asp-for="ConfirmPassword" data-i18n-key="account.confirmPassword">Confirmar contraseña</label>
+                    <div class="login-input"><i class="bi bi-shield-check"></i><input asp-for="ConfirmPassword" autocomplete="new-password" /></div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <p class="register-password-help" data-i18n-key="account.passwordHelp">La contraseña debe incluir 8 caracteres, mayúscula, minúscula y número.</p>
+            <button type="submit" class="login-submit"><i class="bi bi-person-check"></i><span data-i18n-key="account.createButton">Crear mi cuenta</span></button>
+        </form>
+
+        <a asp-action="IniciarSesion" class="login-back"><i class="bi bi-arrow-left"></i> <span data-i18n-key="account.alreadyRegistered">Ya tengo una cuenta</span></a>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -52,17 +52,17 @@ namespace MoonBrewCoffee.Infrastructure.Repository.Implementations
             .Select(order => new Pedido { IdPedido = order.IdPedido, Total = order.Total })
             .FirstOrDefaultAsync();
 
-        public Task<Pedido?> GetByIdAsync(int id) => Query()
+        public Task<Pedido?> GetByIdAsync(int id) => DetailQuery()
             .FirstOrDefaultAsync(order => order.IdPedido == id);
 
-        public Task<List<Pedido>> GetByClientAsync(int clientId) => Query()
+        public Task<List<Pedido>> GetByClientAsync(int clientId) => SummaryQuery()
             .Where(order => order.IdCliente == clientId)
             .OrderByDescending(order => order.FechaPedido)
             .ToListAsync();
 
         public Task<List<Pedido>> GetAllAsync(DateTime? from = null, DateTime? to = null, int? statusId = null)
         {
-            var query = Query();
+            var query = ReportQuery();
             if (from.HasValue)
                 query = query.Where(order => order.FechaPedido >= from.Value.Date);
             if (to.HasValue)
@@ -134,14 +134,22 @@ namespace MoonBrewCoffee.Infrastructure.Repository.Implementations
             await transaction.CommitAsync();
         }
 
-        private IQueryable<Pedido> Query() => _context.Pedidos
+        private IQueryable<Pedido> SummaryQuery() => _context.Pedidos
+            .AsNoTracking()
+            .Include(order => order.Cliente)
+            .Include(order => order.Encargado)
+            .Include(order => order.EstadoPedido);
+
+        private IQueryable<Pedido> ReportQuery() => SummaryQuery()
+            .Include(order => order.Detalles);
+
+        private IQueryable<Pedido> DetailQuery() => _context.Pedidos
             .AsNoTracking()
             .AsSplitQuery()
             .Include(order => order.Cliente)
             .Include(order => order.Encargado)
             .Include(order => order.EstadoPedido)
             .Include(order => order.Pago)
-            .Include(order => order.Procesos).ThenInclude(step => step.Estacion)
             .Include(order => order.HistorialEstados).ThenInclude(change => change.Estado)
             .Include(order => order.HistorialEstados).ThenInclude(change => change.Usuario)
             .Include(order => order.Detalles).ThenInclude(line => line.Producto)

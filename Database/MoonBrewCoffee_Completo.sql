@@ -109,7 +109,7 @@ CREATE TABLE [Usuarios] (
     [IdRol] int NOT NULL,
     [Nombre] nvarchar(max) NOT NULL,
     [Apellido] nvarchar(max) NOT NULL,
-    [Correo] nvarchar(max) NOT NULL,
+    [Correo] nvarchar(256) NOT NULL,
     [Telefono] nvarchar(max) NOT NULL,
     [PasswordHash] nvarchar(max) NOT NULL,
     [FechaRegistro] datetime2 NOT NULL,
@@ -367,6 +367,10 @@ CREATE INDEX [IX_Pedidos_IdEstado] ON [Pedidos] ([IdEstado]);
 GO
 
 
+CREATE UNIQUE INDEX [IX_Usuarios_Correo] ON [Usuarios] ([Correo]);
+GO
+
+
 CREATE INDEX [IX_ProcesosPreparacion_IdEstacion] ON [ProcesosPreparacion] ([IdEstacion]);
 GO
 
@@ -414,10 +418,10 @@ DECLARE @CatFria INT=(SELECT IdCategoria FROM Categorias WHERE Nombre=N'Bebidas 
 DECLARE @CatPostre INT=(SELECT IdCategoria FROM Categorias WHERE Nombre=N'Postres');
 DECLARE @CatTe INT=(SELECT IdCategoria FROM Categorias WHERE Nombre=N'Té Caliente');
 INSERT INTO Productos (IdCategoria,Nombre,Descripcion,Precio,Image64,TiempoPreparacion,Activo) VALUES
-(@CatCafe,N'Latte Clásico',N'Café espresso con leche cremosa',2200,NULL,8,1),
-(@CatFria,N'Frappé de Chocolate',N'Bebida fría con chocolate',2800,NULL,10,1),
-(@CatPostre,N'Brownie',N'Brownie artesanal de chocolate',1800,NULL,12,1),
-(@CatTe,N'Té Chai',N'Infusión especiada con leche',2100,NULL,7,1);
+(@CatCafe,N'Latte Clásico',N'Café espresso con leche cremosa',2200,N'/Imagenes/Latte Clasico.webp',8,1),
+(@CatFria,N'Frappé de Chocolate',N'Bebida fría con chocolate',2800,N'/Imagenes/Frappe Caramelo.webp',10,1),
+(@CatPostre,N'Brownie',N'Brownie artesanal de chocolate',1800,N'/Imagenes/Brownie.webp',12,1),
+(@CatTe,N'Té Chai',N'Infusión especiada con leche',2100,N'/Imagenes/Te verde.webp',7,1);
 
 INSERT INTO ProductoIngredientes (IdProducto,IdIngrediente)
 SELECT p.IdProducto,i.IdIngrediente FROM Productos p CROSS JOIN Ingredientes i

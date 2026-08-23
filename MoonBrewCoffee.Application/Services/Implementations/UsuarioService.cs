@@ -40,6 +40,11 @@ namespace MoonBrewCoffee.Application.Services.Implementations
             return _mapper.Map<UsuarioDTO>(usuario);
         }
 
+        public Task<bool> EmailExistsAsync(string email)
+        {
+            return _usuarioRepository.EmailExistsAsync(email);
+        }
+
         public async Task AddAsync(UsuarioDTO usuario)
         {
             var entidad = _mapper.Map<Usuario>(usuario);
